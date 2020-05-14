@@ -9,19 +9,28 @@
 <body>
     <!-- formにenctypeを設定しない場合、画像の中身が送信されないため注意 -->
     <form th:action="@{/upload}" th:object="${imageForm}" method="post" enctype="multipart/form-data">
-        ファイルを選択： <input type="file" th:field="*{image}" />
-        <input type="file" th:field="*{image}" />
-        <input type="file" th:field="*{image}" />
-        <input type="file" th:field="*{image}" />
-        <input type="file" th:field="*{image}" />
-        <input type="file" th:field="*{image}" />
-        <input type="file" th:field="*{image}" />
-        <input type="file" th:field="*{image}" />
-        <input type="file" th:field="*{image}" />
-        <input type="file" th:field="*{image}" />
+        ファイルを選択： <input type="file" th:field="*{image}" th.value="*{image}" multiple/>
+        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
+        <!-- <input type="file" th:field="*{image}" th.value="*{image}" multiple/>
+        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}" ></div>
+        <input type="file" th:field="*{image}" th.value="*{image}" multiple/>
+        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div> -->
+        <!-- <input type="file" th:field="*{image}" th.value="*{image}" />
+        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
+        <input type="file" th:field="*{image}" th.value="*{image}" />
+        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
+        <input type="file" th:field="*{image}" th.value="*{image}" />
+        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
+        <input type="file" th:field="*{image}" th.value="*{image}" />
+        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
+        <input type="file" th:field="*{image}" th.value="*{image}" />
+        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
+        <input type="file" th:field="*{image}" th.value="*{image}" />
+        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
+        <input type="file" th:field="*{image}" th.value="*{image}" />
+        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div> -->
         <br /> <input type="submit" value="送信する" />
     </form>
-    <!-- <img src="images/ariana_grande.jpeg" alt=""> -->
 </body>
 
 </html>
