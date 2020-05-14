@@ -10,7 +10,7 @@
   <div class="images" style="display: flex">
     <div th:each= "movie :${movieList}" class="image">
       <img th:src="${movie.movie}" height="100" width="200"/>
-      <span th:text="${movie.created}"></span>
+      <!-- <span th:text="${movie.created}"></span> -->
     </div>
   </div>
 </body>
