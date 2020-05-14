@@ -13,14 +13,19 @@
     <form th:action="@{/upload}" th:object="${imageForm}" method="post" enctype="multipart/form-data" class="form">
         <div id="preview" class="images">
         </div>
-        ファイルを選択： <input type="file" th:field="*{image}" th.value="*{image}" id ="upfile" accept="image/*" capture="camera" multiple/>
+        ファイルを選択： <input type="file" th:field="*{image}" th.value="*{image}" id ="upfile" accept="video/*" capture="camera" multiple/>
         <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
+        <!-- ファイルを選択： <input type="file" th:field="*{image}" th.value="*{image}" id ="upfile" accept="image/*" capture="camera" multiple/>
+        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div> -->
+        <!-- <video src="~/sampleproject/src/main/resources/static/images/VID_20191102_220714.mp4" controls></video> -->
         <br /> <input type="submit" value="送信する" />
     </form>
     
     <script>
         const buildFileField = function(index,src) {
-            const html = `<img id="thumbnail_${index}" src="${src}" class="thumbnail image">`;
+            const html = `<video id="thumbnail_${index}" src="${src}" class="thumbnail image" height="150px" width="300px" controls>
+                        </video>`;
+            // const html = `<img id="thumbnail_${index}" src="${src}" class="thumbnail image" height="300px" width="300px" controls>`;
             return html;
         }
 
@@ -28,7 +33,6 @@
 
             $('.thumbnail').remove();
             for(let i = 0; i < this.files.length; i++) {
-                console.log(this.files.length);
                 // 選択されたファイル情報を取得
                 var file = this.files[i];
                 
@@ -38,7 +42,6 @@
                 reader.onload = function(e) {
                     //filesが複数枚ある場合にはresultではなくe.target.resultを用いる
                     $('#preview').append(buildFileField(i, e.target.result));
-                    console.log(reader.result);
                 }
             }
         });
