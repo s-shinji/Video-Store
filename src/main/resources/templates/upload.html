@@ -3,34 +3,47 @@
 
 <head>
     <meta charset="UTF-8" />
+    <link th:href="@{/css/sample.css}" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <title>upload.html</title>
 </head>
 
 <body>
     <!-- formにenctypeを設定しない場合、画像の中身が送信されないため注意 -->
-    <form th:action="@{/upload}" th:object="${imageForm}" method="post" enctype="multipart/form-data">
-        ファイルを選択： <input type="file" th:field="*{image}" th.value="*{image}" multiple/>
+    <form th:action="@{/upload}" th:object="${imageForm}" method="post" enctype="multipart/form-data" class="form">
+        <div id="preview" class="images">
+        </div>
+        ファイルを選択： <input type="file" th:field="*{image}" th.value="*{image}" id ="upfile" accept="image/*" capture="camera" multiple/>
         <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
-        <!-- <input type="file" th:field="*{image}" th.value="*{image}" multiple/>
-        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}" ></div>
-        <input type="file" th:field="*{image}" th.value="*{image}" multiple/>
-        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div> -->
-        <!-- <input type="file" th:field="*{image}" th.value="*{image}" />
-        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
-        <input type="file" th:field="*{image}" th.value="*{image}" />
-        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
-        <input type="file" th:field="*{image}" th.value="*{image}" />
-        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
-        <input type="file" th:field="*{image}" th.value="*{image}" />
-        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
-        <input type="file" th:field="*{image}" th.value="*{image}" />
-        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
-        <input type="file" th:field="*{image}" th.value="*{image}" />
-        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
-        <input type="file" th:field="*{image}" th.value="*{image}" />
-        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div> -->
         <br /> <input type="submit" value="送信する" />
     </form>
+    
+    <script>
+        const buildFileField = function(index,src) {
+            const html = `<img id="thumbnail_${index}" src="${src}" class="thumbnail image">`;
+            return html;
+        }
+
+        $('#upfile').change(function(){
+
+            $('.thumbnail').remove();
+            for(let i = 0; i < this.files.length; i++) {
+                console.log(this.files.length);
+                // 選択されたファイル情報を取得
+                var file = this.files[i];
+                
+                // readerのresultプロパティに、データURLとしてエンコードされたファイルデータを格納
+                var reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function(e) {
+                    //filesが複数枚ある場合にはresultではなくe.target.resultを用いる
+                    $('#preview').append(buildFileField(i, e.target.result));
+                    console.log(reader.result);
+                }
+            }
+        });
+
+    </script>
 </body>
 
 </html>
