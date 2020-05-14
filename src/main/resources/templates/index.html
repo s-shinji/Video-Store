@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link th:href="@{/css/sample.css}" rel="stylesheet" type="text/css">
+<head>
+    <meta charset="utf-8">
+    <title>Index</title>
+</head>
+
+<body>
+  <div class="images" style="display: flex">
+    <div th:each= "movie :${movieList}" class="image">
+      <img th:src="${movie.movie}" height="100" width="200"/>
+      <!-- <span th:text="${movie.created}"></span> -->
+    </div>
+  </div>
+</body>
+
+</html>

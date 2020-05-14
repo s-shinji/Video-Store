@@ -1,9 +1,16 @@
 package com.example.sampleproject;
 
+// import javax.validation.constraints.NotNull;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public class ImageForm {
-	private MultipartFile[] image;
+    // @NotNull
+    private MultipartFile[] image;
+    
+    public ImageForm(){
+
+    }
 
     public MultipartFile[] getImage() {
         return image;
