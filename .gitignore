@@ -30,7 +30,7 @@ build/
 ### VS Code ###
 .vscode/
 src/main/resources/static/images/*
-application.yml
+src/main/resources/application.yml
 
 ### H2 database ###
 /h2db/
