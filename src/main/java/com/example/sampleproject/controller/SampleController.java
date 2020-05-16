@@ -36,8 +36,8 @@ public class SampleController {
         return new ImageForm();
     }
     
-    @RequestMapping("/sample")
-    public String sample() {
+    @RequestMapping("/upload")
+    public String upload() {
         return "upload";
     }
 
