@@ -28,5 +28,13 @@ public class MovieServiceImpl implements MovieService {
 	public List<Movie> getAll() {
 		return dao.getAll();
 	}
+
+	// @Override
+	// public void deleteById(int id) {
+	// 	//Movieを削除、idがなければ例外発生
+	// 	if(dao.deleteById(id) == 0) {
+	// 		throw new MovieNotFoundException("削除する動画が存在しません")
+	// 	}
+	// }
 	
 }
