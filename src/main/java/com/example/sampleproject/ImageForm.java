@@ -5,12 +5,22 @@ package com.example.sampleproject;
 import org.springframework.web.multipart.MultipartFile;
 
 public class ImageForm {
+
+    // private int[] userId;
     // @NotNull
     private MultipartFile[] image;
-    
-    public ImageForm(){
+
+    public ImageForm() {
 
     }
+
+    // public int[] getUserId() {
+    //     return userId;
+    // }
+
+    // public void setUserId(int[] userId) {
+    //     this.userId = userId;
+    // }
 
     public MultipartFile[] getImage() {
         return image;
