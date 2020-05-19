@@ -1,15 +1,19 @@
 package com.example.sampleproject.controller;
 
 import com.example.sampleproject.ImageForm;
+import com.example.sampleproject.entity.DbUserDetails;
 import com.example.sampleproject.entity.Movie;
 import com.example.sampleproject.service.MovieService;
 
+// import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -56,6 +60,16 @@ public class SampleController {
         }
         model.addAttribute("movieList", list);
         model.addAttribute("movieList2", list2);
+        //index.htmlでユーザー情報を取得したい場合に用いる(現在ログイン中のユーザー情報を取得)
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if(authentication.getPrincipal() instanceof DbUserDetails){
+	    	DbUserDetails account = DbUserDetails.class.cast(authentication.getPrincipal());
+	    	// model.addAttribute("userInfo", "現在ログインしているユーザ名：" + account.getUsername() + "をコントローラクラスから取得しました。");
+	    	model.addAttribute("userInfo", "現在ログインしているユーザ名：" + account.getUserId() + "をコントローラクラスから取得しました。");
+	    }else{
+	    	model.addAttribute("userInfo", "");
+        }	
+        //ここまで
         return "index";
     }
     
@@ -72,6 +86,13 @@ public class SampleController {
             // data.append(base64);
             movie.setMovie(imageForm.getImage()[i].getBytes());
             movie.setCreated(LocalDateTime.now());
+            // 変更箇所(ログインユーザーのID情報を渡す)
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if(authentication.getPrincipal() instanceof DbUserDetails){
+                int userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+                movie.setUserId(userId);
+            }
+            //ここまで
             movieService.save(movie);
         }
         return "redirect:/index";
