@@ -12,6 +12,6 @@ public interface MovieDao {
 
 	List<Movie> getAll();
 
-    // int deleteById(int id);
+    int deleteById(int id);
 	
 }

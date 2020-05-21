@@ -10,6 +10,6 @@ public interface MovieService {
 
 	List<Movie> getAll();
 
-	// void deleteById(int id);
+	void deleteById(int id);
 
 }

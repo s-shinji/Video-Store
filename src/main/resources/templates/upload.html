@@ -14,11 +14,10 @@
     <form th:action="@{/upload}" th:object="${imageForm}" method="post" enctype="multipart/form-data" class="form">
         <div id="preview" class="images">
         </div>
+        <!-- <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}" style="color:red;"></div> -->
+        <div th:errors="*{image}" style="color:red;"></div>
         ファイルを選択： <input type="file" th:field="*{image}" th.value="*{image}" id ="upfile" accept="video/*" capture="camera" multiple/>
-        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
-        <!-- ファイルを選択： <input type="file" th:field="*{image}" th.value="*{image}" id ="upfile" accept="image/*" capture="camera" multiple/>
-        <div th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div> -->
-        <!-- <video src="~/sampleproject/src/main/resources/static/images/VID_20191102_220714.mp4" controls></video> -->
+        <!-- ファイルを選択： <input type="file" th:field="*{image}" th.value="*{image}" id ="upfile" accept="video/*" capture="camera"/> -->
         <br /> <input type="submit" value="送信する" />
     </form>
     

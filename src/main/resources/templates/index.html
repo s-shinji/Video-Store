@@ -10,21 +10,25 @@
   <form role="form" id="logout" th:action="@{/logout}" method="post">
     <button type="submit">ログアウト</button>
   </form>
-  <!-- <span th:text="${userInfo}"></span> -->
   <div class="images" style="display: flex">
-    <div th:each= "movie :${movieList2}" class="image">
-      <video th:src="${movie}" height="150px" width="300px" controls></video>
+    <div th:each= "movie :${movieList3}" class="image">
+      <!-- 動画はmovieのインデックス0に入っている -->
+      <video th:src="${movie.get(0)}" height="150px" width="300px" controls></video>
       <!-- <img th:src="${movie.movie}" height="100px" width="200px" > -->
       <div style="display: flex;justify-content : space-around">
-        <div>作成者</div>
+        <div>
+          <label for = "id">投稿者:</label>
+          <!-- 動画投稿者はmovieのインデックス3に入っている -->
+          <span id="movie" th:text="${movie.get(3)}">投稿者</span>
+        </div>
         <div>再生回数</div>
       </div>
-    </div>
-  </div>
-  <div class="images" style="display: flex">
-    <div th:each= "other :${movieList}" class="image">
-      <!-- <span th:text="${other.created}"></span> -->
-      <!-- <span th:text="${other.id}"></span> -->
+      <!-- 現在ログイン中のユーザーと動画投稿者が同じな場合、削除ボタンを表示する -->
+      <form th:if="${loginUser == movie.get(2)}" method="POST" th:action="@{/delete}">
+        <!-- このname属性が@RequestParamで受け取る際のキーになる（受け取る値はvalue属性） -->
+        <input type="hidden" name="movieId" th:value="${movie.get(1)}">
+        <input type="submit" value="削除">
+      </form>    
     </div>
   </div>
 

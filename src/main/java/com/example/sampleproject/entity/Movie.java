@@ -2,6 +2,16 @@ package com.example.sampleproject.entity;
 
 import java.time.LocalDateTime;
 
+//変更箇所(new)
+// import javax.persistence.ManyToOne;
+
+
+// import javax.persistence.NamedQuery;
+// import java.io.Serializable;
+
+// import javax.persistence.Entity;
+// import javax.persistence.JoinColumn;
+
 // import javax.persistence.JoinColumn;
 //変更箇所
 // import javax.persistence.ManyToOne;
@@ -12,9 +22,14 @@ import java.time.LocalDateTime;
 // import javax.persistence.Id;
 // import javax.persistence.Table;
 
-// @Entity
-// @Table(name="movie")
+//変更箇所(new)
+// @NamedQuery(name="MemberRegistrationEntity.findAll", query="SELECT * FROM MemberRegistrationEntity")
+// @Entity(name = "movie")
 public class Movie {
+    /**
+     *
+     */
+    // private static final long serialVersionUID = 1L;
     // @Id
     // @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
@@ -23,18 +38,13 @@ public class Movie {
     // 変更箇所
     private int userId;
 
-    // @ManyToOne
-    // @JoinColumn(name = "user_id") // 付けなくてもOK
-    // private Account account;
-    // @ManyToOne
-    // private Account account;
-    // usersテーブルができたため追加した項目
-    // private int userId;
-    // private User user;
+    //変更〜
+    private MemberRegistrationEntity user;
 
-    //変更箇所
+    //変更箇所(new)
     // @ManyToOne
-    // MemberRegistrationEntity users;
+    // @JoinColumn(name = "user_id")
+    // private MemberRegistrationEntity memberRegistrationEntity;
 
     public Movie() {
 
@@ -48,21 +58,13 @@ public class Movie {
     // };
 
     // usersテーブルができたため追加した項目
-    // public User getUser() {
-    // return user;
-    // }
-
-    // public void setUser(User user) {
-    // this.user = user;
-    // }
-
-    // public int getUserId() {
-    // return userId;
-    // }
-
-    // public void setUserId(int userId) {
-    // this.userId = userId;
-    // }
+    //変更〜
+    public MemberRegistrationEntity getUser() {
+    return user;
+    }
+    public void setUser(MemberRegistrationEntity user) {
+    this.user = user;
+    }
 
     // 変更箇所
     public int getUserId() {
@@ -97,4 +99,11 @@ public class Movie {
     public void setCreated(LocalDateTime created) {
         this.created = created;
     }
+    //変更箇所(new)
+    // public MemberRegistrationEntity getMemberRegistrationEntity() {
+    //     return memberRegistrationEntity;
+    // }
+    // public void setMemberRegistrationEntity(MemberRegistrationEntity memberRegistrationEntity) {
+    //     this.memberRegistrationEntity = memberRegistrationEntity;
+    // }
 }
