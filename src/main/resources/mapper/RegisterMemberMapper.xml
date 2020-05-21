@@ -7,8 +7,12 @@
         INSERT INTO
             users(name, password)
         VALUES(
-            #{userName},
+            #{name},
             #{password})
     </insert>
+    <!-- 変更箇所(new) -->
+    <!-- <select id="findAll" resultType="com.example.sampleproject.entity.MemberRegistrationEntity">
+        SELECT id,name,password FROM users
+    </select> -->
 
 </mapper>

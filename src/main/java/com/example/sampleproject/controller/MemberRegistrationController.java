@@ -34,7 +34,7 @@ public class MemberRegistrationController {
 		//USERテーブルにinsertする時の引数。
 		MemberRegistrationEntity entity = new MemberRegistrationEntity();
 
-		entity.setUserName(memberRegistrationForm.getUserName());
+		entity.setName(memberRegistrationForm.getName());
 		entity.setPassword(memberRegistrationForm.getPassword());
 
 		//USERテーブルにinsertする。
