@@ -149,6 +149,7 @@ public class SampleController {
         // }
         // movieService.save(movie);
         //ここまで
+        
 
         return "redirect:/index";
     }
@@ -162,6 +163,12 @@ public class SampleController {
         movieService.deleteById(id);
         return "redirect:/index";
     } 
+
+    //後でコメントアウト
+    // @GetMapping("/result")
+    // public String result () {
+    //     return "/result";
+    // }
     
     
 }

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <link th:href="@{/css/sample.css}" rel="stylesheet" type="text/css">
 <head>
@@ -11,6 +11,53 @@
     <button type="submit">ログアウト</button>
   </form>
   <div class="images" style="display: flex">
+    <div th:each= "movie :${movieList3}" class="image"> -->
+      <!-- 動画はmovieのインデックス0に入っている -->
+      <!-- <video th:src="${movie.get(0)}" height="150px" width="300px" controls></video> -->
+      <!-- <img th:src="${movie.movie}" height="100px" width="200px" > -->
+      <!-- <div style="display: flex;justify-content : space-around">
+        <div>
+          <label for = "id">投稿者:</label> -->
+          <!-- 動画投稿者はmovieのインデックス3に入っている -->
+          <!-- <span id="movie" th:text="${movie.get(3)}">投稿者</span>
+        </div>
+        <div>再生回数</div>
+      </div> -->
+      <!-- 現在ログイン中のユーザーと動画投稿者が同じな場合、削除ボタンを表示する -->
+      <!-- <form th:if="${loginUser == movie.get(2)}" method="POST" th:action="@{/delete}"> -->
+        <!-- このname属性が@RequestParamで受け取る際のキーになる（受け取る値はvalue属性） -->
+        <!-- <input type="hidden" name="movieId" th:value="${movie.get(1)}">
+        <input type="submit" value="削除">
+      </form>    
+    </div>
+  </div>
+
+</body>
+
+</html> -->
+
+
+
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link th:href="@{/css/application.css}" rel="stylesheet" type="text/css">
+<head><title>Index</title></head>
+<body>
+<div th:replace="~{block/head::headA}"></div>
+<div th:replace="~{block/header::headerA}"></div>
+<main role="main" class="mainBackground">
+
+  <!-- Main jumbotron for a primary marketing message or call to action -->
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-3">Hello, world!</h1>
+      <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+      <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+    </div>
+  </div>
+
+  <!-- <div > -->
+  <div class="images">
     <div th:each= "movie :${movieList3}" class="image">
       <!-- 動画はmovieのインデックス0に入っている -->
       <video th:src="${movie.get(0)}" height="150px" width="300px" controls></video>
@@ -23,15 +70,48 @@
         </div>
         <div>再生回数</div>
       </div>
+
       <!-- 現在ログイン中のユーザーと動画投稿者が同じな場合、削除ボタンを表示する -->
       <form th:if="${loginUser == movie.get(2)}" method="POST" th:action="@{/delete}">
         <!-- このname属性が@RequestParamで受け取る際のキーになる（受け取る値はvalue属性） -->
         <input type="hidden" name="movieId" th:value="${movie.get(1)}">
-        <input type="submit" value="削除">
+        <input type="submit" value="削除" class="deleteBtn">
       </form>    
+
     </div>
+
   </div>
+  <!-- </div> -->
 
-</body>
+  <!-- <div class="container"> -->
+    <!-- Example row of columns -->
+    <!-- <div class="row">
+      <div class="col-md-4">
+        <h2>Heading</h2>
+        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+        <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+      </div>
+      <div class="col-md-4">
+        <h2>Heading</h2>
+        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+        <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+      </div>
+      <div class="col-md-4">
+        <h2>Heading</h2>
+        <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+        <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+      </div>
+    </div>
 
+    <hr> -->
+
+  <!-- </div> /container -->
+
+</main>
+
+<footer class="container">
+  <p>&copy; Company 2017-2020</p>
+</footer>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+      <script>window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="/docs/4.5/dist/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"integrity="sha384-1CmrxMRARb6aLqgBO7yyAxTOQE2AKb9GfXnEo760AUcUmFx3ibVJJAzGytlQcNXd" crossorigin="anonymous"></script></body>
 </html>
