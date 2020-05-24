@@ -4,10 +4,12 @@
 <mapper namespace="com.example.sampleproject.mapper.RegisterMemberMapper">
 
     <insert id="insertMemberInfo" parameterType="com.example.sampleproject.entity.MemberRegistrationEntity">
+    <!-- 追加！ -->
         INSERT INTO
-            users(name, password)
+            users(name, email, password)
         VALUES(
             #{name},
+            #{email},
             #{password})
     </insert>
     <!-- 変更箇所(new) -->

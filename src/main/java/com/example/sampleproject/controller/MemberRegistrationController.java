@@ -3,6 +3,8 @@ package com.example.sampleproject.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -29,12 +31,24 @@ public class MemberRegistrationController {
 	}
 
 	@RequestMapping("/Register")
-	public String registerUser(@ModelAttribute MemberRegistrationForm memberRegistrationForm) {
+	//追加！
+	public String registerUser(@Validated @ModelAttribute MemberRegistrationForm memberRegistrationForm,
+								BindingResult result) {
+        if(result.hasErrors()) {
+            return "RegistrationForm";
+		}
+		
+		if (!(memberRegistrationForm.getPasswordConfirmation().equals(memberRegistrationForm.getPassword()))) {
+			result.rejectValue("passwordConfirmation",null, "パスワードが一致してません。");
+            return "RegistrationForm";
+		}
 
 		//USERテーブルにinsertする時の引数。
 		MemberRegistrationEntity entity = new MemberRegistrationEntity();
 
 		entity.setName(memberRegistrationForm.getName());
+		//追加！
+		entity.setEmail(memberRegistrationForm.getEmail());
 		entity.setPassword(memberRegistrationForm.getPassword());
 
 		//USERテーブルにinsertする。
