@@ -53,6 +53,11 @@ public class SampleController {
         return new ImageForm();
     }
     
+    @RequestMapping("top")
+    public String top() {
+        return "top";
+    }
+
     @RequestMapping("/upload")
     public String upload() {
         return "upload";
@@ -149,7 +154,6 @@ public class SampleController {
         // }
         // movieService.save(movie);
         //ここまで
-        
 
         return "redirect:/index";
     }
@@ -163,12 +167,6 @@ public class SampleController {
         movieService.deleteById(id);
         return "redirect:/index";
     } 
-
-    //後でコメントアウト
-    // @GetMapping("/result")
-    // public String result () {
-    //     return "/result";
-    // }
     
     
 }

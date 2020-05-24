@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link th:href="@{/css/reset.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/css/top.css}" rel="stylesheet" type="text/css">
+<head>
+    <meta charset="utf-8">
+    <title>Top</title>
+</head>
+<body>
+  <div class="top">
+    <h1>Video Store</h1>
+    <ul >
+      <li class="upper">
+        <a href="#" th:href="@{/index}" class="topList">一覧ページ</a>
+      </li>
+      <li class="lower">
+        <a href="#" th:href="@{/login}" class="topList">ログイン</a>
+        <a href="#" th:href="@{/RegistrationForm}" class="topList">新規登録</a>
+      </li>
+    </div>
+  </div>
+</body>
+</html>
