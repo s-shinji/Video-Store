@@ -105,11 +105,11 @@
   <!-- <div th:if="${iserror}" style="color:red;">
     <p>ログインできませんでした。やりなおしてください。</p>
   </div> -->
-  <label for="inputEmail" class="sr-only">ユーザー名</label>
-  <input type="text" id="inputEmail user" name="userName" class="form-control" placeholder="ユーザー名" required autofocus>
+  <label for="inputName" class="sr-only">ユーザー名</label>
+  <input type="text" id="inputName user" name="userName" class="form-control" placeholder="ユーザー名" style="margin-bottom: 10px;" required autofocus>
 
   <label for="inputPassword" class="sr-only">パスワード</label>
-  <input type="password" id="inputPassword password"  name="password" class="form-control" placeholder="パスワード" required>
+  <input type="password" id="inputPassword password"  name="password" class="form-control" placeholder="パスワード" style="margin-bottom: 10px;" required>
   <div class="checkbox mb-3">
     <label>
       <input type="checkbox" value="remember-me"> 保存する
@@ -117,7 +117,7 @@
   </div>
   <button class="btn btn-lg btn-success btn-block" type="submit">ログイン</button>
   <a th:href="@{/RegistrationForm}"class="btn btn-lg btn-success btn-block" type="submit">新規登録</a>
-  <p class="mt-5 mb-3 text-muted">&copy; 2017-2020</p>
+  <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
 
 </form>
 </body>

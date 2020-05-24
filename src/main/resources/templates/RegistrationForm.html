@@ -99,17 +99,27 @@
   <!-- <div th:if="${iserror}" style="color:red;">
     <p>ログインできませんでした。やりなおしてください。</p>
   </div> -->
-  <label for="inputEmail" class="sr-only">ユーザー名</label>
-  <input type="text" id="inputEmail" th:field="*{name}" class="form-control" placeholder="ユーザー名" required autofocus>
+  <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color:red;"></div>
+  <div th:errors="*{passwordConfirmation}" style="color:red;"></div>
+  <label for="inputName" class="sr-only">ユーザー名</label>
+  <input type="text" id="inputName" th:field="*{name}" class="mb-10 form-control" placeholder="ユーザー名" style="margin-bottom: 10px;" required autofocus>
+
+  <!-- 追加！ -->
+  <label for="inputEmail" class="sr-only">Email</label>
+  <input type="text" id="inputEmail" th:field="*{email}" class="mb-10 form-control" placeholder="Email" style="margin-bottom: 10px;" required autofocus>
 
 
   <label for="inputPassword" class="sr-only">パスワード</label>
-  <input type="password" id="inputPassword"  th:field="*{password}" class="form-control" placeholder="パスワード" required>
+  <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color:red;"></div>
+  <input type="password" id="inputPassword"  th:field="*{password}" class="mb-10 form-control" style="margin-bottom: 10px;" placeholder="パスワード" required>
+
+  <label for="inputPasswordConfirmation" class="sr-only">パスワード(確認用)</label>
+  <input type="password" id="inputPasswordConfirmation"  th:field="*{passwordConfirmation}" class="mb-10 form-control" style="margin-bottom: 10px;" placeholder="パスワード(確認用)" required>
 
   <div class="checkbox mb-3">
   </div>
   <button class="btn btn-lg btn-success btn-block" type="submit">登録</button>
-  <p class="mt-5 mb-3 text-muted">&copy; 2017-2020</p>
+  <p class="mt-5 mb-3 text-muted">&copy; 2020</p>
 
   </form>
 </body>

@@ -10,7 +10,7 @@ package com.example.sampleproject.entity;//変更！！
 /**
  * DBに入れる値を格納するクラス。
  */
-//変更箇所(new)
+// 変更箇所(new)
 // @NamedQuery(name="Movie.findAll", query="SELECT m FROM Movie m")
 // @Entity
 public class MemberRegistrationEntity {
@@ -20,7 +20,12 @@ public class MemberRegistrationEntity {
 
 	private String name;
 
+	private String email;
+
 	private String password;
+
+	
+
 	// 変更箇所(new)
 	// @OneToMany(mappedBy="movie",cascade = CascadeType.ALL)
 	// private List<Movie> movies;
@@ -31,6 +36,7 @@ public class MemberRegistrationEntity {
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -43,6 +49,15 @@ public class MemberRegistrationEntity {
 		this.name = name;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+	//追加！
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
 	public String getPassword() {
 		return password;
 	}
@@ -50,11 +65,14 @@ public class MemberRegistrationEntity {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+
 	// 変更箇所(new)
 	// public Movie addMovie(Movie movie) {
     //     getMovies().add(movie);
 	// 	movie.setMemberRegistrationEntity(this);
 	// 	return movie;
+
 
     // }
     // public Movie removeMovie(Movie movie) {
