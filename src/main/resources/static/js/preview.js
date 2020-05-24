@@ -21,5 +21,8 @@ $(document).ready(function(){
               $('#preview').append(buildFileField(i, e.target.result));
           }
       }
+
+      $('.uploadError').remove();
+
   });
 });

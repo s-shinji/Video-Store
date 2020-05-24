@@ -1,0 +1,49 @@
+.uploadFlex {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 500px;
+  margin: 0 auto;
+}
+
+.uploadBox {
+  cursor: pointer;
+  border: #28a745 1px solid;
+  padding: 50px 0;
+  margin-top: 60px; 
+}
+
+#upfile {
+  display: none;
+}
+
+.fa-video {
+  display: block;
+  font-size: 30px;
+  color: #28a745;
+  width: 35px;
+  margin: 0 auto;
+}
+
+#preview {
+  margin-top: 50px;
+}
+
+.thumbnail {
+  display: block;
+  height: 150px;
+  width: 300px;
+  margin: 0 auto;
+}
+
+.uploadSubmit {
+  display: block;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  margin-top: 20px;
+  padding: 5px;
+  border: #28a745 1px solid;
+  border-radius: 5px;
+  background-color: #28a745;
+}

@@ -42,7 +42,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/RegistrationForm").permitAll()
             .antMatchers("/Register").permitAll()
             .antMatchers("/Result").permitAll()
-			.antMatchers("/index").permitAll()
+            .antMatchers("/index").permitAll()
+            //後でコメントアウトする
+			// .antMatchers("/result").permitAll()
 			//anyRequest().authenticated()でその他の全てのページへはログインが必要にする
             .anyRequest().authenticated();
     }

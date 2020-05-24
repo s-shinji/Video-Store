@@ -1,0 +1,28 @@
+.images{
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.image{
+  width: 25%;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.navbar-brand{
+  background-color: #343a40;
+}
+
+.mainBackground {
+  background-color: #F0FFF0;
+}
+
+.home {
+  border: white 1px solid;
+}
+
+.deleteBtn {
+  display: block;
+  margin-left: 30px;
+}
