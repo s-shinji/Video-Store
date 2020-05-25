@@ -13,6 +13,6 @@ public interface RegisterMemberMapper {
 	public void insertMemberInfo(MemberRegistrationEntity entity);
 
 	//変更箇所(new)
-	// public List<MemberRegistrationEntity> findAll();
+	public MemberRegistrationEntity findByEmail(String email);
 
 }

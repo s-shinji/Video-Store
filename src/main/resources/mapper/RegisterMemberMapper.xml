@@ -13,8 +13,13 @@
             #{password})
     </insert>
     <!-- 変更箇所(new) -->
-    <!-- <select id="findAll" resultType="com.example.sampleproject.entity.MemberRegistrationEntity">
-        SELECT id,name,password FROM users
-    </select> -->
+    <select id="findByEmail" resultType="com.example.sampleproject.entity.MemberRegistrationEntity">
+        SELECT
+          email
+        FROM
+          users
+        WHERE
+          email = #{email}
+    </select>
 
 </mapper>

@@ -32,8 +32,8 @@ public class RegisterMemberService {
 		registerMemberMapper.insertMemberInfo(entity);
 	}
 	// 変更箇所(new)
-	// public List<MemberRegistrationEntity> findAll() {
-	// 	return registerMemberMapper.findAll();
-	// }
+	public MemberRegistrationEntity findByEmail(String email) {
+		return registerMemberMapper.findByEmail(email);
+	}
 
 }

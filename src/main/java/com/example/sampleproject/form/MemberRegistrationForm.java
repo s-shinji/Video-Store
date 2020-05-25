@@ -3,13 +3,15 @@ package com.example.sampleproject.form;//変更！！
 // import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
+import com.example.sampleproject.validation.FindEmail;
+
 /**
  * 会員登録フォームに入力された値を格納するためのクラス。
  */
 public class MemberRegistrationForm {
 	private String name;
 	// 追加！
-	// @Email
+	@FindEmail
 	@Pattern(regexp = "^[a-zA-Z0-9!#$%&'_`/=~\\*\\+\\-\\?\\^\\{\\|\\}]+(\\.[a-zA-Z0-9!#$%&'_`/=~\\*\\+\\-\\?\\^\\{\\|\\}]+)*+(.*)@[a-zA-Z0-9][a-zA-Z0-9\\-]*(\\.[a-zA-Z0-9\\-]+)+$", message = "Emailが不正です。")
 	private String email;
 
