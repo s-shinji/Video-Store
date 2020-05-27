@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 //変更箇所(new)
 // import javax.persistence.ManyToOne;
 
-
 // import javax.persistence.NamedQuery;
 // import java.io.Serializable;
 
@@ -38,10 +37,14 @@ public class Movie {
     // 変更箇所
     private int userId;
 
-    //変更〜
+    // 変更〜
     private MemberRegistrationEntity user;
 
-    //変更箇所(new)
+    private int views;
+
+    private String title;
+
+    // 変更箇所(new)
     // @ManyToOne
     // @JoinColumn(name = "user_id")
     // private MemberRegistrationEntity memberRegistrationEntity;
@@ -56,6 +59,22 @@ public class Movie {
     // this.created = created;
 
     // };
+
+    public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public int getViews() {
+        return views;
+    }
+
+    public void setViews(int views) {
+        this.views = views;
+    }
 
     // usersテーブルができたため追加した項目
     //変更〜
@@ -99,6 +118,7 @@ public class Movie {
     public void setCreated(LocalDateTime created) {
         this.created = created;
     }
+
     //変更箇所(new)
     // public MemberRegistrationEntity getMemberRegistrationEntity() {
     //     return memberRegistrationEntity;

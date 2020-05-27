@@ -41,6 +41,7 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <link th:href="@{/css/application.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/css/index.css}" rel="stylesheet" type="text/css">
 <head><title>Index</title></head>
 <body>
 <div th:replace="~{block/head::headA}"></div>
@@ -48,27 +49,51 @@
 <main role="main" class="mainBackground">
 
   <!-- Main jumbotron for a primary marketing message or call to action -->
-  <div class="jumbotron">
+  <!-- <div class="jumbotron">
     <div class="container">
       <h1 class="display-3">Hello, world!</h1>
       <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
       <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
     </div>
+  </div> -->
+  <div id="loopSlide">
+    <ul>
+        <li th:each="viewList :${viewsList3}" class="indexLoop">
+          <div class="loopInfo">
+            <!-- <label for="rank">No.</label> -->
+            <!-- <span th:text="${viewListStat.index + 1}" id="rank"></span> -->
+          </div>
+          <a href="" th:href="@{/video/{id}(id=${viewList.get(1)})}" class="loopLink">
+            <video th:src="${viewList.get(0)}" height="225px" width="400px" ></video>
+          </a>
+        </li>
+    </ul>
   </div>
+
 
   <!-- <div > -->
   <div class="images">
     <div th:each= "movie :${movieList3}" class="image">
       <!-- 動画はmovieのインデックス0に入っている -->
-      <video th:src="${movie.get(0)}" height="150px" width="300px" controls></video>
-      <!-- <img th:src="${movie.movie}" height="100px" width="200px" > -->
-      <div style="display: flex;justify-content : space-around">
-        <div>
-          <label for = "id">投稿者:</label>
-          <!-- 動画投稿者はmovieのインデックス3に入っている -->
-          <span id="movie" th:text="${movie.get(3)}">投稿者</span>
+      <!-- <video th:src="${movie.get(0)}" height="150px" width="300px" controls></video> -->
+      <div>
+        <a href="" th:href="@{/video/{id}(id=${movie.get(1)})}" class="movieLink">
+          <video th:src="${movie.get(0)}" height="150px" width="300px" class="movieIndex" muted></video>
+          <div th:text="${movie.get(5)}" class="movieTitle"></div>
+        </a>
+
+        <!-- <img th:src="${movie.movie}" height="100px" width="200px" > -->
+        <div class="indexInfo">
+          <div>
+            <label for = "postUser">投稿者:</label>
+            <!-- 動画投稿者はmovieのインデックス3に入っている -->
+            <span id="postUser" th:text="${movie.get(3)}">投稿者</span>
+          </div>
+          <div>
+            <label for = "views">再生回数:</label>
+            <span id="views" th:text="${movie.get(4)} + '回'">再生回数</span>
+          </div>
         </div>
-        <div>再生回数</div>
       </div>
 
       <!-- 現在ログイン中のユーザーと動画投稿者が同じな場合、削除ボタンを表示する -->
@@ -109,9 +134,13 @@
 
 </main>
 
-<footer class="container">
+<footer>
   <p class="footer">&copy; 2020</p>
 </footer>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-      <script>window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="/docs/4.5/dist/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"integrity="sha384-1CmrxMRARb6aLqgBO7yyAxTOQE2AKb9GfXnEo760AUcUmFx3ibVJJAzGytlQcNXd" crossorigin="anonymous"></script></body>
+<script>window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="/docs/4.5/dist/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"integrity="sha384-1CmrxMRARb6aLqgBO7yyAxTOQE2AKb9GfXnEo760AUcUmFx3ibVJJAzGytlQcNXd" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/simplyscroll/2/jquery.simplyscroll.min.js"></script>
+<script type="text/javascript" th:src="@{/js/hover.js}"></script>
+<script type="text/javascript" th:src="@{/js/simplyscroll.js}"></script>
+</body>
 </html>

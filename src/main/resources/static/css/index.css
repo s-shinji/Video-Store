@@ -1,0 +1,101 @@
+footer {
+  background-color: #e9ecef;
+}
+
+.footer {
+  width: 100px;
+  margin: 0 auto;
+  margin-bottom: 0px;
+  padding-bottom: 5px;
+}
+
+.movieIndex {
+  cursor: pointer;
+}
+
+.indexInfo {
+  display: flex;
+  justify-content: space-around;
+}
+
+/* .simply-scroll-container {
+  position: relative;
+}
+.simply-scroll-clip {
+  position: relative;
+  overflow: hidden;
+}
+.simply-scroll-list {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+.simply-scroll-list li { */
+  /* float: left; Horizontal scroll only */
+  /* padding: 0;
+  margin: 0;
+  width: 481px; */
+  /* height: 319px; */
+/* } */
+/* .simply-scroll-list li video {
+  display: block;
+} */
+.simply-scroll-container {
+  position: relative;
+}
+.simply-scroll-clip {
+  position: relative;
+  overflow: hidden;
+}
+.simply-scroll-list {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+.simply-scroll-list li {
+  float: left; /* Horizontal scroll only */
+  padding: 0;
+  margin: 0;
+  width: 400px;
+  height: auto;
+}
+/* .simply-scroll-list li video {
+  display: block;
+  width: 100%;
+} */
+
+.indexLoop {
+  list-style: none;
+  border: 1px white solid;
+}
+
+#loopSlide {
+  background-color: #F0FFF0;
+}
+
+.loopInfo{
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.movieLink {
+  display: block;
+  width: 300px;
+  height: 100%;
+  margin: 0 auto;
+  text-decoration: none;
+}
+
+.loopLink {
+  display: block;
+  width: 400px;
+  height: 225px;
+}
+
+.movieTitle {
+  color: black;
+}
+
+a:hover {
+  text-decoration: none;
+}

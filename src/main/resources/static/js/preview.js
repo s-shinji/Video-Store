@@ -1,6 +1,6 @@
 $(document).ready(function(){
   const buildFileField = function(index,src) {
-      const html = `<video id="thumbnail_${index}" src="${src}" class="thumbnail image" height="150px" width="300px" controls>
+      const html = `<video id="thumbnail_${index}" src="${src}" class="thumbnail" controls>
                   </video>`;
       // const html = `<img id="thumbnail_${index}" src="${src}" class="thumbnail image" height="300px" width="300px" controls>`;
       return html;
