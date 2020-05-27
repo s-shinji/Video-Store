@@ -133,6 +133,31 @@ public class MovieDaoImpl implements MovieDao {
         return jdbcTemplate.update("UPDATE movie SET views = ? WHERE id = ?", views, id);
     }
 
+    @Override
+    public List<Movie> findBySearchWordLike(String searchWord) {
+        String sql = "SELECT movie.id, movie, views, title,"
+                        + "name FROM movie "
+                        + "INNER JOIN users ON movie.user_id = users.id "
+                        + "WHERE title LIKE ? OR name LIKE ?";
+
+        List<Map<String, Object>> resultList = jdbcTemplate.queryForList(sql, searchWord, searchWord);
+        List<Movie> list = new ArrayList<Movie>();
+        //カラム名がStringに値がObjectに格納されている
+        for(Map<String, Object> result:resultList) {
+            Movie movie = new Movie();
+            movie.setId((int) result.get("id"));
+            movie.setMovie((byte[]) result.get("movie"));
+            movie.setViews((int) result.get("views"));
+            movie.setTitle((String) result.get("title"));
+
+            MemberRegistrationEntity user = new MemberRegistrationEntity();
+            user.setName((String) result.get("name"));
+            movie.setUser(user);
+
+            list.add(movie);
+        }
+        return list;
+    }
 
 
 

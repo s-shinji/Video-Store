@@ -61,5 +61,10 @@ public class MovieServiceImpl implements MovieService {
 			throw new MovieNotFoundException("再生する動画が存在しません");
 		}
 	}
+
+	@Override
+	public List<Movie> findBySearchWordLike(String searchWord) {
+		return dao.findBySearchWordLike(searchWord);
+	}
 	
 }

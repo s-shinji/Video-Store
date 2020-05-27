@@ -20,5 +20,7 @@ public interface MovieDao {
 	Optional<Movie> getMovie(int id);
 
 	int updateViews(int views, int id);
+
+	List<Movie> findBySearchWordLike(String searchWord);
 	
 }

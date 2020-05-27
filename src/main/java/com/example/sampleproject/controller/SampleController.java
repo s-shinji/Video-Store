@@ -3,6 +3,7 @@ package com.example.sampleproject.controller;//変更！！
 import com.example.sampleproject.ImageForm;
 import com.example.sampleproject.entity.DbUserDetails;
 import com.example.sampleproject.entity.Movie;
+import com.example.sampleproject.form.SearchForm;
 import com.example.sampleproject.service.MovieService;
 
 // import java.security.Principal;
@@ -56,8 +57,12 @@ public class SampleController {
         return new ImageForm();
     }
     
-    @RequestMapping("top")
+    @RequestMapping("/")
     public String top() {
+        return "top";
+    }
+    @RequestMapping("/top")
+    public String top2() {
         return "top";
     }
 
@@ -229,6 +234,42 @@ public class SampleController {
         movieService.deleteById(id);
         return "redirect:/index";
     } 
+
+    @PostMapping("/search")
+    public String search (SearchForm searchForm, Model model) {
+        if("".equals(searchForm.getSearchWord())) {
+            return "index";
+        } else {
+            List<Movie> list = movieService.findBySearchWordLike("%" + searchForm.getSearchWord() + "%");
+            List<Object> list3 = new ArrayList<>();
+            for(int i = 0; i < list.size(); i++) {
+                // Collections.sort(list.get(i).getViews(),Collections.reverseOrder());
+    
+                StringBuffer data = new StringBuffer();
+                String base64 = Base64.getEncoder().encodeToString(list.get(i).getMovie());
+                // data.append("data:image/jpeg;base64,");
+                //mp4にしか対応していない
+                data.append("data:video/mp4;base64,");
+                data.append(base64);
+    
+                //Object型のリストを作成し必要な要素のみをlistから取り出し詰め替える
+                List<Object> list2 = new ArrayList<>();
+                list2.add(list.get(i).getMovie());
+                list2.add(list.get(i).getId());
+                list2.add(list.get(i).getUser().getName());
+                list2.add(list.get(i).getViews());
+                list2.add(list.get(i).getTitle());
+                
+                //0にはString化される前のmovieが入っているため、それをString化したものに差し替える
+                list2.set(0,data.toString());
+                list3.add(list2);
+            }
+            // model.addAttribute("movieList", list);
+            model.addAttribute("list3", list3);
+            model.addAttribute("listSize", list3.size());
+        }
+        return "search";
+    }
     
     
 }
