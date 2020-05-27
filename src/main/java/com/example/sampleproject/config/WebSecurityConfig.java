@@ -44,7 +44,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/Result").permitAll()
             .antMatchers("/index").permitAll()
             .antMatchers("/video/{id}").permitAll()
+            .antMatchers("/").permitAll()
             .antMatchers("/top").permitAll()
+            .antMatchers("/search").permitAll()
             //後でコメントアウトする
 			// .antMatchers("/upload").permitAll()
 			//anyRequest().authenticated()でその他の全てのページへはログインが必要にする

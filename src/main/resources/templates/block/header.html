@@ -33,15 +33,15 @@
           </div>
         </li> -->
       </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+      <form class="form-inline my-2 my-lg-0"  th:action="@{/search}" method="post">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" name="searchWord">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form>
     </div>
   </nav>
 </header>
 
-<header th:fragment="headerB">
+<!-- <header th:fragment="headerB">
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <form role="form" id="logout" th:action="@{/logout}" method="post" th:if="!${''.equals(loginUser)}">
       <button type="submit" class="navbar-brand">ログアウト</button>
@@ -65,7 +65,7 @@
     </div>
   </nav>
 </header>
-
+ -->
 <header th:fragment="headerC">
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">

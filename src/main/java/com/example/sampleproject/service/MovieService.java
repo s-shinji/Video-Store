@@ -18,4 +18,6 @@ public interface MovieService {
 	Optional<Movie> getMovie(int id);
 
 	void updateViews(int views, int id);
+
+	List<Movie> findBySearchWordLike(String searchWord);
 }
