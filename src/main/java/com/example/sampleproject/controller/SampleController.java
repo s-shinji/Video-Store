@@ -9,7 +9,9 @@ import com.example.sampleproject.service.MovieService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
+// import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -20,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -70,8 +73,11 @@ public class SampleController {
         // model.addAttribute("find",memberRegistrationEntityList.get(0));
         
         List<Movie> list = movieService.getAll();
+        // Collections.sort(list.getCreated(),Collections.reverseOrder());
         List<Object> list3 = new ArrayList<>();
         for(int i = 0; i < list.size(); i++) {
+            // Collections.sort(list.get(i).getViews(),Collections.reverseOrder());
+
             StringBuffer data = new StringBuffer();
             String base64 = Base64.getEncoder().encodeToString(list.get(i).getMovie());
             // data.append("data:image/jpeg;base64,");
@@ -85,12 +91,33 @@ public class SampleController {
             list2.add(list.get(i).getId());
             list2.add(list.get(i).getUserId());
             list2.add(list.get(i).getUser().getName());
+            list2.add(list.get(i).getViews());
+            list2.add(list.get(i).getTitle());
+            
             //0にはString化される前のmovieが入っているため、それをString化したものに差し替える
             list2.set(0,data.toString());
             list3.add(list2);
         }
         // model.addAttribute("movieList", list);
         model.addAttribute("movieList3", list3);
+
+        //再生回数順に上位5つを取り出す
+        List<Movie> viewsList = movieService.getAll2();
+        List<Object> viewsList3 = new ArrayList<>();
+        for(int j = 0; j < 5; j++) {
+            StringBuffer data = new StringBuffer();
+            String base64_2 = Base64.getEncoder().encodeToString(viewsList.get(j).getMovie());
+            data.append("data:video/mp4;base64,");
+            data.append(base64_2);
+
+            List<Object> viewsList2 = new ArrayList<>();
+            viewsList2.add(data.toString());
+            viewsList2.add(viewsList.get(j).getId());
+            viewsList2.add(viewsList.get(j).getTitle());
+            viewsList3.add(viewsList2);
+        }
+        model.addAttribute("viewsList3", viewsList3);
+
         //index.htmlでユーザー情報を取得したい場合に用いる(現在ログイン中のユーザー情報を取得)
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if(authentication.getPrincipal() instanceof DbUserDetails){
@@ -103,56 +130,91 @@ public class SampleController {
         //ここまで
         return "index";
     }
+
+    @GetMapping("/video/{id}")
+    public String video(Movie movie,@PathVariable int id, Model model) {
+        Optional<Movie> movieOpt = movieService.getMovie(id);
+        if(movieOpt.isPresent()) {
+           movie = movieOpt.get();
+        }
+        //再生回数を+1
+        int views = movie.getViews();
+        views += 1; 
+        // Movie viewss = (Movie) views;
+        movieService.updateViews(views, id);
+        StringBuffer data = new StringBuffer();
+        String base64_3 = Base64.getEncoder().encodeToString(movie.getMovie());
+        data.append("data:video/mp4;base64,");
+        data.append(base64_3);
+        // String convertMovie = data.toString();
+        model.addAttribute("convert", data.toString());
+        model.addAttribute("movie", movie);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if(authentication.getPrincipal() instanceof DbUserDetails){
+	    	DbUserDetails account = DbUserDetails.class.cast(authentication.getPrincipal());
+	    	// model.addAttribute("userInfo", "現在ログインしているユーザ名：" + account.getUsername() + "をコントローラクラスから取得しました。");
+	    	model.addAttribute("loginUser", account.getUserId());
+	    }else{
+	    	model.addAttribute("loginUser", "");
+        }	
+
+        return "detail";
+    }
     
     @PostMapping("/upload")
     public String upload(@Validated ImageForm imageForm, BindingResult result, Model model ) throws Exception {
 
-        // if(result.hasErrors()) {
-        //     return "upload";
-        // }
+        if(result.hasErrors()) {
+            return "upload";
+        }
 
         Movie movie = new Movie();
-        for(int i = 0; i < imageForm.getImage().length; i++) {
+        // 動画を複数投稿する場合
+        // for(int i = 0; i < imageForm.getImage().length; i++) {
             //ファイルが一つもない場合にエラー文を表示する
-            MultipartFile uploadFile = imageForm.getImage()[i];
-            if (uploadFile.isEmpty()) {
-                result.rejectValue("image",null, "ファイルを選択してください");
-                return "upload";
-            }
+            // MultipartFile uploadFile = imageForm.getImage()[i];
+            // if (uploadFile.isEmpty()) {
+            //     result.rejectValue("image",null, "ファイルを選択してください");
+            //     return "upload";
+            // }
 
-            // StringBuffer data = new StringBuffer();
-            // String base64 = Base64.getEncoder().encodeToString(imageForm.getImage()[i].getBytes());
-            // data.append("data:image/jpeg;base64,");
-            // data.append(base64);
-            movie.setMovie(imageForm.getImage()[i].getBytes());
-            movie.setCreated(LocalDateTime.now());
+            // movie.setMovie(imageForm.getImage()[i].getBytes());
+            // movie.setCreated(LocalDateTime.now());
             // 変更箇所(ログインユーザーのID情報を渡す)
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if(authentication.getPrincipal() instanceof DbUserDetails){
-                int userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-                movie.setUserId(userId);
-            }
+            // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            // if(authentication.getPrincipal() instanceof DbUserDetails){
+            //     int userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+            //     movie.setUserId(userId);
+            // }
+
+            // movie.setViews(0);
+            // movie.setTitle(imageForm.getTitle());
             //ここまで
-            movieService.save(movie);
-        }
+            // movieService.save(movie);
+        // }
         // 動画投稿を一つずつにする場合の分
-        // MultipartFile[] uploadFile = imageForm.getImage();
-        // if (uploadFile.isEmpty()) {
-        //     result.rejectValue("image",null, "ファイルを選択してください");
-        //     return "upload";
-        // }
-        // StringBuffer data = new StringBuffer();
-        // String base64 = Base64.getEncoder().encodeToString(imageForm.getImage().getBytes());
-        // data.append("data:image/jpeg;base64,");
-        // data.append(base64);
-        // movie.setMovie(imageForm.getImage().getBytes());
-        // movie.setCreated(LocalDateTime.now());
-        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        // if(authentication.getPrincipal() instanceof DbUserDetails){
-        //     int userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-        //     movie.setUserId(userId);
-        // }
-        // movieService.save(movie);
+        MultipartFile uploadFile = imageForm.getImage();
+        if (uploadFile.isEmpty()) {
+            result.rejectValue("image",null, "ファイルを選択してください");
+            return "upload";
+        }
+        StringBuffer data = new StringBuffer();
+        String base64 = Base64.getEncoder().encodeToString(imageForm.getImage().getBytes());
+        data.append("data:image/jpeg;base64,");
+        data.append(base64);
+        movie.setMovie(imageForm.getImage().getBytes());
+        movie.setCreated(LocalDateTime.now());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication.getPrincipal() instanceof DbUserDetails){
+            int userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+            movie.setUserId(userId);
+        }
+
+        movie.setViews(0);
+        movie.setTitle(imageForm.getTitle());
+
+        movieService.save(movie);
         //ここまで
 
         return "redirect:/index";

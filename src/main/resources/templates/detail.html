@@ -1,0 +1,50 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<link th:href="@{/css/application.css}" rel="stylesheet" type="text/css">
+<link th:href="@{/css/detail.css}" rel="stylesheet" type="text/css">
+<head><title>Index</title></head>
+<body>
+<div th:replace="~{block/head::headA}"></div>
+<div th:replace="~{block/header::headerA}"></div>
+<div role="main" class="mainBackground">
+
+  <!-- <div > -->
+  <div class="detail">
+    <!-- <div th:each= "movie :${movieList}" class="image"> -->
+    <!-- 動画はmovieのインデックス0に入っている -->
+    <!-- <video th:src="${movie.get(0)}" height="150px" width="300px" controls></video> -->
+    <video th:src="${convert}" height="500px" width="100%" class="movieDetail" controls></video>
+
+    <!-- <img th:src="${movie.movie}" height="100px" width="200px" > -->
+    <div class="detailInfo" >
+      <div>
+        <label for = "id">投稿者:</label>
+        <!-- 動画投稿者はmovieのインデックス3に入っている -->
+        <span id="movie" th:text="${movie.user.name}">投稿者</span>
+      </div>
+      <div>
+        <label for = "views">再生回数:</label>
+        <span id="views" th:text="${movie.views} + '回'">再生回数</span>
+      </div>
+  </div>
+
+    <!-- 現在ログイン中のユーザーと動画投稿者が同じな場合、削除ボタンを表示する -->
+    <form th:if="${loginUser == movie.user.id}" method="POST" th:action="@{/delete}">
+      <!-- このname属性が@RequestParamで受け取る際のキーになる（受け取る値はvalue属性） -->
+      <input type="hidden" name="movieId" th:value="${movie.id}">
+      <input type="submit" value="削除" class="deleteBtn">
+    </form>    
+
+  <!-- </div> -->
+
+  </div>
+</div>
+
+<footer>
+  <p class="footer">&copy; 2020</p>
+</footer>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="/docs/4.5/dist/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"integrity="sha384-1CmrxMRARb6aLqgBO7yyAxTOQE2AKb9GfXnEo760AUcUmFx3ibVJJAzGytlQcNXd" crossorigin="anonymous"></script>
+<script type="text/javascript" th:src="@{/js/hover.js}"></script>
+</body>
+</html>
