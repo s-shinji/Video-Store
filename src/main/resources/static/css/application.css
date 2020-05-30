@@ -32,3 +32,18 @@
   display: block;
   margin-left: 30px;
 }
+
+.postUserName{
+  color: black;
+  opacity: 0.5;
+  font-weight: bold;
+}
+
+.postUserName:hover{
+  color: black;
+  opacity: 1.0;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+

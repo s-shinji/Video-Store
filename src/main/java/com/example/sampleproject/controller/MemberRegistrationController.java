@@ -50,6 +50,7 @@ public class MemberRegistrationController {
 		//追加！
 		entity.setEmail(memberRegistrationForm.getEmail());
 		entity.setPassword(memberRegistrationForm.getPassword());
+		entity.setAvatar("/images/default.jpeg");
 
 		//USERテーブルにinsertする。
 		registMemberService.registerMember(entity);

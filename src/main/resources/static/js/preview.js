@@ -6,6 +6,7 @@ $(document).ready(function(){
       return html;
   }
 
+  //upload.htmlの内容
   $('#upfile').change(function(){
 
       $('.thumbnail').remove();
@@ -23,6 +24,21 @@ $(document).ready(function(){
       }
 
       $('.uploadError').remove();
+
+  });
+
+  //user.htmlの内容
+  $('#upAvatar').change(function() {
+    var file = this.files[0];
+    // console.log(file);
+    // readerのresultプロパティに、データURLとしてエンコードされたファイルデータを格納
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function(e) {
+        //filesが複数枚ある場合にはresultではなくe.target.resultを用いる
+        console.log(e.target.result);
+        $('.upAvatarBox img').attr('src', e.target.result);
+    }
 
   });
 });

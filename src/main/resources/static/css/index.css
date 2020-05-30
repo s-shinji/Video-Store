@@ -18,28 +18,6 @@ footer {
   justify-content: space-around;
 }
 
-/* .simply-scroll-container {
-  position: relative;
-}
-.simply-scroll-clip {
-  position: relative;
-  overflow: hidden;
-}
-.simply-scroll-list {
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-}
-.simply-scroll-list li { */
-  /* float: left; Horizontal scroll only */
-  /* padding: 0;
-  margin: 0;
-  width: 481px; */
-  /* height: 319px; */
-/* } */
-/* .simply-scroll-list li video {
-  display: block;
-} */
 .simply-scroll-container {
   position: relative;
 }
@@ -98,4 +76,9 @@ footer {
 
 a:hover {
   text-decoration: none;
+}
+
+.upAvatar {
+  border: 1px solid gray;
+  border-radius: 100%;
 }

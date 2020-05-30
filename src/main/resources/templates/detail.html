@@ -21,10 +21,13 @@
     <!-- <img th:src="${movie.movie}" height="100px" width="200px" > -->
     <div class="detailInfo" >
       <div>
-        <label for = "id">投稿者:</label>
         <!-- 動画投稿者はmovieのインデックス3に入っている -->
-        <span id="movie" th:text="${movie.user.name}">投稿者</span>
+        <a  class="postUserName" href="#" th:href="@{/user/{id}(id=${movie.user.id})}" style="display: block;">
+          <img src="" alt="" th:src="${movie.user.avatar}" class="upAvatar" height="50px" width="50px">
+          <span id="postUser" th:text="${movie.user.name}">投稿者</span>
+        </a>
       </div>
+
       <div>
         <label for = "views">再生回数:</label>
         <span id="views" th:text="${movie.views} + '回'">再生回数</span>

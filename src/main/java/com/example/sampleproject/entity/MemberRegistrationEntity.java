@@ -24,7 +24,7 @@ public class MemberRegistrationEntity {
 
 	private String password;
 
-	
+	private String avatar;
 
 	// 変更箇所(new)
 	// @OneToMany(mappedBy="movie",cascade = CascadeType.ALL)
@@ -33,6 +33,14 @@ public class MemberRegistrationEntity {
 	// }
 
 	// 変更箇所
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
 	public int getId() {
 		return id;
 	}

@@ -1,4 +1,4 @@
-package com.example.sampleproject;
+package com.example.sampleproject.form;
 
 import javax.validation.constraints.Size;
 
@@ -6,15 +6,15 @@ import javax.validation.constraints.Size;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class ImageForm {
+public class MovieForm {
     //動画を複数投稿する場合
     // private MultipartFile[] image;
 
-    private MultipartFile image;
+    private MultipartFile movie;
     
     @Size(min = 1, max = 50, message="1~50字で指定してください")
     private String title;
-    public ImageForm() {
+    public MovieForm() {
 
     }
 
@@ -35,10 +35,10 @@ public class ImageForm {
     //     this.image = image;
     // }
 
-    public MultipartFile getImage() {
-        return image;
+    public MultipartFile getMovie() {
+        return movie;
     }
-    public void setImage(MultipartFile image) {
-        this.image = image;
+    public void setMovie(MultipartFile movie) {
+        this.movie = movie;
     }
 }
