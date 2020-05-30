@@ -1,0 +1,44 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- ログインユーザーが自らのユーザーページを訪れた場合 -->
+<div th:if="${popularMovie.userId.equals(loginUser)}" th:fragment="userAvatar1">
+  <form th:action="@{/user/{id}(id=${loginUser})}" method="post" enctype="multipart/form-data">
+    <div th:text="${fileError}" style="color:red;"></div>
+
+    <label for="upAvatar" class="upAvatarBox">
+      <!-- <img src="/images/default.jpeg" alt="" class="upAvatar" height="200px" width="200px"> -->
+      <img src="" th:src="${userName.avatar}" alt="" class="upAvatar" height="200px" width="200px">
+      <input type="file" id="upAvatar" style="display: none;" name="avatar"  accept="image/*"> 
+    </label>
+    <input type="submit" value="更新" class="deleteBtn">
+  </form>
+</div>
+<!-- ログインユーザーが他のユーザーページを訪れた場合 -->
+<div th:if="${!(popularMovie.userId.equals(loginUser))}" th:fragment="userAvatar1">
+  <label for="upAvatar" class="upAvatarBox">
+    <!-- <img src="/images/default.jpeg" alt="" class="upAvatar" height="200px" width="200px"> -->
+    <img src="" th:src="${userName.avatar}" alt="" class="upAvatar" height="200px" width="200px">
+  </label>
+</div>
+
+
+<!-- ログインユーザーが自らのユーザーページを訪れた場合 -->
+<div th:if="${userName.id.equals(loginUser)}" th:fragment="userAvatar2">
+  <form th:action="@{/user/{id}(id=${loginUser})}" method="post" enctype="multipart/form-data">
+    <div th:text="${fileError}" style="color:red;"></div>
+
+    <label for="upAvatar" class="upAvatarBox">
+      <!-- <img src="/images/default.jpeg" alt="" class="upAvatar" height="200px" width="200px"> -->
+      <img src="" th:src="${userName.avatar}" alt="" class="upAvatar" height="200px" width="200px">
+      <input type="file" id="upAvatar" style="display: none;" name="avatar"  accept="image/*"> 
+    </label>
+    <input type="submit" value="更新" class="deleteBtn">
+  </form>
+</div>
+<!-- ログインユーザーが他のユーザーページを訪れた場合 -->
+<div th:if="${!(userName.id.equals(loginUser))}" th:fragment="userAvatar2">
+  <label for="upAvatar" class="upAvatarBox">
+    <!-- <img src="/images/default.jpeg" alt="" class="upAvatar" height="200px" width="200px"> -->
+    <img src="" th:src="${userName.avatar}" alt="" class="upAvatar" height="200px" width="200px">
+  </label>
+</div>

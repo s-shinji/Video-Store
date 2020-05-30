@@ -1,0 +1,33 @@
+.noUser {
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 50px;
+}
+
+.userBox {
+  padding-top: 50px;
+  width: 500px;
+  margin: 0 auto;
+}
+
+.boxParts {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.upAvatar {
+  border: 1px solid gray;
+  border-radius: 100%;
+}
+
+.upAvatarBox {
+  display: block;
+  width: 200px;
+  margin: 0 auto;
+}
+
+.userName {
+  font-weight: bold;
+  font-size: 20px;
+}

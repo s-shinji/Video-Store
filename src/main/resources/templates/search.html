@@ -25,9 +25,13 @@
 
         <div class="indexInfo">
           <div>
-            <label for = "postUser">投稿者:</label>
-            <span id="postUser" th:text="${movie.get(2)}">投稿者</span>
+            <!-- 動画投稿者はmovieのインデックス3に入っている -->
+            <a  class="postUserName" href="#" th:href="@{/user/{id}(id=${movie.get(5)})}" style="display: block;">
+              <img src="" alt="" th:src="${movie.get(6)}" class="upAvatar" height="50px" width="50px">
+              <span id="postUser" th:text="${movie.get(2)}">投稿者</span>
+            </a>
           </div>
+
           <div>
             <label for = "views">再生回数:</label>
             <span id="views" th:text="${movie.get(3)} + '回'">再生回数</span>

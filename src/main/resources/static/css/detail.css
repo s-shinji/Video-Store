@@ -25,3 +25,10 @@ footer {
   padding-bottom: 5px;
 }
 
+.upAvatar {
+  border: 1px solid gray;
+  border-radius: 100%;
+}
+
+
+

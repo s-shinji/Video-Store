@@ -6,11 +6,12 @@
     <insert id="insertMemberInfo" parameterType="com.example.sampleproject.entity.MemberRegistrationEntity">
     <!-- 追加！ -->
         INSERT INTO
-            users(name, email, password)
+            users(name, email, password,avatar)
         VALUES(
             #{name},
             #{email},
-            #{password})
+            #{password},
+            #{avatar})
     </insert>
     <!-- 変更箇所(new) -->
     <select id="findByEmail" resultType="com.example.sampleproject.entity.MemberRegistrationEntity">

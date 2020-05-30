@@ -42,7 +42,7 @@ public class MovieDaoImpl implements MovieDao {
         //変更〜
                           //movie.idにしていないと"id"が曖昧ですというエラーが発生する（users.idが存在することによる影響？）
         String sql = "SELECT movie.id, movie, created, user_id, views, title,"
-                        + "name FROM movie "
+                        + "name, avatar FROM movie "
                         + "INNER JOIN users ON movie.user_id = users.id "
                         + "ORDER BY created DESC";
                         //queryForMapでテーブルの1行分を取得する(今回はそのMapをList化しているためDBの全てを取得していることになる？)
@@ -67,6 +67,7 @@ public class MovieDaoImpl implements MovieDao {
             MemberRegistrationEntity user = new MemberRegistrationEntity();
             user.setId((int) result.get("user_id"));
             user.setName((String) result.get("name"));
+            user.setAvatar((String) result.get("avatar"));
             // MovieにUserをセット
             movie.setUser(user);
 
@@ -77,8 +78,9 @@ public class MovieDaoImpl implements MovieDao {
 
     @Override
     public List<Movie> getAll2() {
-        String sql = "SELECT movie.id, movie , title FROM movie "
-                            + "ORDER BY views DESC";
+        String sql = "SELECT movie.id, movie, title FROM movie "
+                            + "ORDER BY views DESC "
+                            + "LIMIT 5";
         //queryForMapでテーブルの1行分を取得する(今回はそのMapをList化しているためDBの全てを取得していることになる？)
         List<Map<String, Object>> resultList = jdbcTemplate.queryForList(sql);
         List<Movie> list2 = new ArrayList<Movie>();
@@ -106,7 +108,7 @@ public class MovieDaoImpl implements MovieDao {
     @Override
     public Optional<Movie> getMovie(int id) {
         String sql = "SELECT movie.id, movie, created, user_id, views, title,"
-                        + "name FROM movie "
+                        + "name, avatar FROM movie "
                         + "INNER JOIN users ON movie.user_id = users.id "
                         + "WHERE movie.id = ?";
         Map<String, Object> result = jdbcTemplate.queryForMap(sql, id);
@@ -122,6 +124,7 @@ public class MovieDaoImpl implements MovieDao {
         MemberRegistrationEntity user = new MemberRegistrationEntity();
         user.setId((int) result.get("user_id"));
         user.setName((String) result.get("name"));
+        user.setAvatar((String) result.get("avatar"));
         movie.setUser(user);
 
         Optional<Movie> movieOpt = Optional.ofNullable(movie);
@@ -135,10 +138,11 @@ public class MovieDaoImpl implements MovieDao {
 
     @Override
     public List<Movie> findBySearchWordLike(String searchWord) {
-        String sql = "SELECT movie.id, movie, views, title,"
-                        + "name FROM movie "
+        String sql = "SELECT movie.id, movie, views, title, user_id, "
+                        + "name, avatar FROM movie "
                         + "INNER JOIN users ON movie.user_id = users.id "
-                        + "WHERE title LIKE ? OR name LIKE ?";
+                        + "WHERE title LIKE ? OR name LIKE ? "
+                        + "ORDER BY created DESC";
 
         List<Map<String, Object>> resultList = jdbcTemplate.queryForList(sql, searchWord, searchWord);
         List<Movie> list = new ArrayList<Movie>();
@@ -149,9 +153,11 @@ public class MovieDaoImpl implements MovieDao {
             movie.setMovie((byte[]) result.get("movie"));
             movie.setViews((int) result.get("views"));
             movie.setTitle((String) result.get("title"));
+            movie.setUserId((int) result.get("user_id"));
 
             MemberRegistrationEntity user = new MemberRegistrationEntity();
             user.setName((String) result.get("name"));
+            user.setAvatar((String) result.get("avatar"));
             movie.setUser(user);
 
             list.add(movie);

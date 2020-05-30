@@ -1,6 +1,6 @@
 package com.example.sampleproject.controller;//変更！！
 
-import com.example.sampleproject.ImageForm;
+import com.example.sampleproject.form.MovieForm;
 import com.example.sampleproject.entity.DbUserDetails;
 import com.example.sampleproject.entity.Movie;
 import com.example.sampleproject.form.SearchForm;
@@ -53,8 +53,8 @@ public class SampleController {
 
 
     @ModelAttribute
-    public ImageForm setForm() {
-        return new ImageForm();
+    public MovieForm setForm() {
+        return new MovieForm();
     }
     
     @RequestMapping("/")
@@ -67,7 +67,18 @@ public class SampleController {
     }
 
     @RequestMapping("/upload")
-    public String upload() {
+    public String upload(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    if(authentication.getPrincipal() instanceof DbUserDetails){
+            // DbUserDetails account = DbUserDetails.class.cast(authentication.getPrincipal());
+            int userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+
+	    	// model.addAttribute("loginUser", account.getUserId());
+	    	model.addAttribute("loginUser", userId);
+	    }else{
+	    	model.addAttribute("loginUser", "");
+        }	
+
         return "upload";
     }
 
@@ -98,6 +109,7 @@ public class SampleController {
             list2.add(list.get(i).getUser().getName());
             list2.add(list.get(i).getViews());
             list2.add(list.get(i).getTitle());
+            list2.add(list.get(i).getUser().getAvatar());
             
             //0にはString化される前のmovieが入っているため、それをString化したものに差し替える
             list2.set(0,data.toString());
@@ -109,7 +121,7 @@ public class SampleController {
         //再生回数順に上位5つを取り出す
         List<Movie> viewsList = movieService.getAll2();
         List<Object> viewsList3 = new ArrayList<>();
-        for(int j = 0; j < 5; j++) {
+        for(int j = 0; j < viewsList.size(); j++) {
             StringBuffer data = new StringBuffer();
             String base64_2 = Base64.getEncoder().encodeToString(viewsList.get(j).getMovie());
             data.append("data:video/mp4;base64,");
@@ -126,9 +138,11 @@ public class SampleController {
         //index.htmlでユーザー情報を取得したい場合に用いる(現在ログイン中のユーザー情報を取得)
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if(authentication.getPrincipal() instanceof DbUserDetails){
-	    	DbUserDetails account = DbUserDetails.class.cast(authentication.getPrincipal());
-	    	// model.addAttribute("userInfo", "現在ログインしているユーザ名：" + account.getUsername() + "をコントローラクラスから取得しました。");
-	    	model.addAttribute("loginUser", account.getUserId());
+            // DbUserDetails account = DbUserDetails.class.cast(authentication.getPrincipal());
+            int userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+
+	    	// model.addAttribute("loginUser", account.getUserId());
+	    	model.addAttribute("loginUser", userId);
 	    }else{
 	    	model.addAttribute("loginUser", "");
         }	
@@ -157,9 +171,11 @@ public class SampleController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if(authentication.getPrincipal() instanceof DbUserDetails){
-	    	DbUserDetails account = DbUserDetails.class.cast(authentication.getPrincipal());
-	    	// model.addAttribute("userInfo", "現在ログインしているユーザ名：" + account.getUsername() + "をコントローラクラスから取得しました。");
-	    	model.addAttribute("loginUser", account.getUserId());
+            // DbUserDetails account = DbUserDetails.class.cast(authentication.getPrincipal());
+            int userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+
+	    	// model.addAttribute("loginUser", account.getUserId());
+	    	model.addAttribute("loginUser", userId);
 	    }else{
 	    	model.addAttribute("loginUser", "");
         }	
@@ -168,7 +184,7 @@ public class SampleController {
     }
     
     @PostMapping("/upload")
-    public String upload(@Validated ImageForm imageForm, BindingResult result, Model model ) throws Exception {
+    public String upload(@Validated MovieForm movieForm, BindingResult result, Model model ) throws Exception {
 
         if(result.hasErrors()) {
             return "upload";
@@ -176,15 +192,15 @@ public class SampleController {
 
         Movie movie = new Movie();
         // 動画を複数投稿する場合
-        // for(int i = 0; i < imageForm.getImage().length; i++) {
+        // for(int i = 0; i < movieForm.getMovie().length; i++) {
             //ファイルが一つもない場合にエラー文を表示する
-            // MultipartFile uploadFile = imageForm.getImage()[i];
+            // MultipartFile uploadFile = movieForm.getMovie()[i];
             // if (uploadFile.isEmpty()) {
-            //     result.rejectValue("image",null, "ファイルを選択してください");
+            //     result.rejectValue("movie",null, "ファイルを選択してください");
             //     return "upload";
             // }
 
-            // movie.setMovie(imageForm.getImage()[i].getBytes());
+            // movie.setMovie(movieForm.getMovie()[i].getBytes());
             // movie.setCreated(LocalDateTime.now());
             // 変更箇所(ログインユーザーのID情報を渡す)
             // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -194,30 +210,29 @@ public class SampleController {
             // }
 
             // movie.setViews(0);
-            // movie.setTitle(imageForm.getTitle());
+            // movie.setTitle(movieForm.getTitle());
             //ここまで
             // movieService.save(movie);
         // }
         // 動画投稿を一つずつにする場合の分
-        MultipartFile uploadFile = imageForm.getImage();
+        MultipartFile uploadFile = movieForm.getMovie();
         if (uploadFile.isEmpty()) {
-            result.rejectValue("image",null, "ファイルを選択してください");
+            result.rejectValue("movie",null, "ファイルを選択してください");
             return "upload";
         }
         StringBuffer data = new StringBuffer();
-        String base64 = Base64.getEncoder().encodeToString(imageForm.getImage().getBytes());
+        String base64 = Base64.getEncoder().encodeToString(movieForm.getMovie().getBytes());
         data.append("data:image/jpeg;base64,");
         data.append(base64);
-        movie.setMovie(imageForm.getImage().getBytes());
+        movie.setMovie(movieForm.getMovie().getBytes());
         movie.setCreated(LocalDateTime.now());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication.getPrincipal() instanceof DbUserDetails){
             int userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
             movie.setUserId(userId);
         }
-
         movie.setViews(0);
-        movie.setTitle(imageForm.getTitle());
+        movie.setTitle(movieForm.getTitle());
 
         movieService.save(movie);
         //ここまで
@@ -259,6 +274,8 @@ public class SampleController {
                 list2.add(list.get(i).getUser().getName());
                 list2.add(list.get(i).getViews());
                 list2.add(list.get(i).getTitle());
+                list2.add(list.get(i).getUserId());
+                list2.add(list.get(i).getUser().getAvatar());
                 
                 //0にはString化される前のmovieが入っているため、それをString化したものに差し替える
                 list2.set(0,data.toString());
