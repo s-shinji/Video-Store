@@ -243,11 +243,15 @@ public class SampleController {
         // int lastId = movieService.getLastId();
         image.setMovie_id(lastId);
 
-        StringBuffer data = new StringBuffer();
-        String base64 = Base64.getEncoder().encodeToString(movieForm.getThumbnail().getBytes());
-        data.append("data:image/;base64,");
-        data.append(base64);
-        image.setImage(data.toString());
+        if(movieForm.getThumbnail().isEmpty()) {
+            image.setImage("/images/noImage.jpg");
+        } else {
+            StringBuffer data = new StringBuffer();
+            String base64 = Base64.getEncoder().encodeToString(movieForm.getThumbnail().getBytes());
+            data.append("data:image/;base64,");
+            data.append(base64);
+            image.setImage(data.toString());
+            }
 
         imageService.save(image);
 
