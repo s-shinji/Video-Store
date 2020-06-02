@@ -60,28 +60,30 @@
     </div>
   </div> -->
   <div id="loopSlide">
-    <ul>
-        <li th:each="viewList :${viewsList3}" class="indexLoop">
-          <div class="loopInfo">
-            <!-- <label for="rank">No.</label> -->
-            <!-- <span th:text="${viewListStat.index + 1}" id="rank"></span> -->
-          </div>
-          <a href="" th:href="@{/video/{id}(id=${viewList.get(1)})}" class="loopLink">
-            <video th:src="${viewList.get(0)}" height="225px" width="400px" ></video>
-          </a>
-        </li>
+    <ul class="jsMovie1">
+      <li th:each="viewList :${viewsList3}" class="indexLoop jsMovie1">
+        <!-- <div class="loopInfo"> -->
+          <!-- <label for="rank">No.</label> -->
+          <!-- <span th:text="${viewListStat.index + 1}" id="rank"></span> -->
+        <!-- </div> -->
+         <a href="" th:href="@{/video/{id}(id=${viewList.get(1)})}" class="loopLink">
+          <!-- <video th:src="${viewList.get(0)}" height="225px" width="400px" ></video> -->
+          <img th:src="${viewList.get(3)}" height="225px" width="400px" >
+        </a>
+      </li>
     </ul>
   </div>
 
 
-  <!-- <div > -->
+  <!-- <div> -->
   <div class="images">
     <div th:each= "movie :${movieList3}" class="image">
       <!-- 動画はmovieのインデックス0に入っている -->
       <!-- <video th:src="${movie.get(0)}" height="150px" width="300px" controls></video> -->
       <div>
-        <a href="" th:href="@{/video/{id}(id=${movie.get(1)})}" class="movieLink">
-          <video th:src="${movie.get(0)}" height="150px" width="300px" class="movieIndex" muted></video>
+        <a href="" th:href="@{/video/{id}(id=${movie.get(1)})}" class="movieLink" id="jsMovie2">
+          <!-- <video th:src="${movie.get(0)}" height="150px" width="300px" class="movieIndex" muted></video> -->
+          <img th:src="${movie.get(7)}" height="150px" width="300px" class="movieIndex" id="hoverChange">
           <div th:text="${movie.get(5)}" class="movieTitle"></div>
         </a>
 
@@ -148,5 +150,6 @@
 <script src="https://cdn.jsdelivr.net/simplyscroll/2/jquery.simplyscroll.min.js"></script>
 <script type="text/javascript" th:src="@{/js/hover.js}"></script>
 <script type="text/javascript" th:src="@{/js/simplyscroll.js}"></script>
+<!-- <script type="text/javascript" th:src="@{/js/movie.js}"></script> -->
 </body>
 </html>

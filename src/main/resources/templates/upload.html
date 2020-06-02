@@ -48,21 +48,37 @@
     <div th:replace="~{block/head::headA}"></div>
     <div th:replace="~{block/header::headerA}"></div>
     <!-- formにenctypeを設定しない場合、画像の中身が送信されないため注意 -->
-    <form th:action="@{/upload}" th:object="${movieForm}" method="post" enctype="multipart/form-data" class="form">
-        <div id="preview">
+    <form th:action="@{/upload}" th:object="${movieForm}" method="post" enctype="multipart/form-data" class="uploadForm">
+        <div class="previewBox">
+            <div id="preview2"></div>
+            <div id="preview"></div>
         </div>
         <div class="uploadFlex">
             <!-- <div th:if="${#fields.hasErrors('movie')}" th:errors="*{movie}" style="color:red;"></div> -->
-            <div class="uploadError" th:errors="*{movie}" style="color:red;"></div>
-            <label for="upfile" class="uploadBox">
-                <!-- 動画を複数投稿する場合 -->
-                <!-- <input type="file" th:field="*{movie}" th.value="*{movie}" id ="upfile" accept="video/*" capture="camera" multiple/> -->
-                <input type="file" th:field="*{movie}" th.value="*{movie}" id ="upfile" accept="video/*" capture="camera"/>
-                <i class="fas fa-video"></i>
-            </label>
+            <div class="uploadFlex2">
+                <label for="upfile2" class="uploadBox">
+                    <!-- 動画を複数投稿する場合 -->
+                    <!-- <input type="file" th:field="*{movie}" th.value="*{movie}" id ="upfile" accept="video/*" capture="camera" multiple/> -->
+                    <input type="file" th:field="*{thumbnail}" th.value="*{thumbnail}" id ="upfile2" accept="image/*" capture="camera"/>
+                    <div class="uploadParts"><span>サムネイル</span></div>
+                    <i class="far fa-image"></i>
+                </label>
+
+                <div class="uploadError" th:errors="*{movie}" style="color:red;"></div>
+                <label for="upfile" class="uploadBox">
+                    <!-- 動画を複数投稿する場合 -->
+                    <!-- <input type="file" th:field="*{movie}" th.value="*{movie}" id ="upfile" accept="video/*" capture="camera" multiple/> -->
+                    <input type="file" th:field="*{movie}" th.value="*{movie}" id ="upfile" accept="video/*" capture="camera"/>
+                    <div class="uploadParts"><span>動画</span></div>
+                    <i class="fas fa-video"></i>
+                </label>
+            </div>
             <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color:red;"></div>
-            <span>タイトル:</span>
-            <input type="text" th:field="*{title}" th.value="*{title}" placeholder="１〜５０字以内" required>
+            <div class="uploadTitle">
+                <span>タイトル:</span>
+                <input type="text" th:field="*{title}" th.value="*{title}" placeholder="１〜５０字以内" required>
+            </div>
+
             <br /> <input class="uploadSubmit"type="submit" value="送信する" />
         </div>
     </form>

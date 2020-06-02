@@ -19,7 +19,8 @@
     <div th:each= "movie :${list3}" class="image">
       <div>
         <a href="" th:href="@{/video/{id}(id=${movie.get(1)})}" class="movieLink">
-          <video th:src="${movie.get(0)}" height="150px" width="300px" class="movieIndex" muted></video>
+          <!-- <video th:src="${movie.get(0)}" height="150px" width="300px" class="movieIndex" muted></video> -->
+          <img th:src="${movie.get(7)}" height="150px" width="300px" class="movieIndex">
           <div th:text="${movie.get(4)}" class="movieTitle"></div>
         </a>
 

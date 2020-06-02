@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sampleproject.mapper.ImageMapper">
+
+    <insert id="insertImage" parameterType="com.example.sampleproject.entity.Image">
+    <!-- 追加！ -->
+        INSERT INTO
+            image(image, movie_id)
+        VALUES(
+            #{image},
+            #{movie_id})
+    </insert>
+
+</mapper>
