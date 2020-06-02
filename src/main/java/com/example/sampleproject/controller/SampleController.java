@@ -2,8 +2,10 @@ package com.example.sampleproject.controller;//変更！！
 
 import com.example.sampleproject.form.MovieForm;
 import com.example.sampleproject.entity.DbUserDetails;
+import com.example.sampleproject.entity.Image;
 import com.example.sampleproject.entity.Movie;
 import com.example.sampleproject.form.SearchForm;
+import com.example.sampleproject.service.ImageService;
 import com.example.sampleproject.service.MovieService;
 
 // import java.security.Principal;
@@ -42,13 +44,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class SampleController {
 
     private final MovieService movieService;
+    private final ImageService imageService;
     //変更箇所(new)
     // @Autowired
     // private RegisterMemberService registerMemberService;
 
     @Autowired
-    public SampleController(MovieService movieService){
+    public SampleController(MovieService movieService, ImageService imageService){
         this.movieService = movieService;
+        this.imageService = imageService;
     }
 
 
@@ -110,6 +114,7 @@ public class SampleController {
             list2.add(list.get(i).getViews());
             list2.add(list.get(i).getTitle());
             list2.add(list.get(i).getUser().getAvatar());
+            list2.add(list.get(i).getImage().getImage());
             
             //0にはString化される前のmovieが入っているため、それをString化したものに差し替える
             list2.set(0,data.toString());
@@ -131,6 +136,7 @@ public class SampleController {
             viewsList2.add(data.toString());
             viewsList2.add(viewsList.get(j).getId());
             viewsList2.add(viewsList.get(j).getTitle());
+            viewsList2.add(viewsList.get(j).getImage().getImage());
             viewsList3.add(viewsList2);
         }
         model.addAttribute("viewsList3", viewsList3);
@@ -220,10 +226,6 @@ public class SampleController {
             result.rejectValue("movie",null, "ファイルを選択してください");
             return "upload";
         }
-        StringBuffer data = new StringBuffer();
-        String base64 = Base64.getEncoder().encodeToString(movieForm.getMovie().getBytes());
-        data.append("data:image/jpeg;base64,");
-        data.append(base64);
         movie.setMovie(movieForm.getMovie().getBytes());
         movie.setCreated(LocalDateTime.now());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -234,8 +236,21 @@ public class SampleController {
         movie.setViews(0);
         movie.setTitle(movieForm.getTitle());
 
-        movieService.save(movie);
-        //ここまで
+        int lastId = movieService.save(movie);
+        //ここからImage
+        Image image = new Image();
+        //SELECT LASTVAL();を用いて直前のmovie.idを取得しimageテーブルのmovie_idに入れる処理をここに挿入する
+        // int lastId = movieService.getLastId();
+        image.setMovie_id(lastId);
+
+        StringBuffer data = new StringBuffer();
+        String base64 = Base64.getEncoder().encodeToString(movieForm.getThumbnail().getBytes());
+        data.append("data:image/;base64,");
+        data.append(base64);
+        image.setImage(data.toString());
+
+        imageService.save(image);
+
 
         return "redirect:/index";
     }
@@ -276,6 +291,7 @@ public class SampleController {
                 list2.add(list.get(i).getTitle());
                 list2.add(list.get(i).getUserId());
                 list2.add(list.get(i).getUser().getAvatar());
+                list2.add(list.get(i).getImage().getImage());
                 
                 //0にはString化される前のmovieが入っているため、それをString化したものに差し替える
                 list2.set(0,data.toString());

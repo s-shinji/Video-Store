@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.sql.Timestamp;
+
+import com.example.sampleproject.entity.Image;
 //変更〜
 import com.example.sampleproject.entity.MemberRegistrationEntity;
 
@@ -31,9 +33,10 @@ public class MovieDaoImpl implements MovieDao {
 
     // }
     @Override
-    public void insertMovie(Movie movie) {
-        jdbcTemplate.update("INSERT INTO movie(movie, created, user_id, views, title) VALUES(?, ?, ?, ?, ?)", movie.getMovie(), movie.getCreated(), movie.getUserId(), movie.getViews(), movie.getTitle());
-
+    public int insertMovie(Movie movie) {
+        // Integer lastId = jdbcTemplate.update("INSERT INTO movie(movie, created, user_id, views, title) VALUES(?, ?, ?, ?, ?) RETURNING id", Integer.class,movie.getMovie(), movie.getCreated(), movie.getUserId(), movie.getViews(), movie.getTitle());
+        Integer lastId = jdbcTemplate.queryForObject("INSERT INTO movie(movie, created, user_id, views, title) VALUES(?, ?, ?, ?, ?) RETURNING id", Integer.class,movie.getMovie(), movie.getCreated(), movie.getUserId(), movie.getViews(), movie.getTitle());
+        return lastId;
     }
 
     @Override
@@ -42,8 +45,9 @@ public class MovieDaoImpl implements MovieDao {
         //変更〜
                           //movie.idにしていないと"id"が曖昧ですというエラーが発生する（users.idが存在することによる影響？）
         String sql = "SELECT movie.id, movie, created, user_id, views, title,"
-                        + "name, avatar FROM movie "
+                        + "name, avatar, image FROM movie "
                         + "INNER JOIN users ON movie.user_id = users.id "
+                        + "INNER JOIN image ON movie.id = image.movie_id "
                         + "ORDER BY created DESC";
                         //queryForMapでテーブルの1行分を取得する(今回はそのMapをList化しているためDBの全てを取得していることになる？)
         List<Map<String, Object>> resultList = jdbcTemplate.queryForList(sql);
@@ -71,6 +75,10 @@ public class MovieDaoImpl implements MovieDao {
             // MovieにUserをセット
             movie.setUser(user);
 
+            Image image = new Image();
+            image.setImage((String) result.get("image"));
+            movie.setImage(image);
+
             list.add(movie);
         }
         return list;
@@ -78,7 +86,8 @@ public class MovieDaoImpl implements MovieDao {
 
     @Override
     public List<Movie> getAll2() {
-        String sql = "SELECT movie.id, movie, title FROM movie "
+        String sql = "SELECT movie.id, movie, title, image FROM movie "
+                            + "INNER JOIN image ON movie.id = image.movie_id "
                             + "ORDER BY views DESC "
                             + "LIMIT 5";
         //queryForMapでテーブルの1行分を取得する(今回はそのMapをList化しているためDBの全てを取得していることになる？)
@@ -93,6 +102,12 @@ public class MovieDaoImpl implements MovieDao {
         // movie.setMovie((String) result.get("movie"));
         movie.setMovie((byte[]) result.get("movie"));
         movie.setTitle((String) result.get("title"));
+
+        Image image = new Image();
+        image.setImage((String) result.get("image"));
+        movie.setImage(image);
+
+
         list2.add(movie);
         }
         return list2;
@@ -139,8 +154,9 @@ public class MovieDaoImpl implements MovieDao {
     @Override
     public List<Movie> findBySearchWordLike(String searchWord) {
         String sql = "SELECT movie.id, movie, views, title, user_id, "
-                        + "name, avatar FROM movie "
+                        + "name, avatar, image FROM movie "
                         + "INNER JOIN users ON movie.user_id = users.id "
+                        + "INNER JOIN image ON movie.id = image.movie_id "
                         + "WHERE title LIKE ? OR name LIKE ? "
                         + "ORDER BY created DESC";
 
@@ -160,11 +176,14 @@ public class MovieDaoImpl implements MovieDao {
             user.setAvatar((String) result.get("avatar"));
             movie.setUser(user);
 
+            Image image = new Image();
+            image.setImage((String) result.get("image"));
+            movie.setImage(image);    
+
             list.add(movie);
         }
         return list;
     }
-
 
 
 

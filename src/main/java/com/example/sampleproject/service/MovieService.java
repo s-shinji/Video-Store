@@ -7,7 +7,7 @@ import com.example.sampleproject.entity.Movie;
 
 public interface MovieService {
 	//insertなどでも問題ないが一般的にsaveが用いられる
-	void save(Movie movie);
+	int save(Movie movie);
 
 	List<Movie> getAll();
 
@@ -20,4 +20,5 @@ public interface MovieService {
 	void updateViews(int views, int id);
 
 	List<Movie> findBySearchWordLike(String searchWord);
+
 }

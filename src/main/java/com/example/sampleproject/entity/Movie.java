@@ -2,6 +2,8 @@ package com.example.sampleproject.entity;
 
 import java.time.LocalDateTime;
 
+// import javax.persistence.CascadeType;
+
 //変更箇所(new)
 // import javax.persistence.ManyToOne;
 
@@ -15,14 +17,19 @@ import java.time.LocalDateTime;
 //変更箇所
 // import javax.persistence.ManyToOne;
 
-// import javax.persistence.Entity;
 // import javax.persistence.GeneratedValue;
 // import javax.persistence.GenerationType;
 // import javax.persistence.Id;
 // import javax.persistence.Table;
 
+// 変更１
+// import javax.persistence.Entity;
+// import javax.persistence.JoinColumn;
+// import javax.persistence.OneToOne;
+
 //変更箇所(new)
 // @NamedQuery(name="MemberRegistrationEntity.findAll", query="SELECT * FROM MemberRegistrationEntity")
+// 変更１
 // @Entity(name = "movie")
 public class Movie {
     /**
@@ -44,10 +51,16 @@ public class Movie {
 
     private String title;
 
+    private Image image;
+
     // 変更箇所(new)
     // @ManyToOne
     // @JoinColumn(name = "user_id")
     // private MemberRegistrationEntity memberRegistrationEntity;
+
+    // 変更１
+    // @OneToOne(mappedBy = "phone", cascade = CascadeType.ALL)
+    // private Image image;
 
     public Movie() {
 
@@ -59,6 +72,14 @@ public class Movie {
     // this.created = created;
 
     // };
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
 
     public String getTitle() {
 		return title;

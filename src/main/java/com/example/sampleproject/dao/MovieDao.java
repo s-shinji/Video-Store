@@ -9,7 +9,7 @@ import com.example.sampleproject.entity.Movie;
 // @Mapper
 public interface MovieDao {
 
-	void insertMovie(Movie movie);
+	int insertMovie(Movie movie);
 
 	List<Movie> getAll();
 	
