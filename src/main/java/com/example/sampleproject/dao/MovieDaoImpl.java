@@ -85,35 +85,35 @@ public class MovieDaoImpl implements MovieDao {
         return list;
     }
 
-    @Override
-    public List<Movie> getAll2() {
-        String sql = "SELECT movie.id, movie, title, image FROM movie "
-                            + "INNER JOIN image ON movie.id = image.movie_id "
-                            + "ORDER BY views DESC "
-                            + "LIMIT 5";
-        //queryForMapでテーブルの1行分を取得する(今回はそのMapをList化しているためDBの全てを取得していることになる？)
-        List<Map<String, Object>> resultList = jdbcTemplate.queryForList(sql);
-        List<Movie> list2 = new ArrayList<Movie>();
-        //カラム名がStringに値がObjectに格納されている
-        for(Map<String, Object> result:resultList) {
-        //entityをnewしている
-        Movie movie = new Movie();
-        //Objectで受けているためキャストを用いて型変換を行う
-        movie.setId((int) result.get("id"));
-        // movie.setMovie((String) result.get("movie"));
-        movie.setMovie((byte[]) result.get("movie"));
-        movie.setTitle((String) result.get("title"));
+    // @Override
+    // public List<Movie> getAll2() {
+    //     String sql = "SELECT movie.id, movie, title, image FROM movie "
+    //                         + "INNER JOIN image ON movie.id = image.movie_id "
+    //                         + "ORDER BY views DESC "
+    //                         + "LIMIT 5";
+    //     //queryForMapでテーブルの1行分を取得する(今回はそのMapをList化しているためDBの全てを取得していることになる？)
+    //     List<Map<String, Object>> resultList = jdbcTemplate.queryForList(sql);
+    //     List<Movie> list2 = new ArrayList<Movie>();
+    //     //カラム名がStringに値がObjectに格納されている
+    //     for(Map<String, Object> result:resultList) {
+    //     //entityをnewしている
+    //     Movie movie = new Movie();
+    //     //Objectで受けているためキャストを用いて型変換を行う
+    //     movie.setId((int) result.get("id"));
+    //     // movie.setMovie((String) result.get("movie"));
+    //     movie.setMovie((byte[]) result.get("movie"));
+    //     movie.setTitle((String) result.get("title"));
 
-        Image image = new Image();
-        image.setImage((String) result.get("image"));
-        movie.setImage(image);
+    //     Image image = new Image();
+    //     image.setImage((String) result.get("image"));
+    //     movie.setImage(image);
 
 
-        list2.add(movie);
-        }
-        return list2;
+    //     list2.add(movie);
+    //     }
+    //     return list2;
 
-    }
+    // }
 
     
     @Override

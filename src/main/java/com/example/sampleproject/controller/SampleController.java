@@ -14,6 +14,8 @@ import com.example.sampleproject.service.ReviewService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 // import java.util.Collections;
 import java.util.List;
@@ -130,9 +132,35 @@ public class SampleController {
         model.addAttribute("movieList3", list3);
 
         //再生回数順に上位5つを取り出す
-        List<Movie> viewsList = movieService.getAll2();
+        // List<Movie> viewsList = movieService.getAll2();
+        // List<Object> viewsList3 = new ArrayList<>();
+        // for(int j = 0; j < viewsList.size(); j++) {
+        //     StringBuffer data = new StringBuffer();
+        //     String base64_2 = Base64.getEncoder().encodeToString(viewsList.get(j).getMovie());
+        //     data.append("data:video/mp4;base64,");
+        //     data.append(base64_2);
+
+        //     List<Object> viewsList2 = new ArrayList<>();
+        //     viewsList2.add(data.toString());
+        //     viewsList2.add(viewsList.get(j).getId());
+        //     viewsList2.add(viewsList.get(j).getTitle());
+        //     viewsList2.add(viewsList.get(j).getImage().getImage());
+        //     viewsList3.add(viewsList2);
+        // }
+        // model.addAttribute("viewsList3", viewsList3);
+
+        //getAll2を使わずに並び替える方法
+        // listを再生回数順に並び替える
+        List<Movie> viewsList = new ArrayList<>(list);
+        Collections.sort(viewsList,new Comparator<Movie>() {
+            public int compare(Movie obj1, Movie obj2)
+            {
+                return ((Integer)obj2.getViews()).compareTo((Integer)obj1.getViews());
+            }
+        });
+        //再生回数の上位5つを取り出す
         List<Object> viewsList3 = new ArrayList<>();
-        for(int j = 0; j < viewsList.size(); j++) {
+        for(int j = 0; j < 5; j++) {
             StringBuffer data = new StringBuffer();
             String base64_2 = Base64.getEncoder().encodeToString(viewsList.get(j).getMovie());
             data.append("data:video/mp4;base64,");
@@ -168,11 +196,6 @@ public class SampleController {
         if(movieOpt.isPresent()) {
            movie = movieOpt.get();
         }
-        //再生回数を+1
-        int views = movie.getViews();
-        views += 1; 
-        // Movie viewss = (Movie) views;
-        movieService.updateViews(views, id);
         StringBuffer data = new StringBuffer();
         String base64_3 = Base64.getEncoder().encodeToString(movie.getMovie());
         data.append("data:video/mp4;base64,");
@@ -188,6 +211,16 @@ public class SampleController {
 
 	    	// model.addAttribute("loginUser", account.getUserId());
             model.addAttribute("loginUser", userId);
+
+            //動画投稿者じゃない場合に再生回数を+1
+            if(movie.getUserId() != userId) {
+                //再生回数を+1
+                int views = movie.getViews();
+                views += 1; 
+                // Movie viewss = (Movie) views;
+                movieService.updateViews(views, id);
+            }
+
             String matchReview = reviewService.findMatchUserId(userId);
             model.addAttribute("matchReview", matchReview);
 

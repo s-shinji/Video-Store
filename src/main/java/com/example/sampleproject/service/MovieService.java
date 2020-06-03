@@ -11,7 +11,7 @@ public interface MovieService {
 
 	List<Movie> getAll();
 
-	List<Movie> getAll2();
+	// List<Movie> getAll2();
 
 	void deleteById(int id);
 

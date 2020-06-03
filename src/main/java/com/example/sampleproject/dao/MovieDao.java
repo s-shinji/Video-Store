@@ -13,7 +13,7 @@ public interface MovieDao {
 
 	List<Movie> getAll();
 	
-	List<Movie> getAll2();
+	// List<Movie> getAll2();
 
 	int deleteById(int id);
 	

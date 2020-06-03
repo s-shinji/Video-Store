@@ -5,6 +5,7 @@ public class Review {
 	private String review;
 	private int movie_id;
 	private int user_id;
+	
 
 	public int getId() {
 		return id;

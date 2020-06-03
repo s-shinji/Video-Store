@@ -32,10 +32,10 @@ public class MovieServiceImpl implements MovieService {
 		return dao.getAll();
 	}
 
-	@Override
-	public List<Movie> getAll2() {
-		return dao.getAll2();
-	}
+	// @Override
+	// public List<Movie> getAll2() {
+	// 	return dao.getAll2();
+	// }
 
 	@Override
 	public void deleteById(int id) {
