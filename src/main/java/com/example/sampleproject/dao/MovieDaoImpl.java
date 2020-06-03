@@ -12,6 +12,7 @@ import com.example.sampleproject.entity.MemberRegistrationEntity;
 
 import com.example.sampleproject.entity.Movie;
 // import com.example.sampleproject.entity.User;
+// import com.example.sampleproject.entity.Review;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -184,6 +185,26 @@ public class MovieDaoImpl implements MovieDao {
         }
         return list;
     }
+
+    // @Override
+    // public Movie findReviewById(int id) {
+    //     String sql = "SELECT movie.id, "
+    //                     + "review FROM movie "
+    //                     + "INNER JOIN review ON movie.id = review.movie_id "
+    //                     + "WHERE movie.id = ?";
+        
+    //     Map<String, Object> result = jdbcTemplate.queryForMap(sql, id);
+    //     Movie movie = new Movie();
+    //     movie.setId((int) result.get("id"));
+        
+    //     Review review = new Review();
+    //     review.setReview((String) result.get("review"));
+
+    //     movie.setReview(review);
+
+    //     return movie;
+
+    // }
 
 
 

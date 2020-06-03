@@ -53,6 +53,8 @@ public class Movie {
 
     private Image image;
 
+    private Review review;
+
     // 変更箇所(new)
     // @ManyToOne
     // @JoinColumn(name = "user_id")
@@ -72,6 +74,14 @@ public class Movie {
     // this.created = created;
 
     // };
+
+    public Review getReview() {
+        return review;
+    }
+
+    public void setReview(Review review) {
+        this.review = review;
+    }
 
     public Image getImage() {
         return image;
