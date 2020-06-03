@@ -1,3 +1,6 @@
+*{
+  text-decoration: none;
+}
 .detail {
   display: flex;
   flex-direction: column;
@@ -30,5 +33,26 @@ footer {
   border-radius: 100%;
 }
 
+.review {
+  font-size: 20px;
+  display: flex;
+}
 
+/* .reviewCount {
+} */
 
+.reviewIcon {
+  display: block;
+  margin-right: 20px;
+  text-decoration: none;
+  color: black;
+}
+
+.reviewLink {
+  cursor: pointer;
+}
+
+a:hover {
+  color: black;
+  text-decoration: none;
+}

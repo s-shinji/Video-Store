@@ -4,16 +4,20 @@ import com.example.sampleproject.form.MovieForm;
 import com.example.sampleproject.entity.DbUserDetails;
 import com.example.sampleproject.entity.Image;
 import com.example.sampleproject.entity.Movie;
+import com.example.sampleproject.entity.Review;
 import com.example.sampleproject.form.SearchForm;
 import com.example.sampleproject.service.ImageService;
 import com.example.sampleproject.service.MovieService;
+import com.example.sampleproject.service.ReviewService;
 
 // import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 // import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,14 +49,16 @@ public class SampleController {
 
     private final MovieService movieService;
     private final ImageService imageService;
+    private final ReviewService reviewService;
     //変更箇所(new)
     // @Autowired
     // private RegisterMemberService registerMemberService;
 
     @Autowired
-    public SampleController(MovieService movieService, ImageService imageService){
+    public SampleController(MovieService movieService, ImageService imageService, ReviewService reviewService){
         this.movieService = movieService;
         this.imageService = imageService;
+        this.reviewService = reviewService;
     }
 
 
@@ -181,10 +187,30 @@ public class SampleController {
             int userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
 
 	    	// model.addAttribute("loginUser", account.getUserId());
-	    	model.addAttribute("loginUser", userId);
+            model.addAttribute("loginUser", userId);
+            String matchReview = reviewService.findMatchUserId(userId);
+            model.addAttribute("matchReview", matchReview);
+
 	    }else{
 	    	model.addAttribute("loginUser", "");
-        }	
+        }
+
+        List<Review> review = reviewService.findReviewById(id);
+        Map<String,Integer> reviewMap = new HashMap<String, Integer>();
+        reviewMap.put("good", 0);
+        reviewMap.put("normal", 0);
+        reviewMap.put("bad", 0);
+        for(int i = 0; i < review.size(); i++) {
+            if("good".equals(review.get(i).getReview())) {
+                reviewMap.put("good", reviewMap.get("good") + 1 );
+            } else if("normal".equals(review.get(i).getReview())) {
+                reviewMap.put("normal", reviewMap.get("normal") + 1 );
+            } else if("bad".equals(review.get(i).getReview())) {
+                reviewMap.put("bad", reviewMap.get("bad") + 1 );
+            }
+        }
+        model.addAttribute("reviewMap", reviewMap);
+    
 
         return "detail";
     }

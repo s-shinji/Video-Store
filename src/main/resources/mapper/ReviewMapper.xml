@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sampleproject.mapper.ReviewMapper">
+
+    <insert id="insertReview" parameterType="com.example.sampleproject.entity.Review">
+    <!-- 追加！ -->
+        INSERT INTO
+            review(review, movie_id, user_id)
+        VALUES(
+            #{review},
+            #{movie_id},
+            #{user_id})
+    </insert>
+
+    <select id="findReviewById" resultType="com.example.sampleproject.entity.Review">
+        SELECT
+            review
+        FROM
+            review
+        WHERE
+            movie_id = #{movie_id}
+    </select>
+
+    <select id="findMatchUserId" resultType="String">
+        SELECT
+            review
+        FROM
+            review
+        WHERE
+            user_id = #{user_id}
+    </select>
+
+    <delete id="deleteReview" parameterType="int">
+        DELETE FROM review
+        WHERE user_id = #{user_id}  
+    </delete>
+
+</mapper>
