@@ -28,12 +28,17 @@
         FROM
             review
         WHERE
-            user_id = #{user_id}
+            movie_id = #{movie_id}
+            AND
+            user_id  = #{user_id}
     </select>
 
     <delete id="deleteReview" parameterType="int">
         DELETE FROM review
-        WHERE user_id = #{user_id}  
+        WHERE 
+            movie_id = #{movie_id}
+            AND
+            user_id = #{user_id}  
     </delete>
 
 </mapper>

@@ -186,6 +186,17 @@ public class MovieDaoImpl implements MovieDao {
         return list;
     }
 
+    @Override
+    public Optional<Movie> getUserIdByMovieId(int id) {
+        String sql = "SELECT user_id FROM movie "
+                        + "WHERE id = ?";
+        Map<String, Object> result = jdbcTemplate.queryForMap(sql, id);
+        Movie movie = new Movie();
+        movie.setUserId((int) result.get("user_id"));
+        Optional<Movie> movieOpt = Optional.ofNullable(movie);
+        return movieOpt;
+    }
+
     // @Override
     // public Movie findReviewById(int id) {
     //     String sql = "SELECT movie.id, "

@@ -21,5 +21,8 @@ public interface MovieService {
 
 	List<Movie> findBySearchWordLike(String searchWord);
 
+	Optional<Movie> getUserIdByMovieId(int id);
+
+
 	// Movie findReviewById(int id);
 }

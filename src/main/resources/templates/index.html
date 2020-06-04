@@ -1,43 +1,3 @@
-<!-- <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<link th:href="@{/css/sample.css}" rel="stylesheet" type="text/css">
-<head>
-    <meta charset="utf-8">
-    <title>Index</title>
-</head>
-
-<body>
-  <form role="form" id="logout" th:action="@{/logout}" method="post">
-    <button type="submit">ログアウト</button>
-  </form>
-  <div class="images" style="display: flex">
-    <div th:each= "movie :${movieList3}" class="image"> -->
-      <!-- 動画はmovieのインデックス0に入っている -->
-      <!-- <video th:src="${movie.get(0)}" height="150px" width="300px" controls></video> -->
-      <!-- <img th:src="${movie.movie}" height="100px" width="200px" > -->
-      <!-- <div style="display: flex;justify-content : space-around">
-        <div>
-          <label for = "id">投稿者:</label> -->
-          <!-- 動画投稿者はmovieのインデックス3に入っている -->
-          <!-- <span id="movie" th:text="${movie.get(3)}">投稿者</span>
-        </div>
-        <div>再生回数</div>
-      </div> -->
-      <!-- 現在ログイン中のユーザーと動画投稿者が同じな場合、削除ボタンを表示する -->
-      <!-- <form th:if="${loginUser == movie.get(2)}" method="POST" th:action="@{/delete}"> -->
-        <!-- このname属性が@RequestParamで受け取る際のキーになる（受け取る値はvalue属性） -->
-        <!-- <input type="hidden" name="movieId" th:value="${movie.get(1)}">
-        <input type="submit" value="削除">
-      </form>    
-    </div>
-  </div>
-
-</body>
-
-</html> -->
-
-
-
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <!-- Bootstrap core CSS -->
@@ -51,14 +11,6 @@
 <div th:replace="~{block/header::headerA}"></div>
 <main role="main" class="mainBackground">
 
-  <!-- Main jumbotron for a primary marketing message or call to action -->
-  <!-- <div class="jumbotron">
-    <div class="container">
-      <h1 class="display-3">Hello, world!</h1>
-      <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-      <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
-    </div>
-  </div> -->
   <div id="loopSlide">
     <ul class="jsMovie1">
       <li th:each="viewList :${viewsList3}" class="indexLoop jsMovie1">

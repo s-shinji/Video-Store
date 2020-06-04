@@ -21,11 +21,11 @@ public class ReviewService {
 		return reviewMapper.findReviewById(movie_id);
 	}
 
-	public void deleteReview(int user_id) {
-		reviewMapper.deleteReview(user_id);
+	public void deleteReview(int movie_id,int user_id) {
+		reviewMapper.deleteReview(movie_id,user_id);
 	}
 
-	public String findMatchUserId(int user_id) {
-		return reviewMapper.findMatchUserId(user_id);
+	public String findMatchUserId(int movie_id,int user_id) {
+		return reviewMapper.findMatchUserId(movie_id, user_id);
 	}
 }

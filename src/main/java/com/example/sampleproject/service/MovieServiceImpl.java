@@ -66,5 +66,19 @@ public class MovieServiceImpl implements MovieService {
 	public List<Movie> findBySearchWordLike(String searchWord) {
 		return dao.findBySearchWordLike(searchWord);
 	}
+
+	@Override
+	public Optional<Movie> getUserIdByMovieId(int id) {
+		try {
+			return dao.getUserIdByMovieId(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new MovieNotFoundException("指定された動画が存在しません");
+		}
+	}
+
+	// @Override
+	// public Movie findReviewById(int id) {
+	// 	return dao.findReviewById(id);
+	// }
 	
 }

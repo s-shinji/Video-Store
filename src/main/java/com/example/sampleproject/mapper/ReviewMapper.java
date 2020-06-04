@@ -12,7 +12,7 @@ public interface ReviewMapper {
 
 	public List<Review> findReviewById(int movie_id);
 
-	public int deleteReview(int user_id);
+	public int deleteReview(int movie_id, int user_id);
 
-	public String findMatchUserId(int user_id);
+	public String findMatchUserId(int movie_id, int user_id);
 }

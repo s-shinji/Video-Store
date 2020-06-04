@@ -1,4 +1,4 @@
-package com.example.sampleproject.controller;//変更！！
+package com.example.sampleproject.controller;
 
 import com.example.sampleproject.form.MovieForm;
 import com.example.sampleproject.entity.DbUserDetails;
@@ -10,14 +10,12 @@ import com.example.sampleproject.service.ImageService;
 import com.example.sampleproject.service.MovieService;
 import com.example.sampleproject.service.ReviewService;
 
-// import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-// import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -52,9 +50,6 @@ public class SampleController {
     private final MovieService movieService;
     private final ImageService imageService;
     private final ReviewService reviewService;
-    //変更箇所(new)
-    // @Autowired
-    // private RegisterMemberService registerMemberService;
 
     @Autowired
     public SampleController(MovieService movieService, ImageService imageService, ReviewService reviewService){
@@ -82,10 +77,8 @@ public class SampleController {
     public String upload(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if(authentication.getPrincipal() instanceof DbUserDetails){
-            // DbUserDetails account = DbUserDetails.class.cast(authentication.getPrincipal());
             int userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
 
-	    	// model.addAttribute("loginUser", account.getUserId());
 	    	model.addAttribute("loginUser", userId);
 	    }else{
 	    	model.addAttribute("loginUser", "");
@@ -206,10 +199,8 @@ public class SampleController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if(authentication.getPrincipal() instanceof DbUserDetails){
-            // DbUserDetails account = DbUserDetails.class.cast(authentication.getPrincipal());
             int userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
 
-	    	// model.addAttribute("loginUser", account.getUserId());
             model.addAttribute("loginUser", userId);
 
             //動画投稿者じゃない場合に再生回数を+1
@@ -217,11 +208,15 @@ public class SampleController {
                 //再生回数を+1
                 int views = movie.getViews();
                 views += 1; 
-                // Movie viewss = (Movie) views;
                 movieService.updateViews(views, id);
             }
 
-            String matchReview = reviewService.findMatchUserId(userId);
+            //既にReview済みの動画かどうかを判断するための処理
+            String matchReview = "";
+            if(reviewService.findMatchUserId(id,userId) == null) {
+            } else {
+                matchReview = reviewService.findMatchUserId(id,userId);
+            }
             model.addAttribute("matchReview", matchReview);
 
 	    }else{
@@ -298,8 +293,6 @@ public class SampleController {
         int lastId = movieService.save(movie);
         //ここからImage
         Image image = new Image();
-        //SELECT LASTVAL();を用いて直前のmovie.idを取得しimageテーブルのmovie_idに入れる処理をここに挿入する
-        // int lastId = movieService.getLastId();
         image.setMovie_id(lastId);
 
         if(movieForm.getThumbnail().isEmpty()) {
@@ -323,6 +316,26 @@ public class SampleController {
         //hiddenのname属性をキーとしてvalueを受け取り変数idに格納している
         @RequestParam("movieId") int id,
         Model model) {
+
+        //hiddenで送られてきたmovie.idをもとに投稿者のuser_idを取得する
+        Optional<Movie> movieOpt = movieService.getUserIdByMovieId(id);
+        Movie movie = new Movie();
+        if(movieOpt.isPresent()) {
+            movie = movieOpt.get();
+        }
+        //ログインユーザー（つまり、削除ボタンを押したユーザー）を取得する
+        int userId = 0;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication.getPrincipal() instanceof DbUserDetails){
+            userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+        }
+
+        if(movie.getUserId() != userId) {
+            model.addAttribute("error1", "ログイン中のユーザーと動画の投稿者が一致しませんでした。");
+            return "errorMessage";
+        }
+
+
         //動画を一件削除しリダイレクト
         movieService.deleteById(id);
         return "redirect:/index";
