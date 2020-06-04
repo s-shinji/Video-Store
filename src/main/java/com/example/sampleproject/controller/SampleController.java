@@ -331,7 +331,7 @@ public class SampleController {
         }
 
         if(movie.getUserId() != userId) {
-            model.addAttribute("error1", "ログイン中のユーザーと動画の投稿者が一致しませんでした。");
+            model.addAttribute("error1", "エラー：ログイン中のユーザーと動画の投稿者が一致しませんでした。");
             return "errorMessage";
         }
 
