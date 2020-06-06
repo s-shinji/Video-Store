@@ -70,44 +70,44 @@
       <div th:if="${loginUser != movie.user.id && !(''.equals(loginUser))}" class="review">
         <form name="formName1"th:action="@{/review/{id}(id=${movie.id})}" method="POST">
           <!-- 既にreview済みかどうかで分岐 -->
-          <a th:if="${matchReview.equals('good')}" href="javascript:formName1.submit()" class="reviewIcon reviewLink" style="color:#28a745;">
+          <a th:if="${matchReview.equals('good')}"  class="reviewIcon reviewLink link1 ajax_btn1" style="color:#28a745;">
             <i class="far fa-grin-squint"></i>
-            <span class="reviewCount" th:text="${reviewMap.get('good')}">0</span>
+            <span class="reviewCount1" th:text="${reviewMap.get('good')}">0</span>
             
           </a>
-          <a th:if="${!(matchReview.equals('good'))}" href="javascript:formName1.submit()" class="reviewIcon reviewLink" >
+          <a th:if="${!(matchReview.equals('good'))}"  class="reviewIcon reviewLink link1 ajax_btn1">
             <i class="far fa-grin-squint"></i>
-            <span class="reviewCount" th:text="${reviewMap.get('good')}">0</span>
+            <span class="reviewCount1" th:text="${reviewMap.get('good')}">0</span>
             
           </a>
-          <input type="hidden" name="review" value="good">
+          <input type="hidden" name="review" value="good" class="sendReview1">
         </form>
 
         <form name="formName2"th:action="@{/review/{id}(id=${movie.id})}" method="POST">
           <!-- 既にreview済みかどうかで分岐 -->
-          <a th:if="${matchReview.equals('normal')}" href="javascript:formName2.submit()" class="reviewIcon reviewLink" style="color:#28a745;">
+          <a th:if="${matchReview.equals('normal')}"  class="reviewIcon reviewLink link2 ajax_btn2" style="color:#28a745;">
             <i class="far fa-smile"></i>
-            <span class="reviewCount" th:text="${reviewMap.get('normal')}">0</span>
+            <span class="reviewCount2" th:text="${reviewMap.get('normal')}">0</span>
           </a>
-          <a th:if="${!(matchReview.equals('normal'))}" href="javascript:formName2.submit()" class="reviewIcon reviewLink">
+          <a th:if="${!(matchReview.equals('normal'))}" class="reviewIcon reviewLink link2 ajax_btn2">
             <i class="far fa-smile"></i>
-            <span class="reviewCount" th:text="${reviewMap.get('normal')}">0</span>
+            <span class="reviewCount2" th:text="${reviewMap.get('normal')}">0</span>
           </a>
-          <input type="hidden" name="review" value="normal">
+          <input type="hidden" name="review" value="normal" class="sendReview2">
 
         </form>
 
         <form name="formName3"th:action="@{/review/{id}(id=${movie.id})}" method="POST">
           <!-- 既にreview済みかどうかで分岐 -->
-          <a th:if="${matchReview.equals('bad')}" href="javascript:formName3.submit()" class="reviewIcon reviewLink" style="color:#28a745;">
+          <a th:if="${matchReview.equals('bad')}" class="reviewIcon reviewLink link3 ajax_btn3" style="color:#28a745;">
             <i class="far fa-sad-tear"></i>
-            <span class="reviewCount" th:text="${reviewMap.get('bad')}">0</span>
+            <span class="reviewCount3" th:text="${reviewMap.get('bad')}">0</span>
           </a>   
-          <a th:if="${!(matchReview.equals('bad'))}" href="javascript:formName3.submit()" class="reviewIcon reviewLink">
+          <a th:if="${!(matchReview.equals('bad'))}" class="reviewIcon reviewLink link3 ajax_btn3">
             <i class="far fa-sad-tear"></i>
-            <span class="reviewCount" th:text="${reviewMap.get('bad')}">0</span>
+            <span class="reviewCount3" th:text="${reviewMap.get('bad')}">0</span>
           </a>   
-          <input type="hidden" name="review" value="bad">
+          <input type="hidden" name="review" value="bad" class="sendReview3">
 
         </form>
 
@@ -129,8 +129,159 @@
 <footer>
   <p class="footer">&copy; 2020</p>
 </footer>
+<!-- Bootstrap用の軽量版 -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<!-- 通常版 -->
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="/docs/4.5/dist/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"integrity="sha384-1CmrxMRARb6aLqgBO7yyAxTOQE2AKb9GfXnEo760AUcUmFx3ibVJJAzGytlQcNXd" crossorigin="anonymous"></script>
 <script type="text/javascript" th:src="@{/js/hover.js}"></script>
+<!-- ajaxのために追加 -->
+<script type="text/javascript" th:inline="javascript">
+$(function() {
+    // Ajax通信テスト ボタンクリック
+    $(".ajax_btn1").click(function() {
+        
+        var review = $(".sendReview1").val(); 
+        var url = /*[[@{/review/{id}(id=${movie.id})}]]*/
+        $.ajax({
+            type        : "POST",
+            url         : url,
+            data        : {"review" : review},
+            dataType    : "json",
+            success     : function(data) {
+                            success1(data);
+                        },
+            error       : function() {
+                            error1();
+                        }
+        });
+    });
+});
+ 
+// Ajax通信成功時処理
+function success1(data) {
+  $(".reviewCount1").html(
+                `<span class="reviewCount1" style="color:#28a745;">${data["good"]}</span>
+                `);
+  $(".reviewCount2").html(
+                `<span class="reviewCount2" style="color:black;">${data["normal"]}</span>
+                `);
+  $(".reviewCount3").html(
+                `<span class="reviewCount3" style="color:black;">${data["bad"]}</span>
+                `);
+  $(".link2").css('color','black');
+  $(".link3").css('color','black');
+  $(".link2").addClass("ajax_btn2");
+  $(".link3").addClass("ajax_btn3");
+  $(".ajax_btn1").css('color','#28a745');
+  $(".link1").removeClass("ajax_btn1");
+}
+ 
+// Ajax通信失敗時処理
+function error1() {
+    alert("エラー:レビューの値が不正です。");
+}
+</script>
+
+
+
+<script type="text/javascript" th:inline="javascript">
+$(function() {
+    // Ajax通信テスト ボタンクリック
+    $(".ajax_btn2").click(function() {
+        
+        var review = $(".sendReview2").val(); 
+        var url = /*[[@{/review/{id}(id=${movie.id})}]]*/
+        $.ajax({
+            type        : "POST",
+            url         : url,
+            data        : {"review" : review},
+            dataType    : "json",
+            success     : function(data) {
+                            success2(data);
+                        },
+            error       : function() {
+                            error2();
+                        }
+        });
+    });
+});
+ 
+// Ajax通信成功時処理
+function success2(data) {
+  $(".reviewCount1").html(
+                `<span class="reviewCount1" style="color:black;">${data["good"]}</span>
+                `);
+  $(".reviewCount2").html(
+                `<span class="reviewCount2" style="color:#28a745;">${data["normal"]}</span>
+                `);
+  $(".reviewCount3").html(
+                `<span class="reviewCount3" style="color:black;">${data["bad"]}</span>
+                `);
+
+  $(".link1").css('color','black');
+  $(".link3").css('color','black');
+
+
+  $(".link1").addClass("ajax_btn1");
+  $(".link3").addClass("ajax_btn3");
+  $(".ajax_btn2").css('color','#28a745');
+  $(".link2").removeClass("ajax_btn2");
+}
+ 
+// Ajax通信失敗時処理
+function error2() {
+  alert("エラー：レビューの値が不正です");
+}
+</script>
+<script type="text/javascript" th:inline="javascript">
+$(function() {
+    // Ajax通信テスト ボタンクリック
+    $(".ajax_btn3").click(function() {
+        
+        var review = $(".sendReview3").val(); 
+        var url = /*[[@{/review/{id}(id=${movie.id})}]]*/
+        $.ajax({
+            type        : "POST",
+            url         : url,
+            data        : {"review" : review},
+            dataType    : "json",
+            success     : function(data) {
+                            success3(data);
+                        },
+            error       : function() {
+                            error3();
+                        }
+        });
+    });
+});
+ 
+// Ajax通信成功時処理
+function success3(data) {
+  $(".reviewCount1").html(
+                `<span class="reviewCount1" style="color:black;">${data["good"]}</span>
+                `);
+  $(".reviewCount2").html(
+                `<span class="reviewCount2" style="color:black;">${data["normal"]}</span>
+                `);
+  $(".reviewCount3").html(
+                `<span class="reviewCount3" style="color:#28a745;">${data["bad"]}</span>
+                `);
+  $(".link1").css('color','black');
+  $(".link2").css('color','black');
+  $(".link1").addClass("ajax_btn1");
+  $(".link2").addClass("ajax_btn2");
+  $(".ajax_btn3").css('color','#28a745');
+  $(".link3").removeClass("ajax_btn3");
+
+
+  
+}
+ 
+// Ajax通信失敗時処理
+function error3() {
+  alert("エラー：レビューの値が不正です");
+}
+</script>
 </body>
 </html>
