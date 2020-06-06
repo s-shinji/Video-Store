@@ -84,6 +84,12 @@
       <artifactId>hibernate-core</artifactId>
       <version>5.4.4.Final</version>
     </dependency>
+    <!-- ajaxを用いるため追加 -->
+    <!-- <dependency>
+       <groupId>com.fasterxml.jackson.core</groupId>
+       <artifactId>jackson-databind</artifactId>
+       <version>2.9.4</version>
+    </dependency> -->
   </dependencies>
   <build>
     <plugins>
