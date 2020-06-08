@@ -12,14 +12,12 @@
 <div th:replace="~{block/header::headerA}"></div>
 <div role="main" class="mainBackground">
 
-  <!-- <div > -->
   <div class="detail">
     <!-- <div th:each= "movie :${movieList}" class="image"> -->
     <!-- 動画はmovieのインデックス0に入っている -->
     <!-- <video th:src="${movie.get(0)}" height="150px" width="300px" controls></video> -->
     <video th:src="${convert}" height="500px" width="100%" class="movieDetail" controls></video>
 
-    <!-- <img th:src="${movie.movie}" height="100px" width="200px" > -->
     <div class="detailInfo" >
       <div>
         <!-- 動画投稿者はmovieのインデックス3に入っている -->
@@ -33,6 +31,7 @@
         <label for = "views">再生回数:</label>
         <span id="views" th:text="${movie.views} + '回'">再生回数</span>
       </div>
+
       <!-- ログインユーザーと投稿者が等しい場合はdiv -->
       <div th:if="${loginUser == movie.user.id || ''.equals(loginUser)}" class="review">
         <div class="reviewIcon">
@@ -50,35 +49,16 @@
       </div>
       
       <!-- ログインユーザーと投稿者が等しくない場合はリンク化 -->
-      <!-- <div th:if="${loginUser != movie.user.id && !(''.equals(loginUser))}" class="review">
-        <a th:href="@{/review/{id}(id=${movie.id})}"class="reviewIcon">
-          <i class="far fa-grin-squint"></i>
-          <span class="reviewCount">:0</span>
-          <input type="hidden" name="review" value="good">
-        </a>
-        <a th:href="@{/review/{id}(id=${movie.id})}"class="reviewIcon">
-          <i class="far fa-smile"></i>
-          <span class="reviewCount">:0</span>
-          <input type="hidden" name="review" value="normal">
-        </a>
-        <a th:href="@{/review/{id}(id=${movie.id})}"class="reviewIcon">
-          <i class="far fa-sad-tear"></i>
-          <span class="reviewCount">:0</span>
-          <input type="hidden" name="review" value="bad">
-        </a>   
-      </div> -->
       <div th:if="${loginUser != movie.user.id && !(''.equals(loginUser))}" class="review">
         <form name="formName1"th:action="@{/review/{id}(id=${movie.id})}" method="POST">
           <!-- 既にreview済みかどうかで分岐 -->
           <a th:if="${matchReview.equals('good')}"  class="reviewIcon reviewLink link1 ajax_btn1" style="color:#28a745;">
             <i class="far fa-grin-squint"></i>
             <span class="reviewCount1" th:text="${reviewMap.get('good')}">0</span>
-            
           </a>
           <a th:if="${!(matchReview.equals('good'))}"  class="reviewIcon reviewLink link1 ajax_btn1">
             <i class="far fa-grin-squint"></i>
-            <span class="reviewCount1" th:text="${reviewMap.get('good')}">0</span>
-            
+            <span class="reviewCount1" th:text="${reviewMap.get('good')}">0</span>       
           </a>
           <input type="hidden" name="review" value="good" class="sendReview1">
         </form>
@@ -120,8 +100,6 @@
       <input type="hidden" name="movieId" th:value="${movie.id}">
       <input type="submit" value="削除" class="deleteBtn">
     </form>    
-
-  <!-- </div> -->
 
   </div>
 </div>

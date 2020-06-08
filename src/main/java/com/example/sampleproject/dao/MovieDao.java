@@ -5,16 +5,12 @@ import java.util.Optional;
 
 import com.example.sampleproject.entity.Movie;
 
-// import org.apache.ibatis.annotations.Mapper;
-// @Mapper
 public interface MovieDao {
 
 	int insertMovie(Movie movie);
 
 	List<Movie> getAll();
 	
-	// List<Movie> getAll2();
-
 	int deleteById(int id);
 	
 	Optional<Movie> getMovie(int id);
@@ -25,5 +21,4 @@ public interface MovieDao {
 
 	Optional<Movie> getUserIdByMovieId(int id);
 	
-	// Movie findReviewById(int id);
 }

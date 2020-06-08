@@ -1,8 +1,6 @@
-package com.example.sampleproject.form;//変更！！
+package com.example.sampleproject.form;
 
-// import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
-
 import com.example.sampleproject.validation.FindEmail;
 
 /**
@@ -10,7 +8,6 @@ import com.example.sampleproject.validation.FindEmail;
  */
 public class MemberRegistrationForm {
 	private String name;
-	// 追加！
 	@FindEmail
 	@Pattern(regexp = "^[a-zA-Z0-9!#$%&'_`/=~\\*\\+\\-\\?\\^\\{\\|\\}]+(\\.[a-zA-Z0-9!#$%&'_`/=~\\*\\+\\-\\?\\^\\{\\|\\}]+)*+(.*)@[a-zA-Z0-9][a-zA-Z0-9\\-]*(\\.[a-zA-Z0-9\\-]+)+$", message = "Emailが不正です。")
 	private String email;

@@ -11,8 +11,6 @@ public interface MovieService {
 
 	List<Movie> getAll();
 
-	// List<Movie> getAll2();
-
 	void deleteById(int id);
 
 	Optional<Movie> getMovie(int id);
@@ -22,7 +20,4 @@ public interface MovieService {
 	List<Movie> findBySearchWordLike(String searchWord);
 
 	Optional<Movie> getUserIdByMovieId(int id);
-
-
-	// Movie findReviewById(int id);
 }

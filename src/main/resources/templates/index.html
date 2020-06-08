@@ -14,10 +14,6 @@
   <div id="loopSlide">
     <ul class="jsMovie1">
       <li th:each="viewList :${viewsList3}" class="indexLoop jsMovie1">
-        <!-- <div class="loopInfo"> -->
-          <!-- <label for="rank">No.</label> -->
-          <!-- <span th:text="${viewListStat.index + 1}" id="rank"></span> -->
-        <!-- </div> -->
          <a href="" th:href="@{/video/{id}(id=${viewList.get(1)})}" class="loopLink">
           <!-- <video th:src="${viewList.get(0)}" height="225px" width="400px" ></video> -->
           <img th:src="${viewList.get(3)}" height="225px" width="400px" >
@@ -27,22 +23,20 @@
   </div>
 
 
-  <!-- <div> -->
   <div class="images">
-    <div th:each= "movie :${movieList3}" class="image">
+    <div th:each= "movie, movieListStat:${movieList3}" class="image">
       <!-- 動画はmovieのインデックス0に入っている -->
       <!-- <video th:src="${movie.get(0)}" height="150px" width="300px" controls></video> -->
       <div>
-        <a href="" th:href="@{/video/{id}(id=${movie.get(1)})}" class="movieLink" id="jsMovie2">
+        <a href="" th:href="@{/video/{id}(id=${movie.get(1)})}" class="movieLink jsMovie2" th:id="${movieListStat.index}">
           <!-- <video th:src="${movie.get(0)}" height="150px" width="300px" class="movieIndex" muted></video> -->
-          <img th:src="${movie.get(7)}" height="150px" width="300px" class="movieIndex" id="hoverChange">
+          <video src="" height="150px" width="300px" class="movieIndex videoSrc" th:id="'videoSrc_' + ${movieListStat.index}" muted autoplay></video>
+          <img th:src="${movie.get(7)}" height="150px" width="300px" class="movieIndex" id="hoverChange" th:id="'imgSrc_' + ${movieListStat.index}">
           <div th:text="${movie.get(5)}" class="movieTitle"></div>
         </a>
 
-        <!-- <img th:src="${movie.movie}" height="100px" width="200px" > -->
         <div class="indexInfo">
           <div>
-            <!-- <label for = "postUser">投稿者:</label> -->
             <!-- 動画投稿者はmovieのインデックス3に入っている -->
             <a  class="postUserName" href="#" th:href="@{/user/{id}(id=${movie.get(2)})}" style="display: block;">
               <img src="" alt="" th:src="${movie.get(6)}" class="upAvatar" height="50px" width="50px">
@@ -66,32 +60,6 @@
     </div>
 
   </div>
-  <!-- </div> -->
-
-  <!-- <div class="container"> -->
-    <!-- Example row of columns -->
-    <!-- <div class="row">
-      <div class="col-md-4">
-        <h2>Heading</h2>
-        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-        <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-      </div>
-      <div class="col-md-4">
-        <h2>Heading</h2>
-        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-        <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-      </div>
-      <div class="col-md-4">
-        <h2>Heading</h2>
-        <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-        <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-      </div>
-    </div>
-
-    <hr> -->
-
-  <!-- </div> /container -->
-
 </main>
 
 <footer>
@@ -100,8 +68,23 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="/docs/4.5/dist/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"integrity="sha384-1CmrxMRARb6aLqgBO7yyAxTOQE2AKb9GfXnEo760AUcUmFx3ibVJJAzGytlQcNXd" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/simplyscroll/2/jquery.simplyscroll.min.js"></script>
-<script type="text/javascript" th:src="@{/js/hover.js}"></script>
+<!-- <script type="text/javascript" th:src="@{/js/hover.js}"></script> -->
 <script type="text/javascript" th:src="@{/js/simplyscroll.js}"></script>
-<!-- <script type="text/javascript" th:src="@{/js/movie.js}"></script> -->
+<!-- <script th:inline="javascript">
+  $(document).ready(function(){
+     $(".jsMovie2").mouseover(function() {
+      var id = $(this).attr('id');
+      console.log(/*[[${movieList3.get(`${id}`).get(0)}]]*/);
+      $(`#videoSrc_${id}`).attr('src',/*[[${movieList3.get(`${id}`).get(0)}]]*/);
+      $(`#videoSrc_${id}`).css('display','flex');
+      $(`#imgSrc_${id}`).css('display','none');
+     }).mouseleave(function() {
+      var id = $(this).attr('id');
+      $(`#videoSrc_${id}`).attr('src',"")
+      $(`#videoSrc_${id}`).css('display','none');
+      $(`#imgSrc_${id}`).css('display','flex');
+     });
+  });
+</script> -->
 </body>
 </html>

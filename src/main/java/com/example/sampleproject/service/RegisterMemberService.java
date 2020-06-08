@@ -4,9 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-//変更箇所(new)
-// import java.util.List;
-
 import com.example.sampleproject.entity.MemberRegistrationEntity;
 import com.example.sampleproject.mapper.RegisterMemberMapper;
 
@@ -31,7 +28,7 @@ public class RegisterMemberService {
 		//会員情報をUSERテーブルにinsert。
 		registerMemberMapper.insertMemberInfo(entity);
 	}
-	// 変更箇所(new)
+
 	public MemberRegistrationEntity findByEmail(String email) {
 		return registerMemberMapper.findByEmail(email);
 	}

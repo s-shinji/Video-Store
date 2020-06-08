@@ -45,15 +45,11 @@ public class UserDetailController {
 	    if(authentication.getPrincipal() instanceof DbUserDetails){
 			int userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
 			model.addAttribute("loginUser", userId);
-
-			// if(!(id == userId)) {
-			// 	return "redirect:/index";
-			// }
 	
 			Optional<Movie> popularMovieOpt = userDetailService.findPopularMovie(id);
 			if (popularMovieOpt.isPresent()) {
 				Movie popularMovie = popularMovieOpt.get();
-				StringBuffer data = new StringBuffer();
+				StringBuffer data  = new StringBuffer();
 				String base64_4 = Base64.getEncoder().encodeToString(popularMovie.getMovie());
 				data.append("data:video/mp4;base64,");
 				data.append(base64_4);
@@ -98,7 +94,7 @@ public class UserDetailController {
 			}
 
 			StringBuffer data = new StringBuffer();
-			String base64_5 = Base64.getEncoder().encodeToString(userDetailForm.getAvatar().getBytes());
+			String base64_5   = Base64.getEncoder().encodeToString(userDetailForm.getAvatar().getBytes());
 			data.append("data:image/jpeg;base64,");
 			data.append(base64_5);
 	

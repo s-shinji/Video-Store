@@ -36,13 +36,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-// 変更箇所(new)
-// import com.example.sampleproject.mapper.RegisterMemberMapper;
-// import com.example.sampleproject.entity.MemberRegistrationEntity;
-// import com.example.sampleproject.service.RegisterMemberService;
-
-
-
 
 @Controller
 public class SampleController {
@@ -53,8 +46,8 @@ public class SampleController {
 
     @Autowired
     public SampleController(MovieService movieService, ImageService imageService, ReviewService reviewService){
-        this.movieService = movieService;
-        this.imageService = imageService;
+        this.movieService  = movieService;
+        this.imageService  = imageService;
         this.reviewService = reviewService;
     }
 
@@ -89,19 +82,11 @@ public class SampleController {
 
     @GetMapping("/index")
     public String index(Model model, RedirectAttributes redirectAttributes){
-        //変更箇所(new)
-        // List<MemberRegistrationEntity> memberRegistrationEntityList = registerMemberService.findAll();
-        // model.addAttribute("find",memberRegistrationEntityList.get(0));
-        
-        List<Movie> list = movieService.getAll();
-        // Collections.sort(list.getCreated(),Collections.reverseOrder());
+        List<Movie> list   = movieService.getAll();
         List<Object> list3 = new ArrayList<>();
         for(int i = 0; i < list.size(); i++) {
-            // Collections.sort(list.get(i).getViews(),Collections.reverseOrder());
-
             StringBuffer data = new StringBuffer();
-            String base64 = Base64.getEncoder().encodeToString(list.get(i).getMovie());
-            // data.append("data:image/jpeg;base64,");
+            String base64     = Base64.getEncoder().encodeToString(list.get(i).getMovie());
             //mp4にしか対応していない
             data.append("data:video/mp4;base64,");
             data.append(base64);
@@ -121,28 +106,8 @@ public class SampleController {
             list2.set(0,data.toString());
             list3.add(list2);
         }
-        // model.addAttribute("movieList", list);
         model.addAttribute("movieList3", list3);
 
-        //再生回数順に上位5つを取り出す
-        // List<Movie> viewsList = movieService.getAll2();
-        // List<Object> viewsList3 = new ArrayList<>();
-        // for(int j = 0; j < viewsList.size(); j++) {
-        //     StringBuffer data = new StringBuffer();
-        //     String base64_2 = Base64.getEncoder().encodeToString(viewsList.get(j).getMovie());
-        //     data.append("data:video/mp4;base64,");
-        //     data.append(base64_2);
-
-        //     List<Object> viewsList2 = new ArrayList<>();
-        //     viewsList2.add(data.toString());
-        //     viewsList2.add(viewsList.get(j).getId());
-        //     viewsList2.add(viewsList.get(j).getTitle());
-        //     viewsList2.add(viewsList.get(j).getImage().getImage());
-        //     viewsList3.add(viewsList2);
-        // }
-        // model.addAttribute("viewsList3", viewsList3);
-
-        //getAll2を使わずに並び替える方法
         // listを再生回数順に並び替える
         List<Movie> viewsList = new ArrayList<>(list);
         Collections.sort(viewsList,new Comparator<Movie>() {
@@ -155,7 +120,7 @@ public class SampleController {
         List<Object> viewsList3 = new ArrayList<>();
         for(int j = 0; j < 5; j++) {
             StringBuffer data = new StringBuffer();
-            String base64_2 = Base64.getEncoder().encodeToString(viewsList.get(j).getMovie());
+            String base64_2   = Base64.getEncoder().encodeToString(viewsList.get(j).getMovie());
             data.append("data:video/mp4;base64,");
             data.append(base64_2);
 
@@ -171,15 +136,12 @@ public class SampleController {
         //index.htmlでユーザー情報を取得したい場合に用いる(現在ログイン中のユーザー情報を取得)
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if(authentication.getPrincipal() instanceof DbUserDetails){
-            // DbUserDetails account = DbUserDetails.class.cast(authentication.getPrincipal());
             int userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
 
-	    	// model.addAttribute("loginUser", account.getUserId());
 	    	model.addAttribute("loginUser", userId);
 	    }else{
 	    	model.addAttribute("loginUser", "");
         }	
-        //ここまで
         return "index";
     }
 
@@ -190,10 +152,9 @@ public class SampleController {
            movie = movieOpt.get();
         }
         StringBuffer data = new StringBuffer();
-        String base64_3 = Base64.getEncoder().encodeToString(movie.getMovie());
+        String base64_3   = Base64.getEncoder().encodeToString(movie.getMovie());
         data.append("data:video/mp4;base64,");
         data.append(base64_3);
-        // String convertMovie = data.toString();
         model.addAttribute("convert", data.toString());
         model.addAttribute("movie", movie);
 
@@ -203,12 +164,14 @@ public class SampleController {
 
             model.addAttribute("loginUser", userId);
 
-            //動画投稿者じゃない場合に再生回数を+1
-            if(movie.getUserId() != userId) {
+            //ユーザーがログイン状態且つ動画投稿者じゃない場合に再生回数を+1
+            if(movie.getUserId() == userId) {
+            } else {
                 //再生回数を+1
                 int views = movie.getViews();
                 views += 1; 
                 movieService.updateViews(views, id);
+                
             }
 
             //既にReview済みの動画かどうかを判断するための処理
@@ -220,10 +183,16 @@ public class SampleController {
             model.addAttribute("matchReview", matchReview);
 
 	    }else{
+            //ユーザーがログインしていない場合
+            //再生回数を+1
+            int views = movie.getViews();
+            views += 1; 
+            movieService.updateViews(views, id);
+
 	    	model.addAttribute("loginUser", "");
         }
 
-        List<Review> review = reviewService.findReviewById(id);
+        List<Review> review           = reviewService.findReviewById(id);
         Map<String,Integer> reviewMap = new HashMap<String, Integer>();
         reviewMap.put("good", 0);
         reviewMap.put("normal", 0);
@@ -251,30 +220,7 @@ public class SampleController {
         }
 
         Movie movie = new Movie();
-        // 動画を複数投稿する場合
-        // for(int i = 0; i < movieForm.getMovie().length; i++) {
-            //ファイルが一つもない場合にエラー文を表示する
-            // MultipartFile uploadFile = movieForm.getMovie()[i];
-            // if (uploadFile.isEmpty()) {
-            //     result.rejectValue("movie",null, "ファイルを選択してください");
-            //     return "upload";
-            // }
-
-            // movie.setMovie(movieForm.getMovie()[i].getBytes());
-            // movie.setCreated(LocalDateTime.now());
-            // 変更箇所(ログインユーザーのID情報を渡す)
-            // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            // if(authentication.getPrincipal() instanceof DbUserDetails){
-            //     int userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-            //     movie.setUserId(userId);
-            // }
-
-            // movie.setViews(0);
-            // movie.setTitle(movieForm.getTitle());
-            //ここまで
-            // movieService.save(movie);
-        // }
-        // 動画投稿を一つずつにする場合の分
+        // 動画投稿の処理
         MultipartFile uploadFile = movieForm.getMovie();
         if (uploadFile.isEmpty()) {
             result.rejectValue("movie",null, "ファイルを選択してください");
@@ -299,7 +245,7 @@ public class SampleController {
             image.setImage("/images/noImage.jpg");
         } else {
             StringBuffer data = new StringBuffer();
-            String base64 = Base64.getEncoder().encodeToString(movieForm.getThumbnail().getBytes());
+            String base64     = Base64.getEncoder().encodeToString(movieForm.getThumbnail().getBytes());
             data.append("data:image/;base64,");
             data.append(base64);
             image.setImage(data.toString());
@@ -319,7 +265,7 @@ public class SampleController {
 
         //hiddenで送られてきたmovie.idをもとに投稿者のuser_idを取得する
         Optional<Movie> movieOpt = movieService.getUserIdByMovieId(id);
-        Movie movie = new Movie();
+        Movie movie              = new Movie();
         if(movieOpt.isPresent()) {
             movie = movieOpt.get();
         }
@@ -346,14 +292,12 @@ public class SampleController {
         if("".equals(searchForm.getSearchWord())) {
             return "index";
         } else {
-            List<Movie> list = movieService.findBySearchWordLike("%" + searchForm.getSearchWord() + "%");
+            List<Movie> list   = movieService.findBySearchWordLike("%" + searchForm.getSearchWord() + "%");
             List<Object> list3 = new ArrayList<>();
             for(int i = 0; i < list.size(); i++) {
-                // Collections.sort(list.get(i).getViews(),Collections.reverseOrder());
     
                 StringBuffer data = new StringBuffer();
-                String base64 = Base64.getEncoder().encodeToString(list.get(i).getMovie());
-                // data.append("data:image/jpeg;base64,");
+                String base64     = Base64.getEncoder().encodeToString(list.get(i).getMovie());
                 //mp4にしか対応していない
                 data.append("data:video/mp4;base64,");
                 data.append(base64);
@@ -373,7 +317,6 @@ public class SampleController {
                 list2.set(0,data.toString());
                 list3.add(list2);
             }
-            // model.addAttribute("movieList", list);
             model.addAttribute("list3", list3);
             model.addAttribute("listSize", list3.size());
         }

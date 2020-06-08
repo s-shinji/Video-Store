@@ -28,7 +28,7 @@ public class DbUserDetails extends User {
 	public String getUsername() {
 		return account.getName();
 	}
-	//変更箇所
+
 	public int getUserId() {
 		return account.getId();
 	}

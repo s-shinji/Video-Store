@@ -31,7 +31,6 @@ public class MemberRegistrationController {
 	}
 
 	@RequestMapping("/Register")
-	//追加！
 	public String registerUser(@Validated @ModelAttribute MemberRegistrationForm memberRegistrationForm,
 								BindingResult result) {
         if(result.hasErrors()) {
@@ -47,7 +46,6 @@ public class MemberRegistrationController {
 		MemberRegistrationEntity entity = new MemberRegistrationEntity();
 
 		entity.setName(memberRegistrationForm.getName());
-		//追加！
 		entity.setEmail(memberRegistrationForm.getEmail());
 		entity.setPassword(memberRegistrationForm.getPassword());
 		entity.setAvatar("/images/default.jpeg");

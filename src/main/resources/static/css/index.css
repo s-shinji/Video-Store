@@ -82,3 +82,7 @@ a:hover {
   border: 1px solid gray;
   border-radius: 100%;
 }
+
+.videoSrc {
+  display: none;
+}

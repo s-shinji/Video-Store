@@ -1,10 +1,8 @@
 package com.example.sampleproject.service;
 
 import java.util.List;
-
 import com.example.sampleproject.entity.Review;
 import com.example.sampleproject.mapper.ReviewMapper;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

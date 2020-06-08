@@ -4,7 +4,6 @@
 <mapper namespace="com.example.sampleproject.mapper.ReviewMapper">
 
     <insert id="insertReview" parameterType="com.example.sampleproject.entity.Review">
-    <!-- 追加！ -->
         INSERT INTO
             review(review, movie_id, user_id)
         VALUES(
