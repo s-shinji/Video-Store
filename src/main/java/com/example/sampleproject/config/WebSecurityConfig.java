@@ -1,5 +1,10 @@
 package com.example.sampleproject.config;
 
+import com.example.sampleproject.entity.Image;
+import com.example.sampleproject.entity.MemberRegistrationEntity;
+import com.example.sampleproject.entity.Movie;
+import com.example.sampleproject.entity.Review;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //ログインページを指定。
         //ログインページへのアクセスは全員許可する。
-        http.formLogin()
+        http.formLogin() //ログイン設定
             .loginPage("/login")
             .loginProcessingUrl("/authenticate")
             .usernameParameter("userName")
@@ -36,7 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.permitAll();
 		
 
-		http.csrf().disable().authorizeRequests()
+		http.csrf().disable().authorizeRequests()//.csrf().disable()でCSRFを無効にし、.authorizeRequests()で以下に記述するパスは認証不要でアクセスできるようにする
 			//antMatchers().permitAll()で記載したURLへはログインなしで入れる
 			.antMatchers("/css/**", "/images/**", "/js/**").permitAll()
             .antMatchers("/RegistrationForm").permitAll()
@@ -58,7 +63,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     void configureAuthenticationManager(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
-            .passwordEncoder(passwordEncoder());
+        auth.userDetailsService(userDetailsService)//.userDetailsServiceはAuthenticationManagerBuilderが持つメソッドで引数のuserDetailsServiceは@Autowiredで挿入したもの？
+                                                   //userDetailsServiceをオーバーライドしているためオーバーライドされた内容が追加されている
+            .passwordEncoder(passwordEncoder());//.passwordEncoderはAuthenticationManagerBuilderが持つメソッドで引数のpasswordEncoder()は自分で@Beanで定義したもの
+    }
+
+    @Bean
+    Movie movie () {
+        return new Movie();
+    }
+
+    @Bean
+    Image image () {
+        return new Image();
+    }
+
+    @Bean
+    MemberRegistrationEntity entity () {
+        return new MemberRegistrationEntity();
+    }
+
+    @Bean
+    Review review () {
+        return new Review();
     }
 }

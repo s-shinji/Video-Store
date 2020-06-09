@@ -29,54 +29,58 @@ public class ReviewController {
 	//依存関係？
 	@Autowired
 	MovieService movieService;
+	@Autowired
+	Movie movie;
+
 	@RequestMapping(value="/review/{id}", method = RequestMethod.POST)
 	@ResponseBody
-	public Object review(Review review, @PathVariable("id") int movie_id, @RequestParam("review") String reviewString,Model model) {
+	public Object review(Review review, @PathVariable("id") int movieId, @RequestParam("review") String reviewString,Model model) {
 		// reviewのhiddenが不正に操作された場合の処理
 		if(!("good".equals(reviewString) || "normal".equals(reviewString) || "bad".equals(reviewString))) {
 			return "エラー：レビューの値が不正です";
 		}
 
 		review.setReview(reviewString);
-		review.setMovie_id(movie_id);
+		review.setMovie_id(movieId);
 
 		//ログインユーザー取得
-		int userId = 0;
+		int loginUserId               = 0;
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if(authentication.getPrincipal() instanceof DbUserDetails){
-			userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-			review.setUser_id(userId);
+			loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+			review.setUser_id(loginUserId);
 
 			//投稿者が自らの動画にReviewをするためにhiddenタグを不正に操作された場合の処理
 			//依存関係？
-			Optional<Movie> movieOpt = movieService.getUserIdByMovieId(movie_id);
-			Movie movie              = new Movie();
+			Optional<Movie> movieOpt = movieService.getUserIdByMovieId(movieId);
+			// Movie movie              = new Movie();
 			if(movieOpt.isPresent()) {
 				movie = movieOpt.get();
 			}
-			if(movie.getUserId() == userId) {
+			if(movie.getUserId() == loginUserId) {
 				return "エラー：ログイン中のユーザーと動画の投稿者が同じです。";
 			}
-
-			//同ユーザーがReviewを複数回した場合以前の分を削除する
-			reviewService.deleteReview(movie_id,userId);
-
 		}	
+
+
+		//同ユーザーがReviewを複数回した場合以前の分を削除する
+		reviewService.deleteReview(movieId,loginUserId);
+		//新たなReviewを登録する
 		reviewService.insertReview(review);
 		//Reviewの値を取得する
-        List<Review> review2          = reviewService.findReviewById(movie_id);
-        Map<String,Integer> reviewMap = new HashMap<String, Integer>();
+        List<Review> reviewLists          = reviewService.findReviewById(movieId);
+        Map<String,Integer> reviewMap     = new HashMap<String, Integer>();
         reviewMap.put("good", 0);
         reviewMap.put("normal", 0);
-        reviewMap.put("bad", 0);
-        for(int i = 0; i < review2.size(); i++) {
-            if("good".equals(review2.get(i).getReview())) {
+		reviewMap.put("bad", 0);
+        for(Review reviewList : reviewLists) {
+            if("good".equals(reviewList.getReview())) {
                 reviewMap.put("good", reviewMap.get("good") + 1 );
-            } else if("normal".equals(review2.get(i).getReview())) {
+            } else if("normal".equals(reviewList.getReview())) {
                 reviewMap.put("normal", reviewMap.get("normal") + 1 );
-            } else if("bad".equals(review2.get(i).getReview())) {
+            } else if("bad".equals(reviewList.getReview())) {
                 reviewMap.put("bad", reviewMap.get("bad") + 1 );
-            }
+			}
 		}
         return reviewMap;
 

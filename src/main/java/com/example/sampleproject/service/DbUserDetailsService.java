@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.sampleproject.entity.Account;
 import com.example.sampleproject.entity.DbUserDetails;
 import com.example.sampleproject.mapper.LoginMapper;
-
+//ログイン処理の際DB接続を行い認証を行うサービス
 @Service
 public class DbUserDetailsService implements UserDetailsService {
 
@@ -26,7 +26,7 @@ public class DbUserDetailsService implements UserDetailsService {
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String userName)
 			throws UsernameNotFoundException {
-		//DBからユーザ情報を取得。
+		//DBからユーザ情報を取得。(ログインに必要な情報のみ)
 		Account account = Optional.ofNullable(loginMapper.findAccount(userName))
 				.orElseThrow(() -> new UsernameNotFoundException("User not found."));
 

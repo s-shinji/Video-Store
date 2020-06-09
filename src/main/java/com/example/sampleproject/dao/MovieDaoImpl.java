@@ -16,10 +16,14 @@ import org.springframework.stereotype.Repository;
 public class MovieDaoImpl implements MovieDao {
 
     private final JdbcTemplate jdbcTemplate;
+    private Movie movie;
+    private MemberRegistrationEntity entity;
 
     @Autowired
-    public MovieDaoImpl(JdbcTemplate jdbcTemplate) {
+    public MovieDaoImpl(JdbcTemplate jdbcTemplate, MemberRegistrationEntity entity, Movie movie) {
         this.jdbcTemplate = jdbcTemplate;
+        this.movie        = movie;
+        this.entity       = entity;
     }
 
     
@@ -40,36 +44,36 @@ public class MovieDaoImpl implements MovieDao {
                         + "ORDER BY created DESC";
                         //queryForMapでテーブルの1行分を取得する(今回はそのMapをList化しているためDBの全てを取得していることになる？)
         List<Map<String, Object>> resultList = jdbcTemplate.queryForList(sql);
-        List<Movie> list = new ArrayList<Movie>();
+        List<Movie> movieList                = new ArrayList<Movie>();
         //カラム名がStringに値がObjectに格納されている
         for(Map<String, Object> result:resultList) {
             //entityをnewしている
             Movie movie = new Movie();
             //Objectで受けているためキャストを用いて型変換を行う
-            movie.setId((int) result.get("id"));
+            movie.setId     ((int) result.get("id"));
             // movie.setMovie((String) result.get("movie"));
-            movie.setMovie((byte[]) result.get("movie"));
+            movie.setMovie  ((byte[]) result.get("movie"));
             //DBから取り出すとDateTime型からTimestamp型になる(さらにentityクラスのフィールドではLocalDateTime型であるためさらに変換)
             movie.setCreated(((Timestamp) result.get("created")).toLocalDateTime());
             //usersテーブルのid
-            movie.setUserId((int) result.get("user_id"));
-            movie.setViews((int) result.get("views"));
-            movie.setTitle((String) result.get("title"));
+            movie.setUserId ((int) result.get("user_id"));
+            movie.setViews  ((int) result.get("views"));
+            movie.setTitle  ((String) result.get("title"));
             //Userエンティティは別個で詰め替え
             MemberRegistrationEntity user = new MemberRegistrationEntity();
-            user.setId((int) result.get("user_id"));
-            user.setName((String) result.get("name"));
-            user.setAvatar((String) result.get("avatar"));
+            user.setId      ((int) result.get("user_id"));
+            user.setName    ((String) result.get("name"));
+            user.setAvatar  ((String) result.get("avatar"));
             // MovieにUserをセット
             movie.setUser(user);
 
             Image image = new Image();
-            image.setImage((String) result.get("image"));
+            image.setImage  ((String) result.get("image"));
             movie.setImage(image);
 
-            list.add(movie);
+            movieList.add(movie);
         }
-        return list;
+        return movieList;
     }
 
 
@@ -86,20 +90,19 @@ public class MovieDaoImpl implements MovieDao {
                         + "INNER JOIN users ON movie.user_id = users.id "
                         + "WHERE movie.id = ?";
         Map<String, Object> result = jdbcTemplate.queryForMap(sql, id);
-
-         Movie movie = new Movie();
-        movie.setId((int) result.get("id"));
-        movie.setMovie((byte[]) result.get("movie"));
+        //  Movie movie = new Movie();
+        movie.setId     ((int) result.get("id"));
+        movie.setMovie  ((byte[]) result.get("movie"));
         movie.setCreated(((Timestamp) result.get("created")).toLocalDateTime());
-        movie.setUserId((int) result.get("user_id"));
-        movie.setViews((int) result.get("views"));
-        movie.setTitle((String) result.get("title"));
+        movie.setUserId ((int) result.get("user_id"));
+        movie.setViews  ((int) result.get("views"));
+        movie.setTitle  ((String) result.get("title"));
 
-        MemberRegistrationEntity user = new MemberRegistrationEntity();
-        user.setId((int) result.get("user_id"));
-        user.setName((String) result.get("name"));
-        user.setAvatar((String) result.get("avatar"));
-        movie.setUser(user);
+        // MemberRegistrationEntity user = new MemberRegistrationEntity();
+        entity.setId    ((int) result.get("user_id"));
+        entity.setName  ((String) result.get("name"));
+        entity.setAvatar((String) result.get("avatar"));
+        movie.setUser(entity);
 
         Optional<Movie> movieOpt = Optional.ofNullable(movie);
         return movieOpt;
@@ -122,28 +125,28 @@ public class MovieDaoImpl implements MovieDao {
                         + "ORDER BY created DESC";
 
         List<Map<String, Object>> resultList = jdbcTemplate.queryForList(sql, searchWord, searchWord);
-        List<Movie> list = new ArrayList<Movie>();
+        List<Movie> MovieList                = new ArrayList<Movie>();
         //カラム名がStringに値がObjectに格納されている
         for(Map<String, Object> result:resultList) {
             Movie movie = new Movie();
-            movie.setId((int) result.get("id"));
-            movie.setMovie((byte[]) result.get("movie"));
-            movie.setViews((int) result.get("views"));
-            movie.setTitle((String) result.get("title"));
+            movie.setId    ((int) result.get("id"));
+            movie.setMovie ((byte[]) result.get("movie"));
+            movie.setViews ((int) result.get("views"));
+            movie.setTitle ((String) result.get("title"));
             movie.setUserId((int) result.get("user_id"));
 
             MemberRegistrationEntity user = new MemberRegistrationEntity();
-            user.setName((String) result.get("name"));
-            user.setAvatar((String) result.get("avatar"));
+            user.setName   ((String) result.get("name"));
+            user.setAvatar ((String) result.get("avatar"));
             movie.setUser(user);
 
             Image image = new Image();
-            image.setImage((String) result.get("image"));
+            image.setImage ((String) result.get("image"));
             movie.setImage(image);    
 
-            list.add(movie);
+            MovieList.add(movie);
         }
-        return list;
+        return MovieList;
     }
 
 
@@ -152,9 +155,9 @@ public class MovieDaoImpl implements MovieDao {
         String sql = "SELECT user_id FROM movie "
                         + "WHERE id = ?";
         Map<String, Object> result = jdbcTemplate.queryForMap(sql, id);
-        Movie movie = new Movie();
+        Movie movie                = new Movie();
         movie.setUserId((int) result.get("user_id"));
-        Optional<Movie> movieOpt = Optional.ofNullable(movie);
+        Optional<Movie> movieOpt   = Optional.ofNullable(movie);
         return movieOpt;
     }
 }

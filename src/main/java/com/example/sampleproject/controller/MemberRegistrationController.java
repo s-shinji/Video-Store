@@ -17,6 +17,8 @@ public class MemberRegistrationController {
 
 	@Autowired
 	private RegisterMemberService registMemberService;
+	@Autowired
+	private MemberRegistrationEntity entity;
 
 	/**
 	 * 会員情報入力画面に遷移する。
@@ -43,7 +45,7 @@ public class MemberRegistrationController {
 		}
 
 		//USERテーブルにinsertする時の引数。
-		MemberRegistrationEntity entity = new MemberRegistrationEntity();
+		// MemberRegistrationEntity entity = new MemberRegistrationEntity();
 
 		entity.setName(memberRegistrationForm.getName());
 		entity.setEmail(memberRegistrationForm.getEmail());

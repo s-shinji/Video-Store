@@ -14,9 +14,9 @@
   <div th:replace="~{block/head::headA}"></div>
   <div th:replace="~{block/header::headerA}"></div>
 
-  <div th:if="${listSize} == 0" th:text="指定の動画は見つかりませんでした" class="noMovie"></div>
+  <div th:if="${searchResultListSize} == 0" th:text="指定の動画は見つかりませんでした" class="noMovie"></div>
   <div class="images">
-    <div th:each= "movie :${list3}" class="image">
+    <div th:each= "movie :${searchResultList}" class="image">
       <div>
         <a href="" th:href="@{/video/{id}(id=${movie.get(1)})}" class="movieLink">
           <!-- <video th:src="${movie.get(0)}" height="150px" width="300px" class="movieIndex" muted></video> -->

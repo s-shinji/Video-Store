@@ -8,7 +8,7 @@ import com.example.sampleproject.entity.Movie;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface UserDetailMapper {
+public interface ProfileMapper {
 	public Optional<Movie> findPopularMovie(int user_id);
 
 	public Optional<MemberRegistrationEntity> findUserNameById(int user_id);

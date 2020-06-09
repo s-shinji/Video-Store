@@ -13,10 +13,10 @@
 
   <div id="loopSlide">
     <ul class="jsMovie1">
-      <li th:each="viewList :${viewsList3}" class="indexLoop jsMovie1">
-         <a href="" th:href="@{/video/{id}(id=${viewList.get(1)})}" class="loopLink">
-          <!-- <video th:src="${viewList.get(0)}" height="225px" width="400px" ></video> -->
-          <img th:src="${viewList.get(3)}" height="225px" width="400px" >
+      <li th:each="views :${top5Views}" class="indexLoop jsMovie1">
+         <a href="" th:href="@{/video/{id}(id=${views.get(1)})}" class="loopLink">
+          <!-- <video th:src="${views.get(0)}" height="225px" width="400px" ></video> -->
+          <img th:src="${views.get(3)}" height="225px" width="400px" >
         </a>
       </li>
     </ul>
@@ -24,7 +24,7 @@
 
 
   <div class="images">
-    <div th:each= "movie, movieListStat:${movieList3}" class="image">
+    <div th:each= "movie, movieListStat:${movieList}" class="image">
       <!-- 動画はmovieのインデックス0に入っている -->
       <!-- <video th:src="${movie.get(0)}" height="150px" width="300px" controls></video> -->
       <div>
@@ -74,8 +74,8 @@
   $(document).ready(function(){
      $(".jsMovie2").mouseover(function() {
       var id = $(this).attr('id');
-      console.log(/*[[${movieList3.get(`${id}`).get(0)}]]*/);
-      $(`#videoSrc_${id}`).attr('src',/*[[${movieList3.get(`${id}`).get(0)}]]*/);
+      console.log(/*[[${movieList.get(`${id}`).get(0)}]]*/);
+      $(`#videoSrc_${id}`).attr('src',/*[[${movieList.get(`${id}`).get(0)}]]*/);
       $(`#videoSrc_${id}`).css('display','flex');
       $(`#imgSrc_${id}`).css('display','none');
      }).mouseleave(function() {

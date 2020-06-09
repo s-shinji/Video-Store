@@ -2,7 +2,7 @@ package com.example.sampleproject.form;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class UserDetailForm {
+public class ProfileForm {
 	private MultipartFile avatar;
 
 	public MultipartFile getAvatar() {

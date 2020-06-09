@@ -34,7 +34,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -43,12 +42,16 @@ public class SampleController {
     private final MovieService movieService;
     private final ImageService imageService;
     private final ReviewService reviewService;
+    private Movie movie;
+    private Image image;
 
     @Autowired
-    public SampleController(MovieService movieService, ImageService imageService, ReviewService reviewService){
+    public SampleController(MovieService movieService, ImageService imageService, ReviewService reviewService, Movie movie, Image image){
         this.movieService  = movieService;
         this.imageService  = imageService;
         this.reviewService = reviewService;
+        this.movie         = movie;
+        this.image         = image;
     }
 
 
@@ -68,11 +71,12 @@ public class SampleController {
 
     @RequestMapping("/upload")
     public String upload(Model model) {
+        //ログインユーザーを取得
+        int loginUserId = 0;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if(authentication.getPrincipal() instanceof DbUserDetails){
-            int userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-
-	    	model.addAttribute("loginUser", userId);
+            loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+	    	model.addAttribute("loginUser", loginUserId);
 	    }else{
 	    	model.addAttribute("loginUser", "");
         }	
@@ -81,64 +85,64 @@ public class SampleController {
     }
 
     @GetMapping("/index")
-    public String index(Model model, RedirectAttributes redirectAttributes){
-        List<Movie> list   = movieService.getAll();
-        List<Object> list3 = new ArrayList<>();
-        for(int i = 0; i < list.size(); i++) {
+    public String index(Model model){
+        List<Movie> movieGetAllLists    = movieService.getAll();
+        List<Object> ConvertedMovieList = new ArrayList<>();
+        for(Movie movieGetAllList : movieGetAllLists) {
             StringBuffer data = new StringBuffer();
-            String base64     = Base64.getEncoder().encodeToString(list.get(i).getMovie());
+            String base64     = Base64.getEncoder().encodeToString(movieGetAllList.getMovie());
             //mp4にしか対応していない
             data.append("data:video/mp4;base64,");
             data.append(base64);
 
-            //Object型のリストを作成し必要な要素のみをlistから取り出し詰め替える
-            List<Object> list2 = new ArrayList<>();
-            list2.add(list.get(i).getMovie());
-            list2.add(list.get(i).getId());
-            list2.add(list.get(i).getUserId());
-            list2.add(list.get(i).getUser().getName());
-            list2.add(list.get(i).getViews());
-            list2.add(list.get(i).getTitle());
-            list2.add(list.get(i).getUser().getAvatar());
-            list2.add(list.get(i).getImage().getImage());
+            //Object型のリストを作成し必要な要素のみをmovieGetAllListから取り出し詰め替える
+            List<Object> refillableList = new ArrayList<>();
+            refillableList.add(movieGetAllList.getMovie());
+            refillableList.add(movieGetAllList.getId());
+            refillableList.add(movieGetAllList.getUserId());
+            refillableList.add(movieGetAllList.getUser().getName());
+            refillableList.add(movieGetAllList.getViews());
+            refillableList.add(movieGetAllList.getTitle());
+            refillableList.add(movieGetAllList.getUser().getAvatar());
+            refillableList.add(movieGetAllList.getImage().getImage());
             
             //0にはString化される前のmovieが入っているため、それをString化したものに差し替える
-            list2.set(0,data.toString());
-            list3.add(list2);
+            refillableList.set(0,data.toString());
+            ConvertedMovieList.add(refillableList);
         }
-        model.addAttribute("movieList3", list3);
+        model.addAttribute("movieList", ConvertedMovieList);
 
         // listを再生回数順に並び替える
-        List<Movie> viewsList = new ArrayList<>(list);
+        List<Movie> viewsList = new ArrayList<>(movieGetAllLists);
         Collections.sort(viewsList,new Comparator<Movie>() {
             public int compare(Movie obj1, Movie obj2)
-            {
+            {   //降順
                 return ((Integer)obj2.getViews()).compareTo((Integer)obj1.getViews());
             }
         });
         //再生回数の上位5つを取り出す
-        List<Object> viewsList3 = new ArrayList<>();
+        List<Object> top5Views = new ArrayList<>();
         for(int j = 0; j < 5; j++) {
             StringBuffer data = new StringBuffer();
             String base64_2   = Base64.getEncoder().encodeToString(viewsList.get(j).getMovie());
             data.append("data:video/mp4;base64,");
             data.append(base64_2);
 
-            List<Object> viewsList2 = new ArrayList<>();
-            viewsList2.add(data.toString());
-            viewsList2.add(viewsList.get(j).getId());
-            viewsList2.add(viewsList.get(j).getTitle());
-            viewsList2.add(viewsList.get(j).getImage().getImage());
-            viewsList3.add(viewsList2);
+            List<Object> refillableList2 = new ArrayList<>();
+            refillableList2.add(data.toString());
+            refillableList2.add(viewsList.get(j).getId());
+            refillableList2.add(viewsList.get(j).getTitle());
+            refillableList2.add(viewsList.get(j).getImage().getImage());
+            top5Views.add(refillableList2);
         }
-        model.addAttribute("viewsList3", viewsList3);
+        model.addAttribute("top5Views", top5Views);
 
         //index.htmlでユーザー情報を取得したい場合に用いる(現在ログイン中のユーザー情報を取得)
+        int loginUserId = 0;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if(authentication.getPrincipal() instanceof DbUserDetails){
-            int userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-
-	    	model.addAttribute("loginUser", userId);
+            loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+	    	model.addAttribute("loginUser", loginUserId);
 	    }else{
 	    	model.addAttribute("loginUser", "");
         }	
@@ -146,8 +150,9 @@ public class SampleController {
     }
 
     @GetMapping("/video/{id}")
-    public String video(Movie movie,@PathVariable int id, Model model) {
-        Optional<Movie> movieOpt = movieService.getMovie(id);
+    public String video(@PathVariable("id") int movieId, Model model) {
+        //movieIdに紐づく動画を取得
+        Optional<Movie> movieOpt = movieService.getMovie(movieId);
         if(movieOpt.isPresent()) {
            movie = movieOpt.get();
         }
@@ -157,28 +162,28 @@ public class SampleController {
         data.append(base64_3);
         model.addAttribute("convert", data.toString());
         model.addAttribute("movie", movie);
-
+        //ログインユーザーを取得
+        int loginUserId               = 0;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if(authentication.getPrincipal() instanceof DbUserDetails){
-            int userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-
-            model.addAttribute("loginUser", userId);
+            loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+            model.addAttribute("loginUser", loginUserId);
 
             //ユーザーがログイン状態且つ動画投稿者じゃない場合に再生回数を+1
-            if(movie.getUserId() == userId) {
+            if(movie.getUserId() == loginUserId) {
             } else {
                 //再生回数を+1
                 int views = movie.getViews();
-                views += 1; 
-                movieService.updateViews(views, id);
+                views    += 1; 
+                movieService.updateViews(views, movieId);
                 
             }
 
             //既にReview済みの動画かどうかを判断するための処理
             String matchReview = "";
-            if(reviewService.findMatchUserId(id,userId) == null) {
+            if(reviewService.findMatchUserId(movieId,loginUserId) == null) {
             } else {
-                matchReview = reviewService.findMatchUserId(id,userId);
+                matchReview = reviewService.findMatchUserId(movieId,loginUserId);
             }
             model.addAttribute("matchReview", matchReview);
 
@@ -186,23 +191,24 @@ public class SampleController {
             //ユーザーがログインしていない場合
             //再生回数を+1
             int views = movie.getViews();
-            views += 1; 
-            movieService.updateViews(views, id);
+            views    += 1; 
+            movieService.updateViews(views, movieId);
 
 	    	model.addAttribute("loginUser", "");
         }
 
-        List<Review> review           = reviewService.findReviewById(id);
+        //Review情報を取得
+        List<Review> reviewLists      = reviewService.findReviewById(movieId);
         Map<String,Integer> reviewMap = new HashMap<String, Integer>();
         reviewMap.put("good", 0);
         reviewMap.put("normal", 0);
         reviewMap.put("bad", 0);
-        for(int i = 0; i < review.size(); i++) {
-            if("good".equals(review.get(i).getReview())) {
+        for(Review reviewList : reviewLists) {
+            if("good".equals(reviewList.getReview())) {
                 reviewMap.put("good", reviewMap.get("good") + 1 );
-            } else if("normal".equals(review.get(i).getReview())) {
+            } else if("normal".equals(reviewList.getReview())) {
                 reviewMap.put("normal", reviewMap.get("normal") + 1 );
-            } else if("bad".equals(review.get(i).getReview())) {
+            } else if("bad".equals(reviewList.getReview())) {
                 reviewMap.put("bad", reviewMap.get("bad") + 1 );
             }
         }
@@ -219,7 +225,7 @@ public class SampleController {
             return "upload";
         }
 
-        Movie movie = new Movie();
+        // Movie movie = new Movie();
         // 動画投稿の処理
         MultipartFile uploadFile = movieForm.getMovie();
         if (uploadFile.isEmpty()) {
@@ -228,19 +234,23 @@ public class SampleController {
         }
         movie.setMovie(movieForm.getMovie().getBytes());
         movie.setCreated(LocalDateTime.now());
+        int loginUserId               = 0;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication.getPrincipal() instanceof DbUserDetails){
-            int userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-            movie.setUserId(userId);
+            loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+            movie.setUserId(loginUserId);
         }
+        //再生回数を0で設定
         movie.setViews(0);
         movie.setTitle(movieForm.getTitle());
 
-        int lastId = movieService.save(movie);
+        //movieテーブルに登録し、その際のmovie.idを戻り値として取得している
+        int lastMovieId = movieService.save(movie);
         //ここからImage
-        Image image = new Image();
-        image.setMovie_id(lastId);
+        // Image image = new Image();
+        image.setMovie_id(lastMovieId);
 
+        //サムネイル画像が投稿されているかどうかで処理を分岐
         if(movieForm.getThumbnail().isEmpty()) {
             image.setImage("/images/noImage.jpg");
         } else {
@@ -253,37 +263,34 @@ public class SampleController {
 
         imageService.save(image);
 
-
         return "redirect:/index";
     }
 
     @PostMapping("/delete")
     public String delete (
-        //hiddenのname属性をキーとしてvalueを受け取り変数idに格納している
-        @RequestParam("movieId") int id,
+        //hiddenのname属性をキーとしてvalueを受け取り変数movieIdに格納している
+        @RequestParam("movieId") int movieId,
         Model model) {
 
         //hiddenで送られてきたmovie.idをもとに投稿者のuser_idを取得する
-        Optional<Movie> movieOpt = movieService.getUserIdByMovieId(id);
-        Movie movie              = new Movie();
+        Optional<Movie> movieOpt = movieService.getUserIdByMovieId(movieId);
         if(movieOpt.isPresent()) {
             movie = movieOpt.get();
         }
         //ログインユーザー（つまり、削除ボタンを押したユーザー）を取得する
-        int userId = 0;
+        int loginUserId = 0;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication.getPrincipal() instanceof DbUserDetails){
-            userId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+            loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
         }
 
-        if(movie.getUserId() != userId) {
+        if(movie.getUserId() != loginUserId) {
             model.addAttribute("error1", "エラー：ログイン中のユーザーと動画の投稿者が一致しませんでした。");
             return "errorMessage";
         }
 
-
         //動画を一件削除しリダイレクト
-        movieService.deleteById(id);
+        movieService.deleteById(movieId);
         return "redirect:/index";
     } 
 
@@ -292,33 +299,32 @@ public class SampleController {
         if("".equals(searchForm.getSearchWord())) {
             return "index";
         } else {
-            List<Movie> list   = movieService.findBySearchWordLike("%" + searchForm.getSearchWord() + "%");
-            List<Object> list3 = new ArrayList<>();
-            for(int i = 0; i < list.size(); i++) {
-    
+            List<Movie> searchResultsLists         = movieService.findBySearchWordLike("%" + searchForm.getSearchWord() + "%");
+            List<Object> convertedSearchResultList = new ArrayList<>();
+            for(Movie searchResultList : searchResultsLists) {
                 StringBuffer data = new StringBuffer();
-                String base64     = Base64.getEncoder().encodeToString(list.get(i).getMovie());
+                String base64     = Base64.getEncoder().encodeToString(searchResultList.getMovie());
                 //mp4にしか対応していない
                 data.append("data:video/mp4;base64,");
                 data.append(base64);
     
                 //Object型のリストを作成し必要な要素のみをlistから取り出し詰め替える
-                List<Object> list2 = new ArrayList<>();
-                list2.add(list.get(i).getMovie());
-                list2.add(list.get(i).getId());
-                list2.add(list.get(i).getUser().getName());
-                list2.add(list.get(i).getViews());
-                list2.add(list.get(i).getTitle());
-                list2.add(list.get(i).getUserId());
-                list2.add(list.get(i).getUser().getAvatar());
-                list2.add(list.get(i).getImage().getImage());
+                List<Object> refillableList = new ArrayList<>();
+                refillableList.add(searchResultList.getMovie());
+                refillableList.add(searchResultList.getId());
+                refillableList.add(searchResultList.getUser().getName());
+                refillableList.add(searchResultList.getViews());
+                refillableList.add(searchResultList.getTitle());
+                refillableList.add(searchResultList.getUserId());
+                refillableList.add(searchResultList.getUser().getAvatar());
+                refillableList.add(searchResultList.getImage().getImage());
                 
                 //0にはString化される前のmovieが入っているため、それをString化したものに差し替える
-                list2.set(0,data.toString());
-                list3.add(list2);
+                refillableList.set(0,data.toString());
+                convertedSearchResultList.add(refillableList);
             }
-            model.addAttribute("list3", list3);
-            model.addAttribute("listSize", list3.size());
+            model.addAttribute("searchResultList", convertedSearchResultList);
+            model.addAttribute("searchResultListSize", convertedSearchResultList.size());
         }
         return "search";
     }

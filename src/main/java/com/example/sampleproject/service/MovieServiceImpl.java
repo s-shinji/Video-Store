@@ -32,11 +32,6 @@ public class MovieServiceImpl implements MovieService {
 		return dao.getAll();
 	}
 
-	// @Override
-	// public List<Movie> getAll2() {
-	// 	return dao.getAll2();
-	// }
-
 	@Override
 	public void deleteById(int id) {
 		// Movieを削除、idがなければ例外発生
@@ -76,9 +71,5 @@ public class MovieServiceImpl implements MovieService {
 		}
 	}
 
-	// @Override
-	// public Movie findReviewById(int id) {
-	// 	return dao.findReviewById(id);
-	// }
 	
 }
