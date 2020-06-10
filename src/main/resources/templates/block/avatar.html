@@ -17,6 +17,12 @@
   <label for="upAvatar" class="upAvatarBox">
     <img src="" th:src="${userName.avatar}" alt="" class="upAvatar" height="200px" width="200px">
   </label>
+  <!-- <a href="#" class="followBtn"> フォローする </a> -->
+  <div class="followBox">
+    <button class="followBtn" th:if="${isFollowed == false}"> フォローする </button>
+    <!-- <a href="#" class="followedBtn"> フォローを外す </a> -->
+    <button class="followedBtn" th:if="${isFollowed == true}"> フォロー中 </button>
+  </div>
 </div>
 
 
@@ -38,3 +44,4 @@
     <img src="" th:src="${userName.avatar}" alt="" class="upAvatar" height="200px" width="200px">
   </label>
 </div>
+

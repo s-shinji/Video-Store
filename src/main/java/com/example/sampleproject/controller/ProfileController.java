@@ -8,6 +8,7 @@ import com.example.sampleproject.entity.DbUserDetails;
 import com.example.sampleproject.entity.MemberRegistrationEntity;
 import com.example.sampleproject.entity.Movie;
 import com.example.sampleproject.form.ProfileForm;
+import com.example.sampleproject.service.FollowService;
 import com.example.sampleproject.service.ProfileService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/user")
 public class ProfileController {
 	private final ProfileService profileService;
+	private final FollowService  followService;
 
 	@Autowired
-	public ProfileController(ProfileService profileService) {
+	public ProfileController(ProfileService profileService, FollowService  followService) {
 		this.profileService = profileService;
+		this.followService  = followService;
 	}
 	
 	// @ModelAttribute
@@ -73,6 +76,16 @@ public class ProfileController {
 			model.addAttribute("userName", userName);
 
 		}
+
+		//フォローしているかどうかで条件分岐する(フォローを探すメソッドを作成しそれが空か否かでtrue or falseを選択する)
+		if(followService.checkFollow(userId, loginUserId) == 0) {
+			model.addAttribute("isFollowed", false);
+		} else {
+			model.addAttribute("isFollowed", true);
+		}
+		//フォローの際に使用するためユーザーIDを渡しておく
+		model.addAttribute("userId", userId);
+
 		return "user";
 	}
 

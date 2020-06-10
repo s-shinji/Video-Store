@@ -31,3 +31,16 @@
   font-weight: bold;
   font-size: 20px;
 }
+
+.followBtn {
+  border-radius: 5px;
+}
+.followedBtn {
+  border: 2px solid #0066FF;
+  background-color: #0066FF;
+  color: white;
+  border-radius: 5px;
+}
+.followBox {
+  text-align: end;
+}

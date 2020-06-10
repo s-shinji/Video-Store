@@ -6,7 +6,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 public class DbUserDetails extends User {
-	//DBから取得したユーザ情報。
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
+	// DBから取得したユーザ情報。
 	private final Account account;
 
 	public DbUserDetails(Account account,
