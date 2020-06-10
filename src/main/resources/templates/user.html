@@ -12,7 +12,7 @@
     <meta charset="utf-8">
     <title>User</title>
 </head>
-<body>
+<body class="mainBackground">
   <div th:replace="~{block/head::headA}"></div>
   <div th:replace="~{block/header::headerA}"></div>
   <!-- ユーザーが存在し且つ動画も存在する場合 -->
@@ -45,7 +45,72 @@
   <div th:if="${userName == null}">
     <div th:text="指定のユーザーは見つかりませんでした" class="noUser"></div>
   </div>
+  <!-- Bootstrap用の軽量版 -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <!-- 通常版 -->
+  <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
   <script type="text/javascript" th:src="@{/js/hover.js}"></script>
+  <!-- フォローする処理 -->
+  <script type="text/javascript" th:inline="javascript">
+    $(function() {
+      $(".followBox").on('click','.followBtn', function() {
+        console.log("成功")
+
+        var url = /*[[@{/follow/{id}(id=${userId})}]]*/
+        $.ajax({
+          type    : "POST",
+          url     : url,
+          dataType: "json",
+          success : function() {
+                      success1();
+                    },
+          error   : function() {
+                      error1();
+                    }
+        });
+      });
+    });
+    function success1() {
+      console.log("成功2")
+      $(".followBox").html(
+        `<button class="followedBtn"> フォロー中 </button>`
+      );
+
+
+    }
+    function error1() {
+      alert("エラー：ユーザーが不正です");
+    }
+  </script>
+
+  <!-- フォローを外す処理 -->
+  <script type="text/javascript" th:inline="javascript">
+    $(function() {
+      $(".followBox").on('click','.followedBtn', function() {
+        console.log("成功3")
+        var url = /*[[@{/followed/{id}(id=${userId})}]]*/
+        $.ajax({
+          type    : "POST",
+          url     : url,
+          dataType: "json",
+          success : function() {
+                      success2();
+                    },
+          error   : function() {
+                      error2();
+                    }
+        });
+      });
+    });
+    function success2() {
+      $(".followBox").html(
+        `<button class="followBtn"> フォローする </button>`
+      );
+    }
+    function error2() {
+      alert("エラー：ユーザーが不正です");
+    }
+  </script>
+  
 </body>
 </html>
