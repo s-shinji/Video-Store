@@ -31,7 +31,7 @@
     </association>
   </resultMap>
 
-
+<!-- なぜparameterTypeを書いていないのに取得できている？ -->
   <select id="findUserNameById" resultType="com.example.sampleproject.entity.MemberRegistrationEntity">
     SELECT
         id,
@@ -49,5 +49,28 @@
     WHERE
         id = #{id}
   </update>
+
+  
+  <select id="findFollowingUserInfo" parameterType="int" resultType="com.example.sampleproject.entity.MemberRegistrationEntity">
+    SELECT
+        id,
+        name,
+        avatar
+    FROM
+        users
+    WHERE
+        id = #{follower_id}
+  </select>
+
+  <select id="findFollowerUserInfo" parameterType="int" resultType="com.example.sampleproject.entity.MemberRegistrationEntity">
+    SELECT
+        id,
+        name,
+        avatar
+    FROM
+        users
+    WHERE
+        id = #{followee_id}
+  </select>
 
 </mapper>

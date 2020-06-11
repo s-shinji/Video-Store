@@ -1,0 +1,26 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="following" class="modalBackground" id="followingModal">
+  <div class="modal">
+    <div class="followUserBox" th:each="followingUser : ${followingUserInfoList}">
+      <a th:href="@{/user/{id}(id=${followingUser.id})}" class="followEach">
+        <img th:src="${followingUser.avatar}" class="followAvatar">
+        <span th:text="${followingUser.name}" class="followName"></span>
+      </a>
+    </div>
+    <i class="fas fa-times closeModal"></i>
+  </div>
+</div>
+
+<div th:fragment="follower" class="modalBackground" id="followerModal">
+  <div class="modal">
+    <div class="followUserBox" th:each="followerUser : ${followerUserInfoList}">
+      <a th:href="@{/user/{id}(id=${followerUser.id})}" class="followEach">
+        <img th:src="${followerUser.avatar}" class="followAvatar">
+        <span th:text="${followerUser.name}" class="followName"></span>
+      </a>
+    </div>
+
+    <i class="fas fa-times closeModal"></i>
+  </div>
+</div>

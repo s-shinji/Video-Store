@@ -1,6 +1,8 @@
 package com.example.sampleproject.form;
 
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import com.example.sampleproject.validation.FindEmail;
 import com.example.sampleproject.validation.FindName;
 
@@ -9,6 +11,7 @@ import com.example.sampleproject.validation.FindName;
  */
 public class MemberRegistrationForm {
 	@FindName
+	@Size(min = 1, max = 15,message = "15字以内で指定してください") 
 	private String name;
 	
 	@FindEmail

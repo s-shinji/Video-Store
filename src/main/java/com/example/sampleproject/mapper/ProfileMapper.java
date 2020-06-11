@@ -14,4 +14,9 @@ public interface ProfileMapper {
 	public Optional<MemberRegistrationEntity> findUserNameById(int user_id);
 
 	public int avatarUpdate(String avatar, int id);
+
+	public MemberRegistrationEntity findFollowingUserInfo(int follower_id);
+
+	public MemberRegistrationEntity findFollowerUserInfo(int followee_id);
+
 }

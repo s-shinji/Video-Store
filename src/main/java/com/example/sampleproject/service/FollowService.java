@@ -1,5 +1,7 @@
 package com.example.sampleproject.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import com.example.sampleproject.mapper.FollowMapper;
@@ -24,5 +26,13 @@ public class FollowService {
 
 	public int checkFollow(int followee_id, int follower_id) {
 		return followMapper.checkFollow(followee_id, follower_id);
+	}
+
+	public List<Integer> findFollowingById(int follower_id) {
+		return followMapper.findFollowingById(follower_id);
+	}
+
+	public List<Integer> findFollowerById(int followee_id) {
+		return followMapper.findFollowerById(followee_id);
 	}
 }

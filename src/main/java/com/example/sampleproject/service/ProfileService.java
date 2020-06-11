@@ -27,6 +27,15 @@ public class ProfileService {
 			throw new MovieNotFoundException("更新するユーザーが見つかりません");
 		}
 	};
+
+	public MemberRegistrationEntity findFollowingUserInfo(int follower_id) {
+		return profileMapper.findFollowingUserInfo(follower_id);
+	}
+
+	public MemberRegistrationEntity findFollowerUserInfo(int followee_id) {
+		return profileMapper.findFollowerUserInfo(followee_id);
+	}
+
 	
 }
 
