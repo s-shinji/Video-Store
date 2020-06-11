@@ -11,4 +11,6 @@ public interface RegisterMemberMapper {
 
 	public MemberRegistrationEntity findByEmail(String email);
 
+	public MemberRegistrationEntity findByName(String name);
+
 }
