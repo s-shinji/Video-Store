@@ -33,4 +33,8 @@ public class RegisterMemberService {
 		return registerMemberMapper.findByEmail(email);
 	}
 
+	public MemberRegistrationEntity findByName(String name) {
+		return registerMemberMapper.findByName(name);
+	}
+
 }
