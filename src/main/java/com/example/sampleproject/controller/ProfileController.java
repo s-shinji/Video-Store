@@ -1,7 +1,9 @@
 package com.example.sampleproject.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 
 import com.example.sampleproject.entity.DbUserDetails;
@@ -86,6 +88,28 @@ public class ProfileController {
 		//フォローの際に使用するためユーザーIDを渡しておく
 		model.addAttribute("userId", userId);
 
+		//自分がフォローしているユーザーが存在するかを確認し、その情報を取得する
+		if(followService.findFollowingById(userId).size() == 0) {
+		} else {
+			List<Integer> followingUserIdList  = followService.findFollowingById(userId);
+			List<MemberRegistrationEntity> followingUserInfoList = new ArrayList<>();
+			for(int followingUserId : followingUserIdList) {
+				followingUserInfoList.add(profileService.findFollowingUserInfo(followingUserId));
+			}
+			model.addAttribute("followingUserInfoList", followingUserInfoList);
+		}
+
+		//自分がフォローされているユーザーが存在するかを確認し、その情報を取得する
+		if(followService.findFollowerById(userId).size() == 0) {
+		} else {
+			List<Integer> followerUserIdList  = followService.findFollowerById(userId);
+			List<MemberRegistrationEntity> followerUserInfoList = new ArrayList<>();
+			for(int followerUserId : followerUserIdList) {
+				followerUserInfoList.add(profileService.findFollowerUserInfo(followerUserId));
+			}
+			model.addAttribute("followerUserInfoList", followerUserInfoList);
+		}
+ 
 		return "user";
 	}
 

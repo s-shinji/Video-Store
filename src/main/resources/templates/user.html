@@ -3,6 +3,7 @@
 <!-- Bootstrap core CSS -->
 <link href="/docs/4.5/dist/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <link href="jumbotron.css" th:href="@{/css/jumbotron.css}" rel="stylesheet">
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
 <link th:href="@{/css/application.css}" rel="stylesheet" type="text/css">
 <link th:href="@{/css/index.css}" rel="stylesheet" type="text/css">
 <link th:href="@{/css/user.css}" rel="stylesheet" type="text/css">
@@ -15,6 +16,9 @@
 <body class="mainBackground">
   <div th:replace="~{block/head::headA}"></div>
   <div th:replace="~{block/header::headerA}"></div>
+  <div th:replace="~{block/modal::following}"></div>
+  <div th:replace="~{block/modal::follower}"></div>
+
   <!-- ユーザーが存在し且つ動画も存在する場合 -->
   <div th:if="${popularMovie}" class="userBox">
     <div th:text="${complete}"></div>
@@ -22,14 +26,24 @@
 
     <!-- 自分のページかどうかで条件分岐 -->
     <div th:replace="~{block/avatar::userAvatar1}"></div>
+  
+
 
     <div th:text="${popularMovie.user.name}" class="boxParts userName"></div>
+
+    <!-- フォロー表示 -->
+    <div class="followInfoBox">
+      <div class="followInfo followingInfo">フォロー</div>
+      <div class="followInfo followerInfo">フォロワー</div>
+    </div>
+    
     <video src="" th:src="${convert}" height="280px" width="500px" controls></video>
     <div th:text="${popularMovie.title}" class="boxParts">title</div>
   </div>
 
   <!-- ユーザーは存在するが動画は存在しない場合 -->
   <div th:if="${popularMovie == null && userName != null}" class="userBox">
+  
     <div th:text="${complete}"></div>
     <div th:text="${error}" style="color:red;"></div>
 
@@ -38,6 +52,12 @@
 
     
     <div th:text="${userName.name}" class="boxParts userName"></div>
+
+    <!-- フォロー表示 -->
+    <div class="followInfoBox">
+      <div class="followInfo followingInfo">フォロー</div>
+      <div class="followInfo followerInfo">フォロワー</div>
+    </div>
     
   </div>
 
@@ -45,11 +65,14 @@
   <div th:if="${userName == null}">
     <div th:text="指定のユーザーは見つかりませんでした" class="noUser"></div>
   </div>
+
+
   <!-- Bootstrap用の軽量版 -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <!-- 通常版 -->
   <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
-  <script type="text/javascript" th:src="@{/js/hover.js}"></script>
+  <script type="text/javascript" th:src="@{/js/modal.js}"></script>
+  <!-- <script type="text/javascript" th:src="@{/js/hover.js}"></script> -->
   <!-- フォローする処理 -->
   <script type="text/javascript" th:inline="javascript">
     $(function() {

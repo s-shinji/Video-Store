@@ -43,7 +43,7 @@
   <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color:red;"></div>
   <div th:errors="*{passwordConfirmation}" style="color:red;"></div>
   <label for="inputName" class="sr-only">ユーザー名</label>
-  <input type="text" id="inputName" th:field="*{name}" class="mb-10 form-control" placeholder="ユーザー名" style="margin-bottom: 10px;" required autofocus>
+  <input type="text" id="inputName" th:field="*{name}" class="mb-10 form-control" placeholder="ユーザー名(15字以内)" style="margin-bottom: 10px;" required autofocus>
 
   <label for="inputEmail" class="sr-only">Email</label>
   <input type="text" id="inputEmail" th:field="*{email}" class="mb-10 form-control" placeholder="Email" style="margin-bottom: 10px;" required autofocus>

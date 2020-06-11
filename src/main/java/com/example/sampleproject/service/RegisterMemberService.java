@@ -36,5 +36,4 @@ public class RegisterMemberService {
 	public MemberRegistrationEntity findByName(String name) {
 		return registerMemberMapper.findByName(name);
 	}
-
 }

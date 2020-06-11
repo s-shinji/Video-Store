@@ -13,7 +13,7 @@
 
 .boxParts {
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 }
 
 .upAvatar {
@@ -44,3 +44,71 @@
 .followBox {
   text-align: end;
 }
+.followInfoBox {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+.followInfo {
+  cursor: pointer;
+  font-weight: bold;
+  font-style: italic;
+  text-decoration: underline;
+}
+
+/* ここからモーダル  */
+.modalBackground {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  border: gray 1px solid;
+  display: none;
+}
+
+.modal{
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  background-color: white;
+  border-radius: 10px;
+  width: 450px;
+  height: 450px;
+  overflow: scroll;
+  padding: 5px;
+}
+
+.closeModal{
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  color: rgba(128, 128, 128, 0.46);
+  cursor: pointer;
+}
+
+.followEach {
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.followAvatar {
+  height: 60px;
+  width: 60px;
+  border: 1px solid gray;
+  border-radius: 100%;
+}
+
+.followName {
+  font-size: 25px;
+  color: black;
+}
+
+/* .followUserBox { */
+  /* text-align: center; */
+/* } */
+
