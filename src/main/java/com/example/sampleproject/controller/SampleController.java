@@ -6,8 +6,10 @@ import com.example.sampleproject.entity.Image;
 import com.example.sampleproject.entity.Movie;
 import com.example.sampleproject.entity.Review;
 import com.example.sampleproject.form.SearchForm;
+import com.example.sampleproject.service.FollowService;
 import com.example.sampleproject.service.ImageService;
 import com.example.sampleproject.service.MovieService;
+import com.example.sampleproject.service.NotificationService;
 import com.example.sampleproject.service.ReviewService;
 
 import java.time.LocalDateTime;
@@ -42,16 +44,20 @@ public class SampleController {
     private final MovieService movieService;
     private final ImageService imageService;
     private final ReviewService reviewService;
+    private final FollowService followService;
+    private final NotificationService notificationService;
     private Movie movie;
     private Image image;
 
     @Autowired
-    public SampleController(MovieService movieService, ImageService imageService, ReviewService reviewService, Movie movie, Image image){
-        this.movieService  = movieService;
-        this.imageService  = imageService;
-        this.reviewService = reviewService;
-        this.movie         = movie;
-        this.image         = image;
+    public SampleController(MovieService movieService, ImageService imageService, ReviewService reviewService, FollowService followService,NotificationService notificationService, Movie movie, Image image){
+        this.movieService        = movieService;
+        this.imageService        = imageService;
+        this.reviewService       = reviewService;
+        this.followService       = followService;
+        this.notificationService = notificationService;
+        this.movie               = movie;
+        this.image               = image;
     }
 
 
@@ -146,6 +152,44 @@ public class SampleController {
 	    }else{
 	    	model.addAttribute("loginUser", "");
         }	
+
+        //フォローユーザーが新たな動画を投稿していた場合に通知する処理
+        if(loginUserId == 0) {
+        } else{
+            List<Integer> followingUserIdList  = followService.findFollowingById(loginUserId);
+            List<Movie> followingUserLatestMovieList = new ArrayList<>();
+            for(int followingUser : followingUserIdList) {
+                //フォローユーザーに動画が存在する場合
+                if(!(movieService.getFollowingUserLatestMovie(followingUser) == null)) {
+                    Movie followingUserLatestInfo = movieService.getFollowingUserLatestMovie(followingUser);
+
+                    //コードが長くなるため一度変数に格納
+                    LocalDateTime followingUserLatestCreatedOnMovieTable        = followingUserLatestInfo.getCreated();
+                    //一度もフォローユーザーの情報がnotificationに格納されていない場合はnullが返ってくるためその処理
+                    if((notificationService.getLatestCreated(followingUserLatestInfo.getUserId(), loginUserId)).isPresent()) {
+                        //コードが長くなるため一度変数に格納
+                        LocalDateTime followingUserLatestCreatedOnNotificationTable = notificationService.getLatestCreated(followingUserLatestInfo.getUserId(), loginUserId).get().getCreated();
+
+                        // 今回送られてきたmovieテーブルからの情報が以前notificationに保存されていた作成日よりも前または同じ場合処理を飛ばす（フォローユーザーの最新動画が削除された場合に起こる）
+                        //compareToメソッドで引数の日付(notificationのデータ)より後の場合は0より大きい値が帰ってくるため、それ以外の値が返ってきた時にcontinueしている
+                        if(!(followingUserLatestCreatedOnMovieTable.compareTo(followingUserLatestCreatedOnNotificationTable) > 0)) {
+                            continue;
+                        }
+                    }
+        
+
+                    //通知テーブルにおけるフォローユーザーの最新動画が更新されていない場合に更新した上でその情報をリストに追加する
+                    if(!(notificationService.searchLatestNotificationInfo(followingUserLatestInfo.getId(), followingUserLatestInfo.getUserId(), loginUserId,followingUserLatestCreatedOnMovieTable) == 1)) {
+                        followingUserLatestMovieList.add(movieService.getFollowingUserLatestMovie(followingUser));
+                    } 
+                }
+            }
+
+            if(!(followingUserLatestMovieList.size() == 0)) {
+                model.addAttribute("followingUserLatestMovieList", followingUserLatestMovieList);
+            }
+        }
+
         return "index";
     }
 
