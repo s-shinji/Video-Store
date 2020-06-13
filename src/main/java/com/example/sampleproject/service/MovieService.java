@@ -20,4 +20,6 @@ public interface MovieService {
 	List<Movie> findBySearchWordLike(String searchWord);
 
 	Optional<Movie> getUserIdByMovieId(int id);
+
+	Movie getFollowingUserLatestMovie(int followee_id);
 }

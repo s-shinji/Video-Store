@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.example.sampleproject.dao.MovieDao;
 import com.example.sampleproject.entity.Movie;
+import com.example.sampleproject.mapper.MovieMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -15,10 +16,12 @@ public class MovieServiceImpl implements MovieService {
 
 	// interface名にしておくことがポイント（こちらはメソッドが確実に保証され変更もないため）
 	private final MovieDao dao;
+	private final MovieMapper movieMapper;
 
 	@Autowired
-	public MovieServiceImpl(MovieDao dao) {
+	public MovieServiceImpl(MovieDao dao, MovieMapper movieMapper) {
 		this.dao = dao;
+		this.movieMapper = movieMapper;
 	}
 
 	@Override
@@ -71,5 +74,11 @@ public class MovieServiceImpl implements MovieService {
 		}
 	}
 
-	
+	//このメソッドはmapperで処理
+	@Override
+	public Movie getFollowingUserLatestMovie(int followee_id) {
+		return movieMapper.getFollowingUserLatestMovie(followee_id);
+			   
+	}
+
 }

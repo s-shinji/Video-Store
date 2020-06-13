@@ -64,27 +64,140 @@
 
 <footer>
   <p class="footer">&copy; 2020</p>
+  <!-- <input type="button" id="push" value="クリックするとプッシュ通知が送られます"/> -->
+</body>
+</html>
+
 </footer>
+<!-- Bootstrap用の軽量版 -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<!-- 通常版 -->
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="/docs/4.5/dist/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"integrity="sha384-1CmrxMRARb6aLqgBO7yyAxTOQE2AKb9GfXnEo760AUcUmFx3ibVJJAzGytlQcNXd" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/simplyscroll/2/jquery.simplyscroll.min.js"></script>
 <!-- <script type="text/javascript" th:src="@{/js/hover.js}"></script> -->
 <script type="text/javascript" th:src="@{/js/simplyscroll.js}"></script>
-<!-- <script th:inline="javascript">
-  $(document).ready(function(){
-     $(".jsMovie2").mouseover(function() {
-      var id = $(this).attr('id');
-      console.log(/*[[${movieList.get(`${id}`).get(0)}]]*/);
-      $(`#videoSrc_${id}`).attr('src',/*[[${movieList.get(`${id}`).get(0)}]]*/);
-      $(`#videoSrc_${id}`).css('display','flex');
-      $(`#imgSrc_${id}`).css('display','none');
-     }).mouseleave(function() {
-      var id = $(this).attr('id');
-      $(`#videoSrc_${id}`).attr('src',"")
-      $(`#videoSrc_${id}`).css('display','none');
-      $(`#imgSrc_${id}`).css('display','flex');
-     });
-  });
-</script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.12/push.min.js"></script>
+<script type="text/javascript" th:inline="javascript">
+  // model.addAttributeを使用する予定のため、htmlファイルにscriptタグ内に記述する必要あり
+$(function() {
+  var loginUser = /*[[${loginUser}]]*/;
+  if(!( loginUser == 0)) {
+
+    // if ("Notification" in window) {
+    //   var permission = Notification.permission;
+
+    //   // if (permission === "denied" || permission === "granted") {
+    //   //   return;
+    //   // }
+    //   if (permission === "denied") {
+    //     return;
+    //   } else if (permission === "granted") {
+    //     console.log("test");
+    //     return checkMovie();
+    //   }
+
+
+    //   Notification
+    //     .requestPermission()
+    //     .then(function() {
+    //       console.log("test2");
+    //       // var n = new Notification("〜さんが新しい動画を投稿しました。");
+    //       checkMovie();
+    //     });
+    // }
+    // var duration = 3000;
+
+
+  //フォローしている人たちそれぞれの最新動画情報を取得するメソッドを作成しそれを得たリストを変数に代入する
+  var followingUserList = /*[[${followingUserLatestMovieList}]]*/;
+  //リストを取り出し、一つ一つ通知出せるような仕組みを作る
+  var allUserName;
+  var allUserTitle;
+  // for(i = 0; i < followingUserList.length; i++) {
+  //   //最新動画情報(movie.idで識別？)
+  //   console.log(followingUserList[i].id);
+  //   var latestMovie = followingUserList[i].id;
+  //   //前回ログインした際の最新動画情報(取得したユーザーidを付与する？)
+  //   console.log(followingUserList[i].userId)
+  //   // var currentMovie = localStorage.getItem("previousMovie" + followingUserList[i].userId);
+  //   // console.log(currentMovie);
+  //   // if (!(latestMovie == currentMovie)) {      
+  //     Push.create(`${followingUserList[i].user.name}さんが新しい動画を投稿しました`,
+  //                               {
+  //                                 body:`動画のタイトルは「${followingUserList[i].title}」です。`,
+  //                                 timeout: 100000,
+  //                               });
+  //   // break;
+  //     // localStorage.setItem("previousMovie" + followingUserList[i].user_id, latestMovie);
+  //     console.log(`${followingUserList[i].user.name}さんが新しい動画を投稿しました`);
+  //     console.log(Push.count());
+  //   // }
+  // }
+
+  //プッシュ通知を一つにまとめて送信する
+  for(i = 0; i < followingUserList.length; i++) {
+    if(i == 0 && i == followingUserList.length - 1) {
+      allUserName  = `${followingUserList[i].user.name}`
+      allUserTitle = `「${followingUserList[i].title}」`
+    } else if(i == 0){
+      allUserName  = `${followingUserList[i].user.name}さん,`
+      allUserTitle = `「${followingUserList[i].title}」,`
+    } else if(i == followingUserList.length - 1) {
+      allUserName  += `${followingUserList[i].user.name}`
+      allUserTitle += `「${followingUserList[i].title}」`
+    } else {
+      allUserName += `${followingUserList[i].user.name}さん,`
+      allUserTitle += `「${followingUserList[i].title}」,`
+    }
+  }
+  Push.create(`${allUserName}さんが新しい動画を投稿しました`,
+                                {
+                                  body:`動画のタイトルは${allUserTitle}です。`,
+                                });
+  }
+
+});
+
+// function checkMovie() {
+//   var duration = 3000;
+//   //フォローしている人たちそれぞれの最新動画情報を取得するメソッドを作成しそれを得たリストを変数に代入する
+//   console.log(/*[[${followingUserLatestMovieList}]]*/);
+//   var followingUserList = /*[[${followingUserLatestMovieList}]]*/;
+//   //リストを取り出し、一つ一つ通知出せるような仕組みを作る
+  
+//   for(i = 0; i < followingUserList.length; i++) {
+//     //最新動画情報(movie.idで識別？)
+//     console.log(followingUserList[i].id);
+//     var latestMovie = followingUserList[i].id;
+//     //前回ログインした際の最新動画情報(取得したユーザーidを付与する？)
+//     console.log(followingUserList[i].userId)
+//     var currentMovie = localStorage.getItem("previousMovie" + followingUserList[i].userId);
+//     console.log(currentMovie);
+//     var n = new Notification(`${followingUserList[i].user.name}さんが新しい動画を投稿しました`,
+//                                 {
+//                                   body:`動画のタイトルは「${followingUserList[i].title}」です。`
+//                                 });
+
+//     if (!(latestMovie == currentMovie)) {      
+//       // displayNotification(
+//       //   `Click to see what's new in v${latestVersion}`,
+//       //   "http://concisecss.com/images/logo.png",
+//       //   "A new version of Concise is available",
+//       //   `https://github.com/ConciseCSS/concise.css/releases/v${latestVersion}`
+//       // );
+
+//       //フォローユーザーの名前を取得し「〜さんが新しい動画を投稿しました」と表示する
+//       var n = new Notification(`${followingUserList[i].user.name}さんが新しい動画を投稿しました`,
+//                                 {
+//                                   body:`動画のタイトルは「${followingUserList[i].title}」です。`
+//                                 });
+//       console.log(n);
+//       setTimeout(n.close.bind(n), duration);
+//       localStorage.setItem("previousMovie" + followingUserList[i].user_id, latestMovie);
+//     }
+//   }
+// }
+</script>
 </body>
 </html>

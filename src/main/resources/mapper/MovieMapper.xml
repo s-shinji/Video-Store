@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.sampleproject.mapper.MovieMapper">
+  <select id="getFollowingUserLatestMovie" resultMap="movieResult">
+    SELECT
+      movie.id,
+      created,
+      user_id,
+      title,
+      name
+    FROM
+      movie
+    INNER JOIN 
+      users ON movie.user_id = users.id
+    WHERE
+      user_id = #{followee_id}
+    ORDER BY
+        created desc
+    LIMIT
+        1
+  </select>
+
+  <resultMap type="com.example.sampleproject.entity.Movie" id="movieResult">
+    <id column="id" property="id"/>
+    <result column="created" property="created"/>
+    <result column="user_id" property="userId" />
+    <result column="title" property="title" />
+    <association property="user" javaType="com.example.sampleproject.entity.MemberRegistrationEntity">
+        <result column="name" property="name"/>
+    </association>
+  </resultMap>
+
+</mapper>

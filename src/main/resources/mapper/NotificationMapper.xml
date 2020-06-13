@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- <typeHandlers>
+    <typeHandler handler="org.apache.ibatis.type.LocalDateTypeHandler" />       
+    <typeHandler handler="org.apache.ibatis.type.LocalTimeTypeHandler" />       
+</typeHandlers> -->
+
+<mapper namespace="com.example.sampleproject.mapper.NotificationMapper">
+ 
+  <select id="searchLatestNotificationInfo" parameterType="int" resultType="int">
+    SELECT COUNT
+      (id)
+    FROM
+      notification
+    WHERE
+      movie_id = #{movie_id}
+      AND
+      followee_id = #{followee_id}
+      AND
+      follower_id = #{follower_id}
+  </select>
+
+  <update id="updateLatestNotificationInfo" >
+    UPDATE notification SET
+      movie_id = #{movie_id},
+      created  = #{created}
+    WHERE
+      followee_id = #{followee_id}
+      AND
+      follower_id = #{follower_id}
+  </update>
+
+  <insert id="insertLatestNotificationInfo">
+    INSERT INTO
+      notification(movie_id,followee_id,follower_id,created)
+    VALUES(
+      #{movie_id},
+      #{followee_id},
+      #{follower_id},
+      #{created}
+    )
+  </insert>
+
+  <!-- resultTypeをMovieのエンティティにしてしまうと送られてきたcreatedと同じ値になってしまう -->
+  <select id="getLatestCreated" parameterType="int" resultType="com.example.sampleproject.entity.Notification">
+    SELECT
+      created
+    FROM
+      notification
+    WHERE
+      followee_id = #{followee_id}
+      AND
+      follower_id = #{follower_id}
+  </select>
+
+  <delete id="deleteNotification" parameterType="int">
+      DELETE FROM notification
+      WHERE 
+        followee_id = #{followee_id}
+        AND
+        follower_id = #{follower_id}  
+  </delete>
+</mapper>
+
