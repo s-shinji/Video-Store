@@ -1,4 +1,4 @@
-// $(document).ready(function(){
+$(document).ready(function(){
 //   $(".movieIndex").mouseover(function() {
 //     $("#hoverChange").html(
       
@@ -16,4 +16,14 @@
 //     $(this).removeAttr("controls");
 //   });
 
-// });
+  $(".thumbnailBox").mouseover(function() {
+    var thumbnail = $(this).attr("id")
+    console.log(thumbnail)
+    $(`#${thumbnail}`).append("<i class='fab fa-youtube'></i>");
+    $(`#${thumbnail}`).css("opacity","0.8");
+  }).mouseleave(function(){
+    var thumbnail = $(this).attr("id")
+    $(".fa-youtube").remove();
+    $(`#${thumbnail}`).css("opacity","1.0");
+  });
+});

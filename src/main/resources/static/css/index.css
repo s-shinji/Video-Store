@@ -86,3 +86,17 @@ a:hover {
 .videoSrc {
   display: none;
 }
+
+.thumbnailBox {
+  position: relative;
+}
+
+.fa-youtube {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  font-size: 50px;
+  color: green;
+}
+

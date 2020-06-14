@@ -52,7 +52,6 @@ $(document).ready(function(){
     reader.readAsDataURL(file);
     reader.onload = function(e) {
         //filesが複数枚ある場合にはresultではなくe.target.resultを用いる
-        console.log(e.target.result);
         $('.upAvatarBox img').attr('src', e.target.result);
     }
 

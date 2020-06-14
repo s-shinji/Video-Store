@@ -3,6 +3,7 @@
 <!-- Bootstrap core CSS -->
 <link href="/docs/4.5/dist/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <link href="jumbotron.css" th:href="@{/css/jumbotron.css}" rel="stylesheet">
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
 <link th:href="@{/css/application.css}" rel="stylesheet" type="text/css">
 <link th:href="@{/css/index.css}" rel="stylesheet" type="text/css">
 <head><title>Index</title></head>
@@ -30,8 +31,10 @@
       <div>
         <a href="" th:href="@{/video/{id}(id=${movie.get(1)})}" class="movieLink jsMovie2" th:id="${movieListStat.index}">
           <!-- <video th:src="${movie.get(0)}" height="150px" width="300px" class="movieIndex" muted></video> -->
-          <video src="" height="150px" width="300px" class="movieIndex videoSrc" th:id="'videoSrc_' + ${movieListStat.index}" muted autoplay></video>
-          <img th:src="${movie.get(7)}" height="150px" width="300px" class="movieIndex" id="hoverChange" th:id="'imgSrc_' + ${movieListStat.index}">
+          <!-- <video src="" height="150px" width="300px" class="movieIndex videoSrc" th:id="'videoSrc_' + ${movieListStat.index}" muted autoplay></video> -->
+          <div class="thumbnailBox" th:id="'imgSrc_' + ${movieListStat.index}">
+            <img th:src="${movie.get(7)}" height="150px" width="300px" class="movieIndex" id="hoverChange" >
+          </div>
           <div th:text="${movie.get(5)}" class="movieTitle"></div>
         </a>
 
@@ -75,7 +78,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="/docs/4.5/dist/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"integrity="sha384-1CmrxMRARb6aLqgBO7yyAxTOQE2AKb9GfXnEo760AUcUmFx3ibVJJAzGytlQcNXd" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/simplyscroll/2/jquery.simplyscroll.min.js"></script>
-<!-- <script type="text/javascript" th:src="@{/js/hover.js}"></script> -->
+<script type="text/javascript" th:src="@{/js/hover.js}"></script>
 <script type="text/javascript" th:src="@{/js/simplyscroll.js}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.12/push.min.js"></script>
 <script type="text/javascript" th:inline="javascript">
