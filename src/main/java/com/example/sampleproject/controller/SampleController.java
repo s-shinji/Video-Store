@@ -4,6 +4,7 @@ import com.example.sampleproject.form.MovieForm;
 import com.example.sampleproject.entity.DbUserDetails;
 import com.example.sampleproject.entity.Image;
 import com.example.sampleproject.entity.Movie;
+import com.example.sampleproject.entity.Notification;
 import com.example.sampleproject.entity.Review;
 import com.example.sampleproject.form.SearchForm;
 import com.example.sampleproject.service.FollowService;
@@ -163,23 +164,28 @@ public class SampleController {
                 if(!(movieService.getFollowingUserLatestMovie(followingUser) == null)) {
                     Movie followingUserLatestInfo = movieService.getFollowingUserLatestMovie(followingUser);
 
-                    //コードが長くなるため一度変数に格納
-                    LocalDateTime followingUserLatestCreatedOnMovieTable        = followingUserLatestInfo.getCreated();
-                    //一度もフォローユーザーの情報がnotificationに格納されていない場合はnullが返ってくるためその処理
+                    //コードが長くなるため一度変数に格納(movieテーブルの最新情報)
+                    LocalDateTime followingUserLatestCreatedOnMovieTable = followingUserLatestInfo.getCreated();
+
+                    //一度もフォローユーザーの情報がnotificationに格納されていない場合はnullが返ってくるためその処理(以下の処理はnullじゃない場合に実行される)
                     if((notificationService.getLatestCreated(followingUserLatestInfo.getUserId(), loginUserId)).isPresent()) {
-                        //コードが長くなるため一度変数に格納
+                        //コードが長くなるため一度変数に格納(notificationテーブルの最新情報)
                         LocalDateTime followingUserLatestCreatedOnNotificationTable = notificationService.getLatestCreated(followingUserLatestInfo.getUserId(), loginUserId).get().getCreated();
 
                         // 今回送られてきたmovieテーブルからの情報が以前notificationに保存されていた作成日よりも前または同じ場合処理を飛ばす（フォローユーザーの最新動画が削除された場合に起こる）
-                        //compareToメソッドで引数の日付(notificationのデータ)より後の場合は0より大きい値が帰ってくるため、それ以外の値が返ってきた時にcontinueしている
+                        //compareToメソッドで引数の日付(notificationのデータ)より後の場合は0より大きい値が帰ってくるため、それ以外の値が返ってきた時にcontinueしている（つまり、作成日よりも前または同じ場合）
                         if(!(followingUserLatestCreatedOnMovieTable.compareTo(followingUserLatestCreatedOnNotificationTable) > 0)) {
                             continue;
                         }
                     }
-        
-
+                    //Notificationのインスタンスを作成して詰め替える（for文の中のためDIできない）
+                    Notification notification = new Notification();
+                    notification.setMovie_id(followingUserLatestInfo.getId());
+                    notification.setFollowee_id(followingUserLatestInfo.getUserId());
+                    notification.setFollower_id(loginUserId);
+                    notification.setCreated(followingUserLatestCreatedOnMovieTable);
                     //通知テーブルにおけるフォローユーザーの最新動画が更新されていない場合に更新した上でその情報をリストに追加する
-                    if(!(notificationService.searchLatestNotificationInfo(followingUserLatestInfo.getId(), followingUserLatestInfo.getUserId(), loginUserId,followingUserLatestCreatedOnMovieTable) == 1)) {
+                    if(!(notificationService.searchLatestNotificationInfo(notification) == 1)) {
                         followingUserLatestMovieList.add(movieService.getFollowingUserLatestMovie(followingUser));
                     } 
                 }

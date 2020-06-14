@@ -1,6 +1,5 @@
 package com.example.sampleproject.service;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -17,15 +16,15 @@ public class NotificationService {
 	@Autowired
 	NotificationMapper notificationMapper;
 
-	public int searchLatestNotificationInfo(int movie_id, int followee_id, int follower_id, LocalDateTime created) {
+	public int searchLatestNotificationInfo(Notification notification) {
 		//動画、フォロー、フォロワー全てが一致するものが既に存在する場合は1を返す
-		if(notificationMapper.searchLatestNotificationInfo(movie_id, followee_id, follower_id, created) == 1) {
-			return notificationMapper.searchLatestNotificationInfo(movie_id, followee_id, follower_id, created);
+		if(notificationMapper.searchLatestNotificationInfo(notification) == 1) {
+			return notificationMapper.searchLatestNotificationInfo(notification);
 		} else {
 
 			//全く情報が存在せず、updateで0が帰ってきた場合は新たに情報を追加して0を返す
-			if(notificationMapper.updateLatestNotificationInfo(movie_id, followee_id, follower_id, created) == 0) {
-				notificationMapper.insertLatestNotificationInfo(movie_id, followee_id, follower_id, created);
+			if(notificationMapper.updateLatestNotificationInfo(notification) == 0) {
+				notificationMapper.insertLatestNotificationInfo(notification);
 				return 0;
 
 			// 今回送られてきたmovieテーブルからの情報が以前notificationに保存されていた作成日よりも前の場合1を返す（フォローユーザーの最新動画が削除された場合に起こる）
