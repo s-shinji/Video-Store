@@ -121,12 +121,31 @@ public class SampleController {
 
         // listを再生回数順に並び替える
         List<Movie> viewsList = new ArrayList<>(movieGetAllLists);
-        Collections.sort(viewsList,new Comparator<Movie>() {
-            public int compare(Movie obj1, Movie obj2)
-            {   //降順
-                return ((Integer)obj2.getViews()).compareTo((Integer)obj1.getViews());
-            }
-        });
+        // Collections.sort(viewsList,new Comparator<Movie>() {
+        //     public int compare(Movie obj1, Movie obj2)
+        //     {   //降順
+        //         return ((Integer)obj2.getViews()).compareTo((Integer)obj1.getViews());
+        //     }
+        // // });
+        
+        //ラムダ式バージョン
+        // Collections.sort(viewsList,(obj1, obj2) -> {
+        //         //降順
+        //         return ((Integer)obj2.getViews()).compareTo((Integer)obj1.getViews());
+        // });
+        
+        //comparingメソッドバージョン
+        // Collections.sort(viewsList,Comparator.comparing(Movie::getViews,Comparator.reverseOrder()));
+        
+        //streamのsortedバージョン(ラムダ式)(変数に代入する)
+        // viewsList.stream()
+        //         .sorted((obj1, obj2) -> obj2.getViews().compareTo(obj1.getViews()));
+
+        //streamのsortedバージョン(comparing)(変数に代入する)
+        // viewsList.stream()
+        //         .sorted(Comparator.comparing(Movie::getViews,Comparator.reverseOrder()));
+                
+
         //再生回数の上位5つを取り出す
         List<Object> top5Views = new ArrayList<>();
         for(int j = 0; j < 5; j++) {
