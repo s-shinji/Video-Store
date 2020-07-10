@@ -52,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/").permitAll()
             .antMatchers("/top").permitAll()
             .antMatchers("/search").permitAll()
+            // .antMatchers("/getBirthStoneList").permitAll()
 			//anyRequest().authenticated()でその他の全てのページへはログインが必要にする
             .anyRequest().authenticated();
     }
