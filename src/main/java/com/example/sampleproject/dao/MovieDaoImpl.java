@@ -37,7 +37,7 @@ public class MovieDaoImpl implements MovieDao {
     @Override
     public List<Movie> getAll() {
                           //movie.idにしていないと"id"が曖昧ですというエラーが発生する（users.idが存在することによる影響？）
-        String sql = "SELECT movie.id, movie, created, user_id, views, title,"
+        String sql = "SELECT movie.id, created, user_id, views, title,"
                         + "name, avatar, image FROM movie "
                         + "INNER JOIN users ON movie.user_id = users.id "
                         + "INNER JOIN image ON movie.id = image.movie_id "
@@ -51,8 +51,6 @@ public class MovieDaoImpl implements MovieDao {
             Movie movie = new Movie();
             //Objectで受けているためキャストを用いて型変換を行う
             movie.setId     ((int) result.get("id"));
-            // movie.setMovie((String) result.get("movie"));
-            movie.setMovie  ((byte[]) result.get("movie"));
             //DBから取り出すとDateTime型からTimestamp型になる(さらにentityクラスのフィールドではLocalDateTime型であるためさらに変換)
             movie.setCreated(((Timestamp) result.get("created")).toLocalDateTime());
             //usersテーブルのid
@@ -117,7 +115,7 @@ public class MovieDaoImpl implements MovieDao {
 
     @Override
     public List<Movie> findBySearchWordLike(String searchWord) {
-        String sql = "SELECT movie.id, movie, views, title, user_id, "
+        String sql = "SELECT movie.id, views, title, user_id, "
                         + "name, avatar, image FROM movie "
                         + "INNER JOIN users ON movie.user_id = users.id "
                         + "INNER JOIN image ON movie.id = image.movie_id "
@@ -130,7 +128,6 @@ public class MovieDaoImpl implements MovieDao {
         for(Map<String, Object> result:resultList) {
             Movie movie = new Movie();
             movie.setId    ((int) result.get("id"));
-            movie.setMovie ((byte[]) result.get("movie"));
             movie.setViews ((int) result.get("views"));
             movie.setTitle ((String) result.get("title"));
             movie.setUserId((int) result.get("user_id"));

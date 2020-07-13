@@ -94,34 +94,10 @@ public class SampleController {
     @GetMapping("/index")
     public String index(Model model){
         List<Movie> movieGetAllLists    = movieService.getAll();
-        List<Object> ConvertedMovieList = new ArrayList<>();
-        for(Movie movieGetAllList : movieGetAllLists) {
-            StringBuffer data = new StringBuffer();
-            String base64     = Base64.getEncoder().encodeToString(movieGetAllList.getMovie());
-            //mp4にしか対応していない
-            data.append("data:video/mp4;base64,");
-            data.append(base64);
-
-            //Object型のリストを作成し必要な要素のみをmovieGetAllListから取り出し詰め替える
-            List<Object> refillableList = new ArrayList<>();
-            refillableList.add(movieGetAllList.getMovie());
-            refillableList.add(movieGetAllList.getId());
-            refillableList.add(movieGetAllList.getUserId());
-            refillableList.add(movieGetAllList.getUser().getName());
-            refillableList.add(movieGetAllList.getViews());
-            refillableList.add(movieGetAllList.getTitle());
-            refillableList.add(movieGetAllList.getUser().getAvatar());
-            refillableList.add(movieGetAllList.getImage().getImage());
-            
-            //0にはString化される前のmovieが入っているため、それをString化したものに差し替える
-            refillableList.set(0,data.toString());
-            ConvertedMovieList.add(refillableList);
-        }
-        model.addAttribute("movieList", ConvertedMovieList);
+        model.addAttribute("movieList", movieGetAllLists);
 
         // listを再生回数順に並び替える
-        List<Movie> viewsList = new ArrayList<>(movieGetAllLists);
-        // Collections.sort(viewsList,new Comparator<Movie>() {
+        // Collections.sort(movieGetAllLists,new Comparator<Movie>() {
         //     public int compare(Movie obj1, Movie obj2)
         //     {   //降順
         //         return ((Integer)obj2.getViews()).compareTo((Integer)obj1.getViews());
@@ -129,36 +105,29 @@ public class SampleController {
         // // });
         
         //ラムダ式バージョン
-        // Collections.sort(viewsList,(obj1, obj2) -> {
+        // Collections.sort(movieGetAllLists,(obj1, obj2) -> {
         //         //降順
         //         return ((Integer)obj2.getViews()).compareTo((Integer)obj1.getViews());
         // });
         
         //comparingメソッドバージョン
-        // Collections.sort(viewsList,Comparator.comparing(Movie::getViews,Comparator.reverseOrder()));
+        Collections.sort(movieGetAllLists,Comparator.comparing(Movie::getViews,Comparator.reverseOrder()));
         
         //streamのsortedバージョン(ラムダ式)(変数に代入する)
-        // viewsList.stream()
+        // movieGetAllLists.stream()
         //         .sorted((obj1, obj2) -> obj2.getViews().compareTo(obj1.getViews()));
 
         //streamのsortedバージョン(comparing)(変数に代入する)
-        // viewsList.stream()
+        // movieGetAllLists.stream()
         //         .sorted(Comparator.comparing(Movie::getViews,Comparator.reverseOrder()));
                 
 
         //再生回数の上位5つを取り出す
         List<Object> top5Views = new ArrayList<>();
         for(int j = 0; j < 5; j++) {
-            StringBuffer data = new StringBuffer();
-            String base64_2   = Base64.getEncoder().encodeToString(viewsList.get(j).getMovie());
-            data.append("data:video/mp4;base64,");
-            data.append(base64_2);
-
             List<Object> refillableList2 = new ArrayList<>();
-            refillableList2.add(data.toString());
-            refillableList2.add(viewsList.get(j).getId());
-            refillableList2.add(viewsList.get(j).getTitle());
-            refillableList2.add(viewsList.get(j).getImage().getImage());
+            refillableList2.add(movieGetAllLists.get(j).getId());
+            refillableList2.add(movieGetAllLists.get(j).getImage().getImage());
             top5Views.add(refillableList2);
         }
         model.addAttribute("top5Views", top5Views);
@@ -368,32 +337,9 @@ public class SampleController {
         if("".equals(searchForm.getSearchWord())) {
             return "index";
         } else {
-            List<Movie> searchResultsLists         = movieService.findBySearchWordLike("%" + searchForm.getSearchWord() + "%");
-            List<Object> convertedSearchResultList = new ArrayList<>();
-            for(Movie searchResultList : searchResultsLists) {
-                StringBuffer data = new StringBuffer();
-                String base64     = Base64.getEncoder().encodeToString(searchResultList.getMovie());
-                //mp4にしか対応していない
-                data.append("data:video/mp4;base64,");
-                data.append(base64);
-    
-                //Object型のリストを作成し必要な要素のみをlistから取り出し詰め替える
-                List<Object> refillableList = new ArrayList<>();
-                refillableList.add(searchResultList.getMovie());
-                refillableList.add(searchResultList.getId());
-                refillableList.add(searchResultList.getUser().getName());
-                refillableList.add(searchResultList.getViews());
-                refillableList.add(searchResultList.getTitle());
-                refillableList.add(searchResultList.getUserId());
-                refillableList.add(searchResultList.getUser().getAvatar());
-                refillableList.add(searchResultList.getImage().getImage());
-                
-                //0にはString化される前のmovieが入っているため、それをString化したものに差し替える
-                refillableList.set(0,data.toString());
-                convertedSearchResultList.add(refillableList);
-            }
-            model.addAttribute("searchResultList", convertedSearchResultList);
-            model.addAttribute("searchResultListSize", convertedSearchResultList.size());
+            List<Movie> searchResultsLists = movieService.findBySearchWordLike("%" + searchForm.getSearchWord() + "%");
+            model.addAttribute("searchResultList", searchResultsLists);
+            model.addAttribute("searchResultListSize", searchResultsLists.size());
         }
         return "search";
     }
