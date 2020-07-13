@@ -19,28 +19,26 @@
   <div class="images">
     <div th:each= "movie, movieStat:${searchResultList}" class="image">
       <div>
-        <a href="" th:href="@{/video/{id}(id=${movie.get(1)})}" class="movieLink">
-          <!-- <video th:src="${movie.get(0)}" height="150px" width="300px" class="movieIndex" muted></video> -->
-          <!-- <img th:src="${movie.get(7)}" height="150px" width="300px" class="movieIndex"> -->
+        <a href="" th:href="@{/video/{id}(id=${movie.getId()})}" class="movieLink">
           <div class="thumbnailBox" th:id="'imgSrc2_' + ${movieStat.index}">
-            <img th:src="${movie.get(7)}" height="150px" width="300px" class="movieIndex">
+            <img th:src="${movie.getImage().getImage()}" height="150px" width="300px" class="movieIndex">
           </div>
 
-          <div th:text="${movie.get(4)}" class="movieTitle"></div>
+          <div th:text="${movie.getTitle()}" class="movieTitle"></div>
         </a>
 
         <div class="indexInfo">
           <div>
             <!-- 動画投稿者はmovieのインデックス3に入っている -->
-            <a  class="postUserName" href="#" th:href="@{/user/{id}(id=${movie.get(5)})}" style="display: block;">
-              <img src="" alt="" th:src="${movie.get(6)}" class="upAvatar" height="50px" width="50px">
-              <span id="postUser" th:text="${movie.get(2)}">投稿者</span>
+            <a  class="postUserName" href="#" th:href="@{/user/{id}(id=${movie.getUserId()})}" style="display: block;">
+              <img src="" alt="" th:src="${movie.getUser().getAvatar()}" class="upAvatar" height="50px" width="50px">
+              <span id="postUser" th:text="${movie.getUser().getName()}">投稿者</span>
             </a>
           </div>
 
           <div>
             <label for = "views">再生回数:</label>
-            <span id="views" th:text="${movie.get(3)} + '回'">再生回数</span>
+            <span id="views" th:text="${movie.getViews()} + '回'">再生回数</span>
           </div>
         </div>
       </div>
