@@ -32,12 +32,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .loginProcessingUrl("/authenticate")
             .usernameParameter("userName")
             .passwordParameter("password")
-			.defaultSuccessUrl("/index")
+			.defaultSuccessUrl("http://localhost:3000/index")
 			.failureUrl("/login-error")
 			.permitAll();
 		
 		http.logout()
-			.logoutSuccessUrl("/login")
+			.logoutSuccessUrl("http://localhost:3000/login")
 			.permitAll();
 		
 

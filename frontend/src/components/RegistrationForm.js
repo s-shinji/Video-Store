@@ -2,8 +2,7 @@ import React from 'react';
 
 const RegistrationForm = () => {
       const style = {
-        marginBottom: "10px",
-        color: "red"
+        marginBottom: "10px"
       }
       return(
         <form className="form-signin" action="Register" method="POST">

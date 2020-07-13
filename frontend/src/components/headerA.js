@@ -6,7 +6,7 @@ const HeaderA = () => {
       return(
         <header>
           <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-            <form role="form" id="logout" action="@{/logout}" method="post" if="!${''.equals(loginUser)}">
+            <form role="form" id="logout" action="/logout" method="post" if="!${''.equals(loginUser)}">
               <button type="submit" className="navbar-brand">ログアウト</button>
             </form>   
             {/* <form role="form" id="login" action="/login" method="post" if="${''.equals(loginUser)}">
