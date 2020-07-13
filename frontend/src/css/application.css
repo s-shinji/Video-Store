@@ -1,0 +1,53 @@
+*{
+  text-decoration: none;
+}
+
+.images{
+  /* display: flex;
+  flex-wrap: wrap; */
+  margin-top: 20px;
+}
+
+.image{
+  /* 追加 */
+  display: flex;
+  flex-wrap: wrap;
+  /* ここまで */
+  /* width: 25%; */
+  text-align: center;
+  margin-top: 20px;
+}
+
+.navbar-brand{
+  background-color: #343a40;
+}
+
+.mainBackground {
+  min-height: calc(100vh - 80px);
+  height: 100%;
+  background-color: #e9ecef;
+}
+
+.home {
+  border: white 1px solid;
+}
+
+.deleteBtn {
+  display: block;
+  margin-left: 30px;
+}
+
+.postUserName{
+  color: black;
+  opacity: 0.8;
+  font-weight: bold;
+}
+
+.postUserName:hover{
+  color: black;
+  opacity: 1.0;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+
