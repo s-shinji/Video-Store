@@ -11,8 +11,8 @@ class Top extends Component {
               <Link to="/index" className="topList">一覧ページ</Link>
             </li>
             <li className="lower">
-              <a href="#" className="topList">ログイン</a>
-              <a href="#" className="topList">新規登録</a>
+              <Link to="/login" className="topList">ログイン</Link>
+              <Link to="/RegistrationForm" className="topList">新規登録</Link>
             </li>
           </ul>
         </div>     

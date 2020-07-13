@@ -5,11 +5,15 @@ import './css/bootstrap.min.css';
 import './css/application.css';
 import './css/index.css';
 import './css/top.css';
+import './css/signin.css';
+
 
 import { BrowserRouter, Route, Switch} from 'react-router-dom'
 import Top from './components/top'
 import HeaderA from './components/headerA';
 import HeaderB from './components/headerB';
+import Login from './components/login';
+import RegistrationForm from './components/RegistrationForm';
 import MovieIndex from './components/movie_index';
 import * as serviceWorker from './serviceWorker';
 
@@ -20,6 +24,9 @@ ReactDOM.render(
       <Route exact path="/" component= {Top} />
       <Route path="/index" component= {HeaderA, MovieIndex} />
       <Route path="/(index|upload|user|search|video)/" component={HeaderA} />
+      <Route path="/(login|RegistrationForm)/" component={HeaderB} />
+      <Route path="/login" component={Login} />
+      <Route path="/RegistrationForm" component={RegistrationForm} />
       {/* </Switch> */}
     </BrowserRouter>
   </React.StrictMode>,

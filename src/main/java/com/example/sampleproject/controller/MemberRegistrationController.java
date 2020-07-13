@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.sampleproject.entity.MemberRegistrationEntity;
 import com.example.sampleproject.form.MemberRegistrationForm;
@@ -32,14 +33,43 @@ public class MemberRegistrationController {
 		return "RegistrationForm";
 	}
 
+	// @RequestMapping("/Register")
+	// public String registerUser(@Validated @ModelAttribute MemberRegistrationForm memberRegistrationForm,
+	// 							BindingResult result) {
+    //     if(result.hasErrors()) {
+    //         return "RegistrationForm";
+	// 	}
+		
+	// 	if (!(memberRegistrationForm.getPasswordConfirmation().equals(memberRegistrationForm.getPassword()))) {
+	// 		result.rejectValue("passwordConfirmation",null, "パスワードが一致してません。");
+    //         return "RegistrationForm";
+	// 	}
+
+	// 	//USERテーブルにinsertする時の引数。
+	// 	// MemberRegistrationEntity entity = new MemberRegistrationEntity();
+
+	// 	entity.setName(memberRegistrationForm.getName());
+	// 	entity.setEmail(memberRegistrationForm.getEmail());
+	// 	entity.setPassword(memberRegistrationForm.getPassword());
+	// 	entity.setAvatar("/images/default.jpeg");
+
+	// 	//USERテーブルにinsertする。
+	// 	registMemberService.registerMember(entity);
+
+	// 	return "Result";
+	// }
 	@RequestMapping("/Register")
 	public String registerUser(@Validated @ModelAttribute MemberRegistrationForm memberRegistrationForm,
-								BindingResult result) {
+								BindingResult result,
+								@RequestParam("name") String name,
+								@RequestParam("email") String email, 
+								@RequestParam("password") String password,
+								@RequestParam("passwordConfirmation") String passwordConfirmation) {
         if(result.hasErrors()) {
             return "RegistrationForm";
 		}
 		
-		if (!(memberRegistrationForm.getPasswordConfirmation().equals(memberRegistrationForm.getPassword()))) {
+		if (!(passwordConfirmation.equals(password))) {
 			result.rejectValue("passwordConfirmation",null, "パスワードが一致してません。");
             return "RegistrationForm";
 		}
@@ -47,9 +77,9 @@ public class MemberRegistrationController {
 		//USERテーブルにinsertする時の引数。
 		// MemberRegistrationEntity entity = new MemberRegistrationEntity();
 
-		entity.setName(memberRegistrationForm.getName());
-		entity.setEmail(memberRegistrationForm.getEmail());
-		entity.setPassword(memberRegistrationForm.getPassword());
+		entity.setName(name);
+		entity.setEmail(email);
+		entity.setPassword(password);
 		entity.setAvatar("/images/default.jpeg");
 
 		//USERテーブルにinsertする。
@@ -57,4 +87,5 @@ public class MemberRegistrationController {
 
 		return "Result";
 	}
+
 }

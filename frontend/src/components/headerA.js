@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 
 const HeaderA = () => {
       return(
@@ -7,9 +9,12 @@ const HeaderA = () => {
             <form role="form" id="logout" action="@{/logout}" method="post" if="!${''.equals(loginUser)}">
               <button type="submit" className="navbar-brand">ログアウト</button>
             </form>   
-            <form role="form" id="login" action="@{/login}" method="post" if="${''.equals(loginUser)}">
+            {/* <form role="form" id="login" action="/login" method="post" if="${''.equals(loginUser)}">
               <button type="submit" className="navbar-brand">ログイン</button>
-            </form>
+            </form> */}
+            <Link to="/login" id="login" if="${''.equals(loginUser)}">
+              <button type="submit" className="navbar-brand">ログイン</button>
+            </Link>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>
             </button>
@@ -17,7 +22,7 @@ const HeaderA = () => {
             <div className="collapse navbar-collapse" id="navbarsExampleDefault">
               <ul className="navbar-nav mr-auto">
                 <li className="nav-item active">
-                  <a className="nav-link" href="#" href="@{/index}">ホーム <span className="sr-only">(current)</span></a>
+                  <Link to="/index"className="nav-link">ホーム <span className="sr-only">(current)</span></Link>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link" href="#" href="@{/upload}">投稿</a>

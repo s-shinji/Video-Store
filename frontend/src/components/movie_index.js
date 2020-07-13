@@ -39,8 +39,7 @@ class MovieIndex extends Component{
 
   
   renderMovie() {
-    const top5Views = _.map(this.state.top5Views, (value,key) => {
-      console.log(value)
+    const handleTop5Views = _.map(this.state.top5Views, (value,key) => {
       return(
         <React.Fragment key={`top5Views${key}`}>
           <li className="indexLoop jsMovie1">
@@ -53,7 +52,7 @@ class MovieIndex extends Component{
 
     })
 
-    const movie = _.map(this.state.movieList,(value,key) => {
+    const handleMovie = _.map(this.state.movieList,(value,key) => {
       const style={
         display: "block"
       }
@@ -88,12 +87,12 @@ class MovieIndex extends Component{
       <main role="main" className="mainBackground">
         <div id="loopSlide">
           <ul className="jsMovie1">
-            {top5Views}
+            {handleTop5Views}
           </ul>
         </div>
         <div className="images">
           <div className="image">
-            {movie}
+            {handleMovie}
           </div>
         </div>
       </main>    

@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 
 const HeaderB = () => {
       return(
@@ -7,7 +9,7 @@ const HeaderB = () => {
             <div className="collapse navbar-collapse" id="navbarsExampleDefault">
               <ul className="navbar-nav mr-auto">
                 <li className="nav-item active">
-                  <a className="nav-link home" href="#" href="@{/index}">ホーム <span className="sr-only">(current)</span></a>
+                  <Link to="/index" className="nav-link home">ホーム <span className="sr-only">(current)</span></Link>
                 </li>
               </ul>
             </div>
