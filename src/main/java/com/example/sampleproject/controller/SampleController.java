@@ -30,12 +30,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -90,9 +92,13 @@ public class SampleController {
 
         return "upload";
     }
-
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/index")
-    public String index(Model model){
+    @ResponseBody
+    public List<Object> index(Model model){
+        List<Object> allItem = new ArrayList<>();
+
+
         List<Movie> movieGetAllLists    = movieService.getAll();
         List<Object> ConvertedMovieList = new ArrayList<>();
         for(Movie movieGetAllList : movieGetAllLists) {
@@ -118,6 +124,7 @@ public class SampleController {
             ConvertedMovieList.add(refillableList);
         }
         model.addAttribute("movieList", ConvertedMovieList);
+        allItem.add(ConvertedMovieList);
 
         // listを再生回数順に並び替える
         List<Movie> viewsList = new ArrayList<>(movieGetAllLists);
@@ -162,6 +169,7 @@ public class SampleController {
             top5Views.add(refillableList2);
         }
         model.addAttribute("top5Views", top5Views);
+        allItem.add(top5Views);
 
         //index.htmlでユーザー情報を取得したい場合に用いる(現在ログイン中のユーザー情報を取得)
         int loginUserId = 0;
@@ -215,7 +223,7 @@ public class SampleController {
             }
         }
 
-        return "index";
+        return allItem;
     }
 
     @GetMapping("/video/{id}")

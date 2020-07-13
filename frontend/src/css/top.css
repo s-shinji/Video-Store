@@ -1,0 +1,49 @@
+.top {
+  min-height: 100vh;
+  height: 100%;
+  background-image: url("/images/動画サイト①.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.topPageH1 {
+  width: 330px;
+  color: white;
+  margin: 0 auto;
+  padding-top: 30px;
+  font-size: 60px;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.topPageUl {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding-top: 420px;
+}
+
+li {
+  display: flex;
+}
+
+.upper {
+  margin: 0 auto;
+}
+.lower {
+  margin-top: 50px;
+  justify-content: space-between;
+}
+
+.topList {
+  font-style: italic;
+  color: white;
+  font-size: 30px;
+  text-decoration: underline;
+}
+
+.topList:hover {
+  color: white;
+  text-decoration: underline;
+}
