@@ -101,8 +101,10 @@ public class SampleController {
 
         List<Movie> movieGetAllLists    = movieService.getAll();
         model.addAttribute("movieList", movieGetAllLists);
+        allItem.add(movieGetAllLists);
 
         // listを再生回数順に並び替える
+        List<Movie> viewList = new  ArrayList<>(movieGetAllLists);
         // Collections.sort(movieGetAllLists,new Comparator<Movie>() {
         //     public int compare(Movie obj1, Movie obj2)
         //     {   //降順
@@ -117,7 +119,7 @@ public class SampleController {
         // });
         
         //comparingメソッドバージョン
-        Collections.sort(movieGetAllLists,Comparator.comparing(Movie::getViews,Comparator.reverseOrder()));
+        Collections.sort(viewList,Comparator.comparing(Movie::getViews,Comparator.reverseOrder()));
         
         //streamのsortedバージョン(ラムダ式)(変数に代入する)
         // movieGetAllLists.stream()
@@ -132,8 +134,8 @@ public class SampleController {
         List<Object> top5Views = new ArrayList<>();
         for(int j = 0; j < 5; j++) {
             List<Object> refillableList2 = new ArrayList<>();
-            refillableList2.add(movieGetAllLists.get(j).getId());
-            refillableList2.add(movieGetAllLists.get(j).getImage().getImage());
+            refillableList2.add(viewList.get(j).getId());
+            refillableList2.add(viewList.get(j).getImage().getImage());
             top5Views.add(refillableList2);
         }
         model.addAttribute("top5Views", top5Views);
