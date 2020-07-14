@@ -6,6 +6,7 @@ import './css/application.css';
 import './css/index.css';
 import './css/top.css';
 import './css/signin.css';
+import './css/upload.css';
 
 
 import { BrowserRouter, Route, Switch} from 'react-router-dom'
@@ -15,6 +16,7 @@ import HeaderB from './components/headerB';
 import Login from './components/login';
 import RegistrationForm from './components/RegistrationForm';
 import MovieIndex from './components/movie_index';
+import Upload from './components/upload';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
@@ -27,6 +29,7 @@ ReactDOM.render(
       <Route path="/(login|RegistrationForm)/" component={HeaderB} />
       <Route path="/login" component={Login} />
       <Route path="/RegistrationForm" component={RegistrationForm} />
+      <Route path="/upload" component={Upload} />
       {/* </Switch> */}
     </BrowserRouter>
   </React.StrictMode>,

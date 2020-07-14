@@ -25,7 +25,7 @@ const HeaderA = () => {
                   <Link to="/index"className="nav-link">ホーム <span className="sr-only">(current)</span></Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#" href="@{/upload}">投稿</a>
+                  <Link to="/upload" className="nav-link">投稿</Link>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link" href="#" href="@{/user/{id}(id=${loginUser})}">マイページ</a>
