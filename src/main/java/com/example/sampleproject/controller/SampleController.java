@@ -30,11 +30,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
+// import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -79,7 +80,8 @@ public class SampleController {
     }
 
     @RequestMapping("/upload")
-    public String upload(Model model) {
+    @ResponseBody
+    public int upload(Model model) {
         //ログインユーザーを取得
         int loginUserId = 0;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -90,9 +92,9 @@ public class SampleController {
 	    	model.addAttribute("loginUser", "");
         }	
 
-        return "upload";
+        return loginUserId;
     }
-    @CrossOrigin(origins = "http://localhost:3000")
+    // @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/index")
     @ResponseBody
     public List<Object> index(Model model){
@@ -146,9 +148,11 @@ public class SampleController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if(authentication.getPrincipal() instanceof DbUserDetails){
             loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-	    	model.addAttribute("loginUser", loginUserId);
+            model.addAttribute("loginUser", loginUserId);
+            allItem.add(loginUserId);
 	    }else{
-	    	model.addAttribute("loginUser", "");
+            model.addAttribute("loginUser", "");
+            allItem.add(loginUserId);
         }	
 
         //フォローユーザーが新たな動画を投稿していた場合に通知する処理
@@ -197,7 +201,9 @@ public class SampleController {
     }
 
     @GetMapping("/video/{id}")
-    public String video(@PathVariable("id") int movieId, Model model) {
+    @ResponseBody
+    public List<Object> video(@PathVariable("id") int movieId, Model model) {
+        List<Object> detailVideoInfo = new ArrayList<>();
         //movieIdに紐づく動画を取得
         Optional<Movie> movieOpt = movieService.getMovie(movieId);
         if(movieOpt.isPresent()) {
@@ -209,13 +215,16 @@ public class SampleController {
         data.append(base64_3);
         model.addAttribute("convert", data.toString());
         model.addAttribute("movie", movie);
+        detailVideoInfo.add(data.toString());
+        detailVideoInfo.add(movie);
+
         //ログインユーザーを取得
         int loginUserId               = 0;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    if(authentication.getPrincipal() instanceof DbUserDetails){
             loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
             model.addAttribute("loginUser", loginUserId);
-
+            detailVideoInfo.add(loginUserId);
             //ユーザーがログイン状態且つ動画投稿者じゃない場合に再生回数を+1
             if(movie.getUserId() == loginUserId) {
             } else {
@@ -233,7 +242,7 @@ public class SampleController {
                 matchReview = reviewService.findMatchUserId(movieId,loginUserId);
             }
             model.addAttribute("matchReview", matchReview);
-
+            detailVideoInfo.add(matchReview);
 	    }else{
             //ユーザーがログインしていない場合
             //再生回数を+1
@@ -241,7 +250,8 @@ public class SampleController {
             views    += 1; 
             movieService.updateViews(views, movieId);
 
-	    	model.addAttribute("loginUser", "");
+            model.addAttribute("loginUser", "");
+            detailVideoInfo.add(loginUserId);
         }
 
         //Review情報を取得
@@ -260,13 +270,19 @@ public class SampleController {
             }
         }
         model.addAttribute("reviewMap", reviewMap);
-    
+        detailVideoInfo.add(reviewMap);
 
-        return "detail";
+        // return "detail";
+        return detailVideoInfo;
     }
     
     @PostMapping("/upload")
-    public String upload(@Validated MovieForm movieForm, BindingResult result, Model model ) throws Exception {
+    // @ResponseBody
+    public String upload(@Validated MovieForm movieForm, BindingResult result, Model model,
+                         @RequestParam("movie") MultipartFile movieParams,  
+                         @RequestParam("thumbnail") MultipartFile thumbnailParams,  
+                         @RequestParam("title") String titleParams) throws Exception {
+        // List<Object> createMovie = new ArrayList<>();
 
         if(result.hasErrors()) {
             return "upload";
@@ -281,7 +297,10 @@ public class SampleController {
         }
         movie.setMovie(movieForm.getMovie().getBytes());
         movie.setCreated(LocalDateTime.now());
-        int loginUserId               = 0;
+        //今だけ変更中
+        int loginUserId               = 1;
+        movie.setUserId(loginUserId);
+        // int loginUserId               = 0;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication.getPrincipal() instanceof DbUserDetails){
             loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
@@ -293,6 +312,7 @@ public class SampleController {
 
         //movieテーブルに登録し、その際のmovie.idを戻り値として取得している
         int lastMovieId = movieService.save(movie);
+        // createMovie.add(movie);
         //ここからImage
         // Image image = new Image();
         image.setMovie_id(lastMovieId);
@@ -309,8 +329,11 @@ public class SampleController {
             }
 
         imageService.save(image);
+        // createMovie.add(image);
 
-        return "redirect:/index";
+        // return "redirect:/index";
+        return "redirect:http://localhost:3000/index";
+        // return createMovie;
     }
 
     @PostMapping("/delete")
@@ -324,8 +347,12 @@ public class SampleController {
         if(movieOpt.isPresent()) {
             movie = movieOpt.get();
         }
+
+        //今だけ変更中
+        int loginUserId               = 1;
         //ログインユーザー（つまり、削除ボタンを押したユーザー）を取得する
-        int loginUserId = 0;
+        // int loginUserId = 0;
+        
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(authentication.getPrincipal() instanceof DbUserDetails){
             loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
@@ -338,19 +365,29 @@ public class SampleController {
 
         //動画を一件削除しリダイレクト
         movieService.deleteById(movieId);
-        return "redirect:/index";
+        // return "redirect:/index";
+        return "redirect:http://localhost:3000/index";
     } 
-
+    
     @PostMapping("/search")
-    public String search (SearchForm searchForm, Model model) {
+    @ResponseBody
+    //@RequestParamsで受け取れなかったため、@RequestBodyで代替
+    public List<Object> search (@RequestBody String body,SearchForm searchForm, Model model) {
+        //不要なダブルクォーテーションをエスケープする
+        body = body.replaceAll("\"", "");
+        List<Object> searchResultsListsInfo =  new ArrayList<>();
         if("".equals(searchForm.getSearchWord())) {
-            return "index";
+            // return "index";
         } else {
-            List<Movie> searchResultsLists = movieService.findBySearchWordLike("%" + searchForm.getSearchWord() + "%");
+            // List<Movie> searchResultsLists = movieService.findBySearchWordLike("%" + searchForm.getSearchWord() + "%");
+            List<Movie> searchResultsLists = movieService.findBySearchWordLike("%" + body + "%");
             model.addAttribute("searchResultList", searchResultsLists);
             model.addAttribute("searchResultListSize", searchResultsLists.size());
+            searchResultsListsInfo.add(searchResultsLists);
+            searchResultsListsInfo.add(searchResultsLists.size());
         }
-        return "search";
+        // return "search";
+        return searchResultsListsInfo;
     }
     
     

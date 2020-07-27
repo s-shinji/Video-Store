@@ -58,19 +58,19 @@ footer {
   width: 100%;
 } */
 
-.indexLoop {
+/* .indexLoop {
   list-style: none;
   border: 1px white solid;
-}
+} */
 
 #loopSlide {
   background-color: #F0FFF0;
 }
 
-.loopInfo{
+/* .loopInfo{
   font-size: 20px;
   font-weight: bold;
-}
+} */
 
 .movieLink {
   display: block;

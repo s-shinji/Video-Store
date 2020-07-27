@@ -1,0 +1,137 @@
+import React, {Component} from 'react';
+import _ from 'lodash'
+import HeaderA from './headerA';
+import Avatar from './avatar'
+// import Modals from './modals'
+import FollowingModal from './followingModal'
+import FollowerModal from './followerModal'
+import { connect } from 'react-redux';
+import { readUser } from '../actions'
+
+// import axios from 'axios'
+// import $ from 'jquery'
+
+class User extends Component{
+  constructor(props) {
+    super(props)
+    this.state = {Component: null}
+    this.selectFollowing = this.selectFollowing.bind(this)
+    this.selectFollower  = this.selectFollower.bind(this)
+    this.handleOnClick   = this.handleOnClick.bind(this)
+  }
+  componentDidMount () {
+    const id = this.props.match.params.id
+    this.props.readUser(id)
+  }
+  componentDidUpdate (prevProps) {
+    if(this.props.match.params.id != prevProps.match.params.id) {
+      const id = this.props.match.params.id
+      this.props.readUser(id)
+    }
+  }
+
+  selectFollowing = () => this.setState({Component: FollowingModal})
+  selectFollower  = () => this.setState({Component: FollowerModal})
+  handleOnClick   = () => this.setState({Component: null})
+
+  
+  renderUser() {
+    const handleUserAndMovie = (userInfo) => {
+      {/* // <!-- ユーザーが存在し且つ動画も存在する場合 --> */}
+      if(userInfo[1]){  //動画が存在する場合の条件式
+        return(
+          <div className="userBox">
+            {/* <div text="${complete}"></div> */}
+            {/* <div text="${error}" style="color:red;"></div> */}
+        
+            <Avatar value= {userInfo}/>
+
+            <div className="boxParts userName">{userInfo[3] ? userInfo[3].name : ""}</div>
+        
+            {/* <!-- フォロー表示 --> */}
+            <div className="followInfoBox">
+              <div className="followInfo followingInfo" onClick={this.selectFollowing}>フォロー</div>
+              <div className="followInfo followerInfo" onClick={this.selectFollower}>フォロワー</div>
+            </div>
+            
+            <video src={userInfo[1]} height="280px" width="500px" controls></video>
+            <div className="boxParts">{userInfo[2] ? userInfo[2].title : ""}</div>
+          </div>
+        )
+      }
+    }
+
+    const handleNotMovie = (userInfo) => {
+        {/* // <!-- ユーザーは存在するが動画は存在しない場合 --> */}
+        if(userInfo[1] === "" && userInfo[3] ? userInfo[3].name != null : "") {
+          return(
+            <div className="userBox">
+            
+              {/* <div text="${complete}"></div>
+              <div text="${error}" style="color:red;"></div> */}
+
+              <Avatar value= {userInfo}/>
+              
+              <div className="boxParts userName">{userInfo[3] ? userInfo[3].name : ""}</div>
+          
+              {/* <!-- フォロー表示 --> */}
+              <div className="followInfoBox">
+                <div className="followInfo followingInfo" onClick={this.selectFollowing}>フォロー</div>
+                <div className="followInfo followerInfo"  onClick={this.selectFollower}>フォロワー</div>
+              </div>
+              
+            </div>
+          )
+        }
+      }
+
+      const handleNotUserAndMovie = (userInfo) => {
+        {/* // <!-- ユーザーが存在しない場合 --> */}
+        if(userInfo[3] ? userInfo[3].name == null : "") {
+          return(
+            <div>
+              <div className="noUser">"指定のユーザーは見つかりませんでした"</div>
+            </div>
+            )
+        }
+      } 
+
+      const props = this.props
+      //{}は必要
+      const {Component} = this.state;
+      return (
+      <React.Fragment>
+        {Component && <Component onClick={this.handleOnClick}/>}
+        {/* // <!-- ユーザーが存在し且つ動画も存在する場合 --> */}
+        {handleUserAndMovie(props.user)}
+
+        {/* // <!-- ユーザーは存在するが動画は存在しない場合 --> */}
+        {handleNotMovie(props.user)}
+      
+        {/* // <!-- ユーザーが存在しない場合 --> */}
+        {handleNotUserAndMovie(props.user)}
+      </React.Fragment>
+       
+    )
+
+  }
+ 
+  render() {
+    const style = {
+      marginTop: "60px",
+      backgroundColor:"#e9ecef",
+      height: "92vh"
+    }
+    return (
+      <React.Fragment>
+        {/* <HeaderA value={this.state.}/> */}
+        <div style={style}>{this.renderUser()}</div>
+      </React.Fragment>
+    );
+  }
+}
+const mapStateToProps = state => ({user : state.user})
+const mapDispatchToProps = ({readUser})
+export default connect(mapStateToProps, mapDispatchToProps)(User);
+
+

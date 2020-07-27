@@ -2,6 +2,9 @@ package com.example.sampleproject.entity;
 
 import java.time.LocalDateTime;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Movie {
     private int id;
     private byte[] movie;

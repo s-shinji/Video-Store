@@ -1,9 +1,9 @@
 package com.example.sampleproject.config;
 
-import com.example.sampleproject.entity.Image;
-import com.example.sampleproject.entity.MemberRegistrationEntity;
-import com.example.sampleproject.entity.Movie;
-import com.example.sampleproject.entity.Review;
+// import com.example.sampleproject.entity.Image;
+// import com.example.sampleproject.entity.MemberRegistrationEntity;
+// import com.example.sampleproject.entity.Movie;
+// import com.example.sampleproject.entity.Review;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -33,6 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .usernameParameter("userName")
             .passwordParameter("password")
 			.defaultSuccessUrl("http://localhost:3000/index")
+			// .defaultSuccessUrl("/index")
 			.failureUrl("/login-error")
 			.permitAll();
 		
@@ -52,6 +53,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/").permitAll()
             .antMatchers("/top").permitAll()
             .antMatchers("/search").permitAll()
+            //Reactから遷移できるように追加
+            .antMatchers("/user/{id}").permitAll()
+            .antMatchers("/upload").permitAll()
+            .antMatchers("/delete").permitAll()
             // .antMatchers("/getBirthStoneList").permitAll()
 			//anyRequest().authenticated()でその他の全てのページへはログインが必要にする
             .anyRequest().authenticated();
@@ -69,23 +74,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .passwordEncoder(passwordEncoder());//.passwordEncoderはAuthenticationManagerBuilderが持つメソッドで引数のpasswordEncoder()は自分で@Beanで定義したもの
     }
 
-    @Bean
-    Movie movie () {
-        return new Movie();
-    }
+    // @Bean
+    // Movie movie () {
+    //     return new Movie();
+    // }
 
-    @Bean
-    Image image () {
-        return new Image();
-    }
+    // @Bean
+    // Image image () {
+    //     return new Image();
+    // }
 
-    @Bean
-    MemberRegistrationEntity entity () {
-        return new MemberRegistrationEntity();
-    }
+    // @Bean
+    // MemberRegistrationEntity entity () {
+    //     return new MemberRegistrationEntity();
+    // }
 
-    @Bean
-    Review review () {
-        return new Review();
-    }
+    // @Bean
+    // Review review () {
+    //     return new Review();
+    // }
 }

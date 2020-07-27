@@ -1,5 +1,8 @@
 package com.example.sampleproject.entity;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Image {
 
 	private int id;
