@@ -60,13 +60,6 @@
       <artifactId>spring-boot-starter-security</artifactId>
       <scope>compile</scope>
     </dependency>
-    <!-- 以下のdependencyはspring-securityを追加した際に手動で追加した内容 -->
-    <!-- <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-test</artifactId>
-      <scope>test</scope>
-    </dependency> -->
-    <!-- ここまで -->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -78,6 +71,21 @@
       <version>2.1.2</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>5.4.4.Final</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.9.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-redis</artifactId>
+      <scope>compile</scope>
+    </dependency>
     <!-- JPAでアソシエーションするためhibernateを追加 -->
     <dependency>
       <groupId>org.hibernate</groupId>
@@ -85,11 +93,11 @@
       <version>5.4.4.Final</version>
     </dependency>
     <!-- ajaxを用いるため追加 -->
-    <!-- <dependency>
+    <dependency>
        <groupId>com.fasterxml.jackson.core</groupId>
        <artifactId>jackson-databind</artifactId>
        <version>2.9.4</version>
-    </dependency> -->
+    </dependency>
   </dependencies>
   <build>
     <plugins>

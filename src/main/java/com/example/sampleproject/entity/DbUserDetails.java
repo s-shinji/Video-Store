@@ -17,7 +17,7 @@ public class DbUserDetails extends User {
 			Collection<GrantedAuthority> authorities) {
 		super(account.getName(), account.getPassword(),
 				true, true, true, true, authorities);
-
+		
 		this.account = account;
 	}
 
@@ -28,6 +28,7 @@ public class DbUserDetails extends User {
 	public String getPassword() {
 		return account.getPassword();
 	}
+	
 
 	public String getUsername() {
 		return account.getName();

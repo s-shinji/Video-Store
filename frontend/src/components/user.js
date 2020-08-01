@@ -124,13 +124,13 @@ class User extends Component{
     }
     return (
       <React.Fragment>
-        {/* <HeaderA value={this.state.}/> */}
+        <HeaderA />
         <div style={style}>{this.renderUser()}</div>
       </React.Fragment>
     );
   }
 }
-const mapStateToProps = state => ({user : state.user})
+const mapStateToProps = state => ({user : state.user,loginUserId : state.auth})
 const mapDispatchToProps = ({readUser})
 export default connect(mapStateToProps, mapDispatchToProps)(User);
 

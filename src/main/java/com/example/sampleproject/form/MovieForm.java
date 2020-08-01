@@ -11,8 +11,18 @@ public class MovieForm {
     @Size(min = 1, max = 50, message = "1~50字で指定してください")
     private String title;
 
+    private int loginUserId;
+
     public MovieForm() {
 
+    }
+
+    public int getLoginUserId() {
+        return loginUserId;
+    }
+
+    public void setLoginUserId(int loginUserId) {
+        this.loginUserId = loginUserId;
     }
 
     public MultipartFile getThumbnail() {

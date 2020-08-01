@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import _ from 'lodash'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import HeaderA from './headerA';
+
 
 class Search extends Component{
   constructor(props) {
@@ -93,7 +95,10 @@ class Search extends Component{
       minHeight: "95vh"
     }
     return (
-    <div className="mainBackground" style={style}>{this.renderSearch()}</div>
+      <React.Fragment>
+        <HeaderA />
+        <div className="mainBackground" style={style}>{this.renderSearch()}</div>
+      </React.Fragment>
     );
   }
 }

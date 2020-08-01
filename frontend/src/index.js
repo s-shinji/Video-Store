@@ -17,6 +17,7 @@ import './css/upload.css';
 import './css/user.css';
 import './css/search.css';
 import './css/detail.css';
+import './css/result.css';
 
 
 
@@ -31,6 +32,8 @@ import Upload from './components/upload';
 import User from './components/user';
 import Search from './components/search';
 import Detail from './components/detail';
+import Auth from './components/auth';
+import Result from './components/result';
 import * as serviceWorker from './serviceWorker';
 
 const store = createStore(reducer,applyMiddleware(thunk))
@@ -38,18 +41,19 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        {/* <Switch> */}
-        <Route exact path="/" component= {Top} />
-        <Route path="/index" component= {MovieIndex} />
-        <Route path="/(index|upload|user|search|video)/" component={HeaderA} />
-        {/* <Route path="/(login|RegistrationForm)/" component={HeaderB} /> */}
-        <Route path="/login" component={Login} />
-        <Route path="/RegistrationForm" component={RegistrationForm} />
-        <Route path="/upload" component={Upload} />
-        <Route path="/user/:id" component={User} />
-        <Route path="/search" component={Search} />
-        <Route path="/video/:id" component={Detail} />
-        {/* </Switch> */}
+        <Switch>
+          <Route exact path="/" component= {Top} />
+          <Route path="/index" component= {MovieIndex} />
+          <Route path="/login" component={Login} />
+          <Route path="/RegistrationForm" component={RegistrationForm} />
+          <Route path="/user/:id" component={User} />
+          <Route path="/search" component={Search} />
+          <Route path="/video/:id" component={Detail} />
+          <Route path="/result" component={Result} />
+          <Auth>
+            <Route path="/upload" component={Upload} />
+          </Auth>
+        </Switch>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,

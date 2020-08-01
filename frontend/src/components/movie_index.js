@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import _ from 'lodash'
 import { Link } from 'react-router-dom';
 import HeaderA from './headerA';
-import { readMovieIndex } from '../actions' 
+import { readMovieIndex,deleteMovie } from '../actions' 
 import { connect } from 'react-redux'
+import { Field, reduxForm} from 'redux-form'
+
 
 // import Slider from "react-slick";
 // import "slick-carousel/slick/slick.css";
@@ -11,25 +13,45 @@ import { connect } from 'react-redux'
 import {SimpleSlider} from './reactSlick'
 
 class MovieIndex extends Component{
+  constructor(props) {
+    super(props)
+    this.onSubmit = this.onSubmit.bind(this)
+  }
   
-  //componentDidMountに変えて実験中
   componentDidMount () {
     this.props.readMovieIndex()
   }
+  componentDidUpdate (prevProps) {
+    if(this.props!= prevProps) {
+      this.props.readMovieIndex()
+    }
+    // this.props.readMovieIndex()
 
-  // componentDidMount() {
-  //   $('#loopSlide ul').simplyScroll({
-  //     autoMode: 'loop',
-  //     speed: 1,
-  //     frameRate: 24,
-  //     horizontal: true,
-  //     pauseOnHover:   true,
-  //     pauseOnTouch: true
-  //   });
-  // }
+  }
+
+
+  async onSubmit(movieId) {
+    let arrayDeleteInfo = []
+    arrayDeleteInfo.push(movieId)
+    arrayDeleteInfo.push(this.props.loginUserId)
+    await this.props.deleteMovie(arrayDeleteInfo)
+    console.log(this.props)
+    await this.props.history.push("/index")
+
+  }
+  renderField(field) {
+    const {input, type, value} = field
+    return(
+      <input {...input} type={type} value={value}/>
+    )
+  }
 
   renderMovie() {
     const props = this.props
+    const loginUserId = props.loginUserId
+    const {handleSubmit} = props
+
+    console.log(props)
     
     // const handleTop5Views = _.map(props.movies[1], (value,key) => {
     //   const style = {
@@ -79,10 +101,13 @@ class MovieIndex extends Component{
                 </div>
               </div>
               {/* <!-- 現在ログイン中のユーザーと動画投稿者が同じな場合、削除ボタンを表示する --> */}
-              {props.movies[2] == value.id &&
-                <form action="/delete" method="POST" >
+              {loginUserId == value.userId &&
+                <form action="/delete" method="POST" onSubmit={handleSubmit(() => this.onSubmit(value.id))}>
                   {/* <!-- このname属性が@RequestParamで受け取る際のキーになる（受け取る値はvalue属性） --> */}
                   <input type="hidden" name="movieId" value={value.id} />
+                  {/* <Field type="hidden" name="movieId" value={value.id} component={this.renderField}/> */}
+                  {/* <input type="hidden" name="loginUserId" value={loginUserId} /> */}
+                  {/* <Field type="hidden" name="loginUserId" value={loginUserId} component={this.renderField}/> */}
                   <input type="submit" value="削除" className="deleteBtn" />
                 </form>    
               }
@@ -115,7 +140,7 @@ class MovieIndex extends Component{
   render() {
     return (
       <React.Fragment>
-        {/* <HeaderA value={this.state.}/> */}
+        <HeaderA />
         {this.renderMovie()}
       </React.Fragment>
     );
@@ -123,6 +148,8 @@ class MovieIndex extends Component{
 }
 
 //オブジェクト(ハッシュ)を返す場合は戻り値に()が必要??
-const mapStateToProps = state => ({movies : state.movies})
-const mapDispatchToProps = ({readMovieIndex})
-export default connect(mapStateToProps, mapDispatchToProps)(MovieIndex);
+// const mapStateToProps = state => ({movies : state.movies})
+const mapStateToProps = state => ({movies : state.movies,loginUserId : state.auth})
+
+const mapDispatchToProps = ({readMovieIndex,deleteMovie})
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({form: 'deleteMovieForm'})(MovieIndex));

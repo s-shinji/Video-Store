@@ -1,7 +1,7 @@
-<!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!-- <!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"> -->
 <!-- Bootstrap core CSS -->
-<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+<!-- <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
 <link href="/docs/4.5/dist/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <link href="jumbotron.css" th:href="@{/css/jumbotron.css}" rel="stylesheet">
 <link th:href="@{/css/application.css}" rel="stylesheet" type="text/css">
@@ -11,17 +11,17 @@
 <div th:replace="~{block/head::headA}"></div>
 <div th:replace="~{block/header::headerA}"></div>
 <div role="main" class="mainBackground">
-
-  <div class="detail">
+ -->
+  <!-- <div class="detail"> -->
     <!-- <div th:each= "movie :${movieList}" class="image"> -->
     <!-- 動画はmovieのインデックス0に入っている -->
     <!-- <video th:src="${movie.get(0)}" height="150px" width="300px" controls></video> -->
-    <video th:src="${convert}" height="500px" width="100%" class="movieDetail" controls></video>
+    <!-- <video th:src="${convert}" height="500px" width="100%" class="movieDetail" controls></video>
 
     <div class="detailInfo" >
-      <div>
+      <div> -->
         <!-- 動画投稿者はmovieのインデックス3に入っている -->
-        <a  class="postUserName" href="#" th:href="@{/user/{id}(id=${movie.user.id})}" style="display: block;">
+        <!-- <a  class="postUserName" href="#" th:href="@{/user/{id}(id=${movie.user.id})}" style="display: block;">
           <img src="" alt="" th:src="${movie.user.avatar}" class="upAvatar" height="50px" width="50px">
           <span id="postUser" th:text="${movie.user.name}">投稿者</span>
         </a>
@@ -30,10 +30,10 @@
       <div>
         <label for = "views">再生回数:</label>
         <span id="views" th:text="${movie.views} + '回'">再生回数</span>
-      </div>
+      </div> -->
 
       <!-- ログインユーザーと投稿者が等しい場合はdiv -->
-      <div th:if="${loginUser == movie.user.id || ''.equals(loginUser)}" class="review">
+      <!-- <div th:if="${loginUser == movie.user.id || ''.equals(loginUser)}" class="review">
         <div class="reviewIcon">
           <i class="far fa-grin-squint"></i>
           <span class="reviewCount" th:text="${reviewMap.get('good')}">0</span>
@@ -47,12 +47,12 @@
           <span class="reviewCount" th:text="${reviewMap.get('bad')}">0</span>
         </div>
       </div>
-      
+       -->
       <!-- ログインユーザーと投稿者が等しくない場合はリンク化 -->
-      <div th:if="${loginUser != movie.user.id && !(''.equals(loginUser))}" class="review">
-        <form name="formName1"th:action="@{/review/{id}(id=${movie.id})}" method="POST">
+      <!-- <div th:if="${loginUser != movie.user.id && !(''.equals(loginUser))}" class="review">
+        <form name="formName1"th:action="@{/review/{id}(id=${movie.id})}" method="POST"> -->
           <!-- 既にreview済みかどうかで分岐 -->
-          <a th:if="${matchReview.equals('good')}"  class="reviewIcon reviewLink link1 ajax_btn1" style="color:#28a745;">
+          <!-- <a th:if="${matchReview.equals('good')}"  class="reviewIcon reviewLink link1 ajax_btn1" style="color:#28a745;">
             <i class="far fa-grin-squint"></i>
             <span class="reviewCount1" th:text="${reviewMap.get('good')}">0</span>
           </a>
@@ -62,10 +62,10 @@
           </a>
           <input type="hidden" name="review" value="good" class="sendReview1">
         </form>
-
-        <form name="formName2"th:action="@{/review/{id}(id=${movie.id})}" method="POST">
+ -->
+        <!-- <form name="formName2"th:action="@{/review/{id}(id=${movie.id})}" method="POST"> -->
           <!-- 既にreview済みかどうかで分岐 -->
-          <a th:if="${matchReview.equals('normal')}"  class="reviewIcon reviewLink link2 ajax_btn2" style="color:#28a745;">
+          <!-- <a th:if="${matchReview.equals('normal')}"  class="reviewIcon reviewLink link2 ajax_btn2" style="color:#28a745;">
             <i class="far fa-smile"></i>
             <span class="reviewCount2" th:text="${reviewMap.get('normal')}">0</span>
           </a>
@@ -77,9 +77,9 @@
 
         </form>
 
-        <form name="formName3"th:action="@{/review/{id}(id=${movie.id})}" method="POST">
+        <form name="formName3"th:action="@{/review/{id}(id=${movie.id})}" method="POST"> -->
           <!-- 既にreview済みかどうかで分岐 -->
-          <a th:if="${matchReview.equals('bad')}" class="reviewIcon reviewLink link3 ajax_btn3" style="color:#28a745;">
+          <!-- <a th:if="${matchReview.equals('bad')}" class="reviewIcon reviewLink link3 ajax_btn3" style="color:#28a745;">
             <i class="far fa-sad-tear"></i>
             <span class="reviewCount3" th:text="${reviewMap.get('bad')}">0</span>
           </a>   
@@ -91,13 +91,13 @@
 
         </form>
 
-      </div>
-  </div>
+      </div> -->
+  <!-- </div> -->
 
     <!-- 現在ログイン中のユーザーと動画投稿者が同じな場合、削除ボタンを表示する -->
-    <form th:if="${loginUser == movie.user.id}" method="POST" th:action="@{/delete}">
+    <!-- <form th:if="${loginUser == movie.user.id}" method="POST" th:action="@{/delete}"> -->
       <!-- このname属性が@RequestParamで受け取る際のキーになる（受け取る値はvalue属性） -->
-      <input type="hidden" name="movieId" th:value="${movie.id}">
+      <!-- <input type="hidden" name="movieId" th:value="${movie.id}">
       <input type="submit" value="削除" class="deleteBtn">
     </form>    
 
@@ -106,17 +106,17 @@
 
 <footer>
   <p class="footer">&copy; 2020</p>
-</footer>
+</footer> -->
 <!-- Bootstrap用の軽量版 -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
 <!-- 通常版 -->
-<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="/docs/4.5/assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="/docs/4.5/dist/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"integrity="sha384-1CmrxMRARb6aLqgBO7yyAxTOQE2AKb9GfXnEo760AUcUmFx3ibVJJAzGytlQcNXd" crossorigin="anonymous"></script>
-<script type="text/javascript" th:src="@{/js/hover.js}"></script>
+<script type="text/javascript" th:src="@{/js/hover.js}"></script> -->
 <!-- ajaxのために追加 -->
-<script type="text/javascript" th:inline="javascript">
-$(function() {
-    // Ajax通信テスト ボタンクリック
+<!-- <script type="text/javascript" th:inline="javascript">
+$(function() { -->
+    <!-- // Ajax通信テスト ボタンクリック
     $(".ajax_btn1").click(function() {
         
         var review = $(".sendReview1").val(); 
@@ -160,12 +160,12 @@ function error1() {
     alert("エラー:レビューの値が不正です。");
 }
 </script>
+ -->
 
 
-
-<script type="text/javascript" th:inline="javascript">
-$(function() {
-    // Ajax通信テスト ボタンクリック
+<!-- <script type="text/javascript" th:inline="javascript">
+$(function() { -->
+    <!-- // Ajax通信テスト ボタンクリック
     $(".ajax_btn2").click(function() {
         
         var review = $(".sendReview2").val(); 
@@ -232,9 +232,9 @@ $(function() {
                         }
         });
     });
-});
+}); -->
  
-// Ajax通信成功時処理
+<!-- // Ajax通信成功時処理
 function success3(data) {
   $(".reviewCount1").html(
                 `<span class="reviewCount1" style="color:black;">${data["good"]}</span>
@@ -263,4 +263,4 @@ function error3() {
 </script>
 
 </body>
-</html>
+</html> -->

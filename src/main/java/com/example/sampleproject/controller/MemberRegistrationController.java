@@ -8,12 +8,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.sampleproject.entity.MemberRegistrationEntity;
 import com.example.sampleproject.form.MemberRegistrationForm;
 import com.example.sampleproject.service.RegisterMemberService;
 
-@Controller
+// @Controller
+@RestController
 public class MemberRegistrationController {
 
 	@Autowired
@@ -24,14 +26,14 @@ public class MemberRegistrationController {
 	/**
 	 * 会員情報入力画面に遷移する。
 	 */
-	@RequestMapping("/RegistrationForm")
-	public String showRegistMemberForm(Model model) {
+	// @RequestMapping("/RegistrationForm")
+	// public String showRegistMemberForm(Model model) {
 
-		model.addAttribute(new MemberRegistrationForm());
+	// 	model.addAttribute(new MemberRegistrationForm());
 
-		//会員情報入力画面。
-		return "RegistrationForm";
-	}
+	// 	//会員情報入力画面。
+	// 	return "RegistrationForm";
+	// }
 
 	// @RequestMapping("/Register")
 	// public String registerUser(@Validated @ModelAttribute MemberRegistrationForm memberRegistrationForm,
@@ -65,14 +67,14 @@ public class MemberRegistrationController {
 								@RequestParam("email") String email, 
 								@RequestParam("password") String password,
 								@RequestParam("passwordConfirmation") String passwordConfirmation) {
-        if(result.hasErrors()) {
-            return "RegistrationForm";
-		}
+        // if(result.hasErrors()) {
+        //     return "RegistrationForm";
+		// }
 		
-		if (!(passwordConfirmation.equals(password))) {
-			result.rejectValue("passwordConfirmation",null, "パスワードが一致してません。");
-            return "RegistrationForm";
-		}
+		// if (!(passwordConfirmation.equals(password))) {
+		// 	result.rejectValue("passwordConfirmation",null, "パスワードが一致してません。");
+        //     return "RegistrationForm";
+		// }
 
 		//USERテーブルにinsertする時の引数。
 		// MemberRegistrationEntity entity = new MemberRegistrationEntity();
@@ -85,7 +87,7 @@ public class MemberRegistrationController {
 		//USERテーブルにinsertする。
 		registMemberService.registerMember(entity);
 
-		return "Result";
+		return "OK";
 	}
 
 }

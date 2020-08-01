@@ -240,7 +240,7 @@ class Detail extends Component{
   render() {
     return (
       <React.Fragment>
-        {/* <HeaderA value={this.state.}/> */}
+        <HeaderA />
         {this.renderDetail()}
       </React.Fragment>
     );
