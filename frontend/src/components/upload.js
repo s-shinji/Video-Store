@@ -53,6 +53,8 @@ class Upload extends Component {
   }
 
   handleChangeFile2(e) {
+    document.getElementById("uploadSubmitBtn").disabled = false
+
     const createObjectURL = (window.URL || window.webkitURL).createObjectURL || window.createObjectURL;
     // ①イベントからfileの配列を受け取る
     const files = e.target.files;
@@ -140,7 +142,7 @@ class Upload extends Component {
                 <input type="hidden" name="loginUserId" id="upfileId" value={loginUserId}/>
               </div>
 
-              <br /> <input className="uploadSubmit"type="submit" value="送信する"/>
+              <br /> <input className="uploadSubmit" id="uploadSubmitBtn" type="submit" value="送信する" disabled="true"/>
           </div>
         </form>
       </React.Fragment>

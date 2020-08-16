@@ -23,8 +23,6 @@ import './css/result.css';
 
 import { BrowserRouter, Route, Switch} from 'react-router-dom'
 import Top from './components/top'
-import HeaderA from './components/headerA';
-import HeaderB from './components/headerB';
 import Login from './components/login';
 import RegistrationForm from './components/RegistrationForm';
 import MovieIndex from './components/movie_index';

@@ -102,7 +102,7 @@ class MovieIndex extends Component{
               </div>
               {/* <!-- 現在ログイン中のユーザーと動画投稿者が同じな場合、削除ボタンを表示する --> */}
               {loginUserId == value.userId &&
-                <form action="/delete" method="POST" onSubmit={handleSubmit(() => this.onSubmit(value.id))}>
+                <form onSubmit={handleSubmit(() => this.onSubmit(value.id))}>
                   {/* <!-- このname属性が@RequestParamで受け取る際のキーになる（受け取る値はvalue属性） --> */}
                   <input type="hidden" name="movieId" value={value.id} />
                   {/* <Field type="hidden" name="movieId" value={value.id} component={this.renderField}/> */}

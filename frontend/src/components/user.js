@@ -21,10 +21,19 @@ class User extends Component{
   }
   componentDidMount () {
     const id = this.props.match.params.id
-    this.props.readUser(id)
+    const loginUserId = this.props.loginUserId
+    this.props.readUser(id,loginUserId)
   }
-  componentDidUpdate (prevProps) {
-    if(this.props.match.params.id != prevProps.match.params.id) {
+  // componentDidUpdate (prevProps) {
+  //   if(this.props != prevProps) {
+  //     const id = this.props.match.params.id
+  //     const loginUserId = this.props.loginUserId
+  //     this.props.readUser(id,loginUserId)
+  //   }
+  // }
+  componentDidUpdate () {
+    //profileが更新された際に返されるレスポンスでuserステートを更新(そのため、レスポンスのstatusを指定することで200が返って来るはず)
+    if(this.props.user.status == 200) {
       const id = this.props.match.params.id
       this.props.readUser(id)
     }
@@ -44,7 +53,7 @@ class User extends Component{
             {/* <div text="${complete}"></div> */}
             {/* <div text="${error}" style="color:red;"></div> */}
         
-            <Avatar value= {userInfo}/>
+            <Avatar/>
 
             <div className="boxParts userName">{userInfo[3] ? userInfo[3].name : ""}</div>
         
@@ -70,7 +79,7 @@ class User extends Component{
               {/* <div text="${complete}"></div>
               <div text="${error}" style="color:red;"></div> */}
 
-              <Avatar value= {userInfo}/>
+              <Avatar/>
               
               <div className="boxParts userName">{userInfo[3] ? userInfo[3].name : ""}</div>
           

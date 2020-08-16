@@ -34,7 +34,9 @@ public class ReviewController {
 
 	@RequestMapping(value="/review/{id}", method = RequestMethod.POST)
 	@ResponseBody
-	public Object review(Review review, @PathVariable("id") int movieId, @RequestParam("review") String reviewString,Model model) {
+	public Object review(Review review, @PathVariable("id") int movieId
+									  , @RequestParam("review") String reviewString
+									  , @RequestParam int loginUserId) {
 		// reviewのhiddenが不正に操作された場合の処理
 		if(!("good".equals(reviewString) || "normal".equals(reviewString) || "bad".equals(reviewString))) {
 			return "エラー：レビューの値が不正です";
@@ -44,10 +46,10 @@ public class ReviewController {
 		review.setMovie_id(movieId);
 
 		//ログインユーザー取得
-		int loginUserId               = 0;
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    if(authentication.getPrincipal() instanceof DbUserDetails){
-			loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+		// int loginUserId               = 0;
+		// Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    // if(authentication.getPrincipal() instanceof DbUserDetails){
+		// 	loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
 			review.setUser_id(loginUserId);
 
 			//投稿者が自らの動画にReviewをするためにhiddenタグを不正に操作された場合の処理
@@ -60,7 +62,7 @@ public class ReviewController {
 			if(movie.getUserId() == loginUserId) {
 				return "エラー：ログイン中のユーザーと動画の投稿者が同じです。";
 			}
-		}	
+		// }	
 
 
 		//同ユーザーがReviewを複数回した場合以前の分を削除する

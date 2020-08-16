@@ -24,7 +24,7 @@ class HeaderA extends Component {
 
   async logout() {
     await this.props.postLogout(this.props.loginUserId)
-    // await this.props.history.push('/login')
+    await this.props.history.push('/login')
   }
 
   renderField(field) {

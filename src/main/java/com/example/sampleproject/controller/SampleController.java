@@ -207,9 +207,84 @@ public class SampleController {
         return allItem;
     }
 
+    // @GetMapping("/video/{id}")
+    // // @ResponseBody
+    // public List<Object> video(@PathVariable("id") int movieId, Model model) {
+    //     List<Object> detailVideoInfo = new ArrayList<>();
+    //     //movieIdに紐づく動画を取得
+    //     Optional<Movie> movieOpt = movieService.getMovie(movieId);
+    //     if(movieOpt.isPresent()) {
+    //        movie = movieOpt.get();
+    //     }
+    //     StringBuffer data = new StringBuffer();
+    //     String base64_3   = Base64.getEncoder().encodeToString(movie.getMovie());
+    //     data.append("data:video/mp4;base64,");
+    //     data.append(base64_3);
+    //     model.addAttribute("convert", data.toString());
+    //     model.addAttribute("movie", movie);
+    //     detailVideoInfo.add(data.toString());
+    //     detailVideoInfo.add(movie);
+
+    //     //ログインユーザーを取得
+    //     int loginUserId               = 0;
+    //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	//     if(authentication.getPrincipal() instanceof DbUserDetails){
+    //         loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+    //         model.addAttribute("loginUser", loginUserId);
+    //         detailVideoInfo.add(loginUserId);
+    //         //ユーザーがログイン状態且つ動画投稿者じゃない場合に再生回数を+1
+    //         if(movie.getUserId() == loginUserId) {
+    //         } else {
+    //             //再生回数を+1
+    //             int views = movie.getViews();
+    //             views    += 1; 
+    //             movieService.updateViews(views, movieId);
+                
+    //         }
+
+    //         //既にReview済みの動画かどうかを判断するための処理
+    //         String matchReview = "";
+    //         if(reviewService.findMatchUserId(movieId,loginUserId) == null) {
+    //         } else {
+    //             matchReview = reviewService.findMatchUserId(movieId,loginUserId);
+    //         }
+    //         model.addAttribute("matchReview", matchReview);
+    //         detailVideoInfo.add(matchReview);
+	//     }else{
+    //         //ユーザーがログインしていない場合
+    //         //再生回数を+1
+    //         int views = movie.getViews();
+    //         views    += 1; 
+    //         movieService.updateViews(views, movieId);
+
+    //         model.addAttribute("loginUser", "");
+    //         detailVideoInfo.add(loginUserId);
+    //     }
+
+    //     //Review情報を取得
+    //     List<Review> reviewLists      = reviewService.findReviewById(movieId);
+    //     Map<String,Integer> reviewMap = new HashMap<String, Integer>();
+    //     reviewMap.put("good", 0);
+    //     reviewMap.put("normal", 0);
+    //     reviewMap.put("bad", 0);
+    //     for(Review reviewList : reviewLists) {
+    //         if("good".equals(reviewList.getReview())) {
+    //             reviewMap.put("good", reviewMap.get("good") + 1 );
+    //         } else if("normal".equals(reviewList.getReview())) {
+    //             reviewMap.put("normal", reviewMap.get("normal") + 1 );
+    //         } else if("bad".equals(reviewList.getReview())) {
+    //             reviewMap.put("bad", reviewMap.get("bad") + 1 );
+    //         }
+    //     }
+    //     model.addAttribute("reviewMap", reviewMap);
+    //     detailVideoInfo.add(reviewMap);
+
+    //     // return "detail";
+    //     return detailVideoInfo;
+    // }
     @GetMapping("/video/{id}")
     // @ResponseBody
-    public List<Object> video(@PathVariable("id") int movieId, Model model) {
+    public List<Object> video(@PathVariable("id") int movieId, @RequestParam int loginUserId,Model model) {
         List<Object> detailVideoInfo = new ArrayList<>();
         //movieIdに紐づく動画を取得
         Optional<Movie> movieOpt = movieService.getMovie(movieId);
@@ -226,12 +301,13 @@ public class SampleController {
         detailVideoInfo.add(movie);
 
         //ログインユーザーを取得
-        int loginUserId               = 0;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    if(authentication.getPrincipal() instanceof DbUserDetails){
-            loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-            model.addAttribute("loginUser", loginUserId);
-            detailVideoInfo.add(loginUserId);
+        // int loginUserId               = 0;
+        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    // if(authentication.getPrincipal() instanceof DbUserDetails){
+        //     loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+        //     model.addAttribute("loginUser", loginUserId);
+        //     detailVideoInfo.add(loginUserId);
+        // if(loginUserId != 0) {
             //ユーザーがログイン状態且つ動画投稿者じゃない場合に再生回数を+1
             if(movie.getUserId() == loginUserId) {
             } else {
@@ -250,16 +326,16 @@ public class SampleController {
             }
             model.addAttribute("matchReview", matchReview);
             detailVideoInfo.add(matchReview);
-	    }else{
-            //ユーザーがログインしていない場合
-            //再生回数を+1
-            int views = movie.getViews();
-            views    += 1; 
-            movieService.updateViews(views, movieId);
+	    // }else if (loginUserId == 0){
+        //     //ユーザーがログインしていない場合
+        //     //再生回数を+1
+        //     int views = movie.getViews();
+        //     views    += 1; 
+        //     movieService.updateViews(views, movieId);
 
-            model.addAttribute("loginUser", "");
-            detailVideoInfo.add(loginUserId);
-        }
+        //     model.addAttribute("loginUser", "");
+        //     detailVideoInfo.add(loginUserId);
+        // }
 
         //Review情報を取得
         List<Review> reviewLists      = reviewService.findReviewById(movieId);

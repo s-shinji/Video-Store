@@ -7,9 +7,14 @@ export const READ_MOVIE_INDEX = 'READ_MOVIE_INDEX'
 export const READ_MOVIE_DETAIL  = 'READ_MOVIE_DETAIL'
 export const READ_USER   = 'READ_USER'
 export const READ_UPLOAD = 'READ_UPLOAD'
+export const POST_PROFILE = 'POST_PROFILE'
+export const POST_REVIEW = 'POST_REVIEW'
+export const POST_FOLLOW = 'POST_FOLLOW'
+export const POST_UNFOLLOW = 'POST_UNFOLLOW'
 export const SEARCH_MOVIE = 'SEARCH_MOVIE'
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
+export const CREATE_REGISTRATION = 'CREATE_REGISTRATION'
 // export const LOGOUT = 'LOGOUT'
 // export const CREATE_MOVIE = 'CREATE_MOVIE'
 
@@ -20,24 +25,42 @@ export const readMovieIndex = () => async dispatch => {
   dispatch({type: READ_MOVIE_INDEX, response})
 }
 
-export const readMovieDetail = id => async dispatch => {
-  const response = await fetch(`${ROOT_URL}/video/${id}`, {mode: 'cors'}).then(res => res.json())
+// export const readMovieDetail = id => async dispatch => {
+//   const response = await fetch(`${ROOT_URL}/video/${id}`, {mode: 'cors'}).then(res => res.json())
+//   dispatch({type: READ_MOVIE_DETAIL, response})
+// }
+export const readMovieDetail = (id,loginUserId) => async dispatch => {
+  // const params = new URLSearchParams()
+  // params.append("loginUserId", loginUserId)
+  const response = await fetch(`${ROOT_URL}/video/${id}?loginUserId=${loginUserId}`, {mode: 'cors'}).then(res => res.json())
   dispatch({type: READ_MOVIE_DETAIL, response})
 }
 
 export const readUser = id => async dispatch => {
+  // const params = new URLSearchParams()
+  // params.append("loginUserId", loginUserId)
+  // let hashLoginUserId = {}
+  // hashLoginUserId.loginUserId= loginUserId
+  // console.log(hashLoginUserId)
   const response = await fetch(`${ROOT_URL}/user/${id}`, {mode: 'cors'}).then(res => res.json())
   dispatch({type: READ_USER, response})
 }
+// export const readUser = (id,loginUserId) => async dispatch => {
+//   // const params = new URLSearchParams()
+//   // params.append("loginUserId", loginUserId)
+//   // let hashLoginUserId = {}
+//   // hashLoginUserId.loginUserId= loginUserId
+//   // console.log(hashLoginUserId)
+//   const response = await fetch(`${ROOT_URL}/user/${id}?loginUserId=${loginUserId}`, {mode: 'cors'}).then(res => res.json())
+//   dispatch({type: READ_USER, response})
+// }
 
 export const postMovie = values => async dispatch =>{
-  console.log(values.thumbnail)
   const formData = new FormData()
   formData.append('thumbnail', values.thumbnail)
   formData.append('movie', values.movie)
   formData.append('title', values.title)
   formData.append('loginUserId', values.id)
-  console.log(formData)
   await fetch(`${ROOT_URL}/upload`, {mode: 'cors', method: 'POST',body:formData})
   // const response = await fetch(`${ROOT_URL}/upload`, {mode: 'cors', method: 'POST',body:formData})
   // const response = await axios.post(`${ROOT_URL}/upload`,formData)
@@ -53,6 +76,32 @@ export const deleteMovie = ids => async dispatch =>{
   await fetch(`${ROOT_URL}/delete`, {mode: 'cors',method: 'POST', body:params})
 }
 
+export const postProfile = hashUpProfileInfo => async dispatch => {
+  const formData = new FormData()
+  formData.append("avatar", hashUpProfileInfo.avatar)
+  const response = await fetch(`${ROOT_URL}/user/${hashUpProfileInfo.id}`, {mode: 'cors',method: 'POST', body:formData})
+  dispatch({type: POST_PROFILE, response})
+}
+
+export const postReview = hashUpReviewInfo => async dispatch => {
+  const params = new URLSearchParams()
+  params.append("review", hashUpReviewInfo.review)
+  params.append("loginUserId", hashUpReviewInfo.loginUserId)
+  const response = await fetch(`${ROOT_URL}/review/${hashUpReviewInfo.movieId}`, {mode: 'cors',method: 'POST', body:params}).then(res => res.json())
+  dispatch({type: POST_REVIEW, response})
+}
+export const postFollow = hashFollowInfo => async dispatch => {
+  const params = new URLSearchParams()
+  params.append("loginUserId", hashFollowInfo.loginUserId)
+  const response = await fetch(`${ROOT_URL}/follow/${hashFollowInfo.userId}`, {mode: 'cors',method: 'POST', body:params}).then(res => res.json())
+  dispatch({type: POST_FOLLOW, response})
+}
+export const postUnfollow = hashUnfollowInfo => async dispatch => {
+  const params = new URLSearchParams()
+  params.append("loginUserId", hashUnfollowInfo.loginUserId)
+  const response = await fetch(`${ROOT_URL}/followed/${hashUnfollowInfo.userId}`, {mode: 'cors',method: 'POST', body:params}).then(res => res.json())
+  dispatch({type: POST_UNFOLLOW, response})
+}
 
 // export const postSearch = values => async dispatch => {
 //   // 今回はコントローラ側において@RequestParamsではうまくデータが渡らず、@RequestBodyで代替したためredux-formを用いるメリットはあまりなかったかも？
@@ -75,16 +124,22 @@ export const postLogin = values => async dispatch => {
     params.append('password', values.password)
   // console.log(params)
   // 今回はコントローラ側において@RequestParamsではうまくデータが渡らず、@RequestBodyで代替したためredux-formを用いるメリットはあまりなかったかも？
-  const response = await fetch(`${ROOT_URL}/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params}).then(res => res.json())
+  // const response = await fetch(`${ROOT_URL}/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params}).then(res => res.json())
+
+  let response = await fetch(`${ROOT_URL}/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params})
   // const response = await axios.post(`${ROOT_URL}/authenticate`, params,{
   //   withCredentials: true
   // })
-  // console.log(response)
+  if(response.url == "http://localhost:8080/login-error") {
+    response = 0;
+  } else {
+    response = await fetch(`${ROOT_URL}/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params}).then(res => res.json())
+  }
   dispatch({type: LOGIN, response})
 }
 
 export const postLogout = () => async dispatch =>{
-  fetch(`${ROOT_URL}/logout`, {mode: 'cors', method: 'POST'})
+  await fetch(`${ROOT_URL}/logout`, {mode: 'cors', method: 'POST'})
   const response = 0;
   dispatch({type: LOGOUT, response})
 }
@@ -96,6 +151,7 @@ export const createNewRegistration = values => async dispatch =>{
   params.append('password', values.password)
   params.append('passwordConfirmation', values.passwordConfirmation)
 
-  fetch(`${ROOT_URL}/Register`, {mode: 'cors', method: 'POST', body:params})
-  // dispatch({type: LOGOUT, response})
+  const response = await fetch(`${ROOT_URL}/Register`, {mode: 'cors', method: 'POST', body:params}).then(res => res.json())
+
+  dispatch({type: CREATE_REGISTRATION, response})
 }
