@@ -6,27 +6,37 @@ import { readMovieIndex,deleteMovie } from '../actions'
 import { connect } from 'react-redux'
 import { Field, reduxForm} from 'redux-form'
 
-
-// import Slider from "react-slick";
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
 import {SimpleSlider} from './reactSlick'
+// import {  Notifications } from 'react-push-notification' ;
+import Announcement from 'react-announcement'
+import { withCookies, Cookies } from 'react-cookie';
+import { instanceOf } from 'prop-types';
+import Logo from '../images/インフォメーションアイコン3.png'
+
 
 class MovieIndex extends Component{
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired
+  };
   constructor(props) {
     super(props)
     this.onSubmit = this.onSubmit.bind(this)
+    const { cookies } = props;
+    //なぜbanner?
+    cookies.remove('banner')
   }
   
   componentDidMount () {
-    this.props.readMovieIndex()
+    //loginUserIdで実験中
+    this.props.readMovieIndex(this.props.loginUserId)
   }
+  
+  //deleteの反映で必要
   componentDidUpdate (prevProps) {
-    if(this.props!= prevProps) {
-      this.props.readMovieIndex()
+    if(this.props.movies[0] != prevProps.movies[0] ) {
+      //loginUserIdで実験中
+      this.props.readMovieIndex(this.props.loginUserId)
     }
-    // this.props.readMovieIndex()
-
   }
 
 
@@ -121,6 +131,7 @@ class MovieIndex extends Component{
 
     return (
       <main role="main" className="mainBackground">
+        {/* {handleNotification} */}
         <div id="loopSlide">
           <ul className="jsMovie1">
             {/* {handleTop5Views} */}
@@ -148,8 +159,7 @@ class MovieIndex extends Component{
 }
 
 //オブジェクト(ハッシュ)を返す場合は戻り値に()が必要??
-// const mapStateToProps = state => ({movies : state.movies})
 const mapStateToProps = state => ({movies : state.movies,loginUserId : state.auth})
 
 const mapDispatchToProps = ({readMovieIndex,deleteMovie})
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({form: 'deleteMovieForm'})(MovieIndex));
+export default withCookies(connect(mapStateToProps, mapDispatchToProps)(reduxForm({form: 'deleteMovieForm'})(MovieIndex)));

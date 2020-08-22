@@ -5,11 +5,10 @@ export default (user={}, action) => {
   switch(action.type) {
     case POST_PROFILE:
     case READ_USER:
-      console.log(action.response)
       return action.response;
     case POST_FOLLOW:
     case POST_UNFOLLOW:
-      return {...user, [4]: action.response}
+      return {...user, [3]: action.response}
     default:
       return user;
   }

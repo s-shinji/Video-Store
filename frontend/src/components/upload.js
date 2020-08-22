@@ -142,7 +142,7 @@ class Upload extends Component {
                 <input type="hidden" name="loginUserId" id="upfileId" value={loginUserId}/>
               </div>
 
-              <br /> <input className="uploadSubmit" id="uploadSubmitBtn" type="submit" value="送信する" disabled="true"/>
+              <br /> <input className="uploadSubmit" id="uploadSubmitBtn" type="submit" value="送信する" disabled={true}/>
           </div>
         </form>
       </React.Fragment>

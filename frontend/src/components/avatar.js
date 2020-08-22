@@ -86,27 +86,25 @@ class Avatar extends Component {
   // }
   async follow() {
     let hashFollowInfo = {}
-    hashFollowInfo.userId = this.props.user[3].id
+    hashFollowInfo.userId = this.props.user[2].id
     hashFollowInfo.loginUserId = this.props.loginUserId
     await this.props.postFollow(hashFollowInfo)
-    // await this.props.history.push(`/user/${this.props.user[3].id}`)
+    // await this.props.history.push(`/user/${this.props.user[2].id}`)
   }
   async unfollow() {
     let hashUnfollowInfo = {}
-    hashUnfollowInfo.userId = this.props.user[3].id
+    hashUnfollowInfo.userId = this.props.user[2].id
     hashUnfollowInfo.loginUserId = this.props.loginUserId
     await this.props.postUnfollow(hashUnfollowInfo)
-    // await this.props.history.push(`/user/${this.props.user[3].id}`)
+    // await this.props.history.push(`/user/${this.props.user[2].id}`)
   }
   async onSubmit() {
     let hashUpProfileInfo = {}
     hashUpProfileInfo.avatar = document.getElementById("upAvatar").files[0]
-    hashUpProfileInfo.id = this.props.user[3].id
+    hashUpProfileInfo.id = this.props.user[2].id
     await this.props.postProfile(hashUpProfileInfo)
-    console.log(`/user/${this.props.user[3].id}`)
-    // this.props.history.push(`/user/${this.props.user[3].id}`)
-    console.log(this.props)
-    await this.props.history.push(`/user/${this.props.user[3].id}`)
+    // this.props.history.push(`/user/${this.props.user[2].id}`)
+    await this.props.history.push(`/user/${this.props.user[2].id}`)
   }
 
   async onChange() {
@@ -120,7 +118,7 @@ class Avatar extends Component {
 
     const user = this.props.user
     const loginUserId = this.props.loginUserId
-    const movieUserId = user[3] ? user[3].id : ""
+    const movieUserId = user[2] ? user[2].id : ""
 
     const {handleSubmit} = this.props
   
@@ -132,11 +130,11 @@ class Avatar extends Component {
             {/* <div text="${fileError}" style="color:red;"></div> */}
   
             <label htmlFor="upAvatar" className="upAvatarBox">
-              <img src="" src={user[3] ? user[3].avatar : ""} alt="" className="upAvatar" height="200px" width="200px" />
+              <img src="" src={user[2] ? user[2].avatar : ""} alt="" className="upAvatar" height="200px" width="200px" />
               <input type="file" id="upAvatar" style={style} name="avatar"  accept="image/*" onChange={this.onChange}/> 
               {/* <Field type="file" id="upAvatar" style={style} name="avatar"  accept="image/*" component={this.renderField}/>  */}
             </label>
-            <input type="submit" value="更新" className="deleteBtn"  id="avatarUpdateBtn" disabled="true"/>
+            <input type="submit" value="更新" className="deleteBtn"  id="avatarUpdateBtn" disabled={true}/>
           </form>
         </div>
       )
@@ -146,7 +144,7 @@ class Avatar extends Component {
   handleAccessOtherUserPage() {
     const user = this.props.user
     const loginUserId = this.props.loginUserId
-    const movieUserId = user[3] ? user[3].id : ""
+    const movieUserId = user[2] ? user[2].id : ""
     const {handleSubmit} = this.props
 
     if(movieUserId != loginUserId) {
@@ -154,13 +152,13 @@ class Avatar extends Component {
         // ログインユーザーが他のユーザーページを訪れた場合
         <div>
           <label htmlFor="upAvatar" className="upAvatarBox">
-            <img src="" src={user[3] ? user[3].avatar : ""} alt="" className="upAvatar" height="200px" width="200px" />
+            <img src="" src={user[2] ? user[2].avatar : ""} alt="" className="upAvatar" height="200px" width="200px" />
           </label>
           {loginUserId != 0 ?
             <div className="followBox">
-              { user[4] == false ? <button className="followBtn" onClick={handleSubmit(this.follow)}> フォローする </button> : ""}
+              { user[3] == false ? <button className="followBtn" onClick={handleSubmit(this.follow)}> フォローする </button> : ""}
               {/* <!-- <a href="#" className="followedBtn"> フォローを外す </a> --> */}
-              { user[4] == true ? <button className="followedBtn" onClick={handleSubmit(this.unfollow)}> フォロー中 </button> : "" }
+              { user[3] == true ? <button className="followedBtn" onClick={handleSubmit(this.unfollow)}> フォロー中 </button> : "" }
             </div>
           : "" }
         </div>

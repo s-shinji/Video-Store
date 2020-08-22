@@ -120,112 +120,21 @@ public class ProfileController {
 	// 	return "user";
 
     // @CrossOrigin(origins = "http://localhost:3000")
-	@GetMapping("/{id}")
-	// @ResponseBody
-	public List<Object> user(@PathVariable("id") int userId, Model model) {
-		List<Object> userAllInfo = new ArrayList<>();
-		//ログインユーザーを取得
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		int loginUserId               = 1;
-	    if(authentication.getPrincipal() instanceof DbUserDetails){
-			loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-			// model.addAttribute("loginUser", loginUserId);
-			userAllInfo.add(loginUserId);
-	
-		} else {
-			userAllInfo.add(loginUserId);
-		}
-		//最も再生回数が多い動画を一つ取得
-		Optional<Movie> popularMovieOpt = profileService.findPopularMovie(userId);
-		if (popularMovieOpt.isPresent()) {
-			Movie popularMovie = popularMovieOpt.get();
-			StringBuffer data  = new StringBuffer();
-			String base64_4    = Base64.getEncoder().encodeToString(popularMovie.getMovie());
-			data.append("data:video/mp4;base64,");
-			data.append(base64_4);
-			// model.addAttribute("convert", data.toString());
-			// model.addAttribute("popularMovie", popularMovie);	
-			userAllInfo.add(data.toString());
-			userAllInfo.add(popularMovie);
-
-		} else {
-			Movie popularMovie = null;
-			// model.addAttribute("popularMovie", popularMovie);
-			StringBuffer data  = new StringBuffer();
-			userAllInfo.add(data.toString());
-			userAllInfo.add(popularMovie);
-		}
-		//ユーザーネームの取得
-		Optional<MemberRegistrationEntity> userNameOpt = profileService.findUserNameById(userId);
-		if (userNameOpt.isPresent()) {
-			MemberRegistrationEntity userName = userNameOpt.get();
-			// model.addAttribute("userName", userName);
-			userAllInfo.add(userName);
-		} else {
-			MemberRegistrationEntity userName = null;
-			// model.addAttribute("userName", userName);
-			userAllInfo.add(userName);
-		}
-
-		//フォローしているかどうかで条件分岐する(フォローを探すメソッドを作成しそれが空か否かでtrue or falseを選択する)
-		if(followService.checkFollow(userId, loginUserId) == 0) {
-			// model.addAttribute("isFollowed", false);
-			Boolean isFollowed = false;
-			userAllInfo.add(isFollowed);
-		} else {
-			// model.addAttribute("isFollowed", true);
-			Boolean isFollowed = true;
-			userAllInfo.add(isFollowed);
-
-		}
-		//フォローの際に使用するためユーザーIDを渡しておく
-		// model.addAttribute("userId", userId);
-		userAllInfo.add(userId);
-
-
-		//自分がフォローしているユーザーが存在するかを確認し、その情報を取得する
-		if(followService.findFollowingById(userId).size() == 0) {
-		} else {
-			List<Integer> followingUserIdList  = followService.findFollowingById(userId);
-			List<MemberRegistrationEntity> followingUserInfoList = new ArrayList<>();
-			for(int followingUserId : followingUserIdList) {
-				followingUserInfoList.add(profileService.findFollowingUserInfo(followingUserId));
-			}
-			// model.addAttribute("followingUserInfoList", followingUserInfoList);
-			userAllInfo.add(followingUserInfoList);
-
-		}
-
-		//自分がフォローされているユーザーが存在するかを確認し、その情報を取得する
-		if(followService.findFollowerById(userId).size() == 0) {
-		} else {
-			List<Integer> followerUserIdList  = followService.findFollowerById(userId);
-			List<MemberRegistrationEntity> followerUserInfoList = new ArrayList<>();
-			for(int followerUserId : followerUserIdList) {
-				followerUserInfoList.add(profileService.findFollowerUserInfo(followerUserId));
-			}
-			// model.addAttribute("followerUserInfoList", followerUserInfoList);
-			userAllInfo.add(followerUserInfoList);
-		}
- 
-		// return "user";
-		return userAllInfo;
-	}
-	// @RequestMapping("/{id}")
-	// @ResponseBody
-	// public List<Object> user(@PathVariable("id") int userId, @RequestParam int loginUserId,Model model) {
+	// @GetMapping("/{id}")
+	// // @ResponseBody
+	// public List<Object> user(@PathVariable("id") int userId, Model model) {
 	// 	List<Object> userAllInfo = new ArrayList<>();
 	// 	//ログインユーザーを取得
-	// 	// Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	// 	// int loginUserId               = 1;
-	//     // if(authentication.getPrincipal() instanceof DbUserDetails){
-	// 	// 	loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-	// 	// 	// model.addAttribute("loginUser", loginUserId);
-	// 	// 	userAllInfo.add(loginUserId);
+	// 	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	// 	int loginUserId               = 1;
+	//     if(authentication.getPrincipal() instanceof DbUserDetails){
+	// 		loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+	// 		// model.addAttribute("loginUser", loginUserId);
+	// 		userAllInfo.add(loginUserId);
 	
-	// 	// } else {
-	// 	// 	userAllInfo.add(loginUserId);
-	// 	// }
+	// 	} else {
+	// 		userAllInfo.add(loginUserId);
+	// 	}
 	// 	//最も再生回数が多い動画を一つ取得
 	// 	Optional<Movie> popularMovieOpt = profileService.findPopularMovie(userId);
 	// 	if (popularMovieOpt.isPresent()) {
@@ -302,6 +211,97 @@ public class ProfileController {
 	// 	// return "user";
 	// 	return userAllInfo;
 	// }
+	@GetMapping("/{id}")
+	// @ResponseBody
+	public List<Object> user(@PathVariable("id") int userId, @RequestParam int loginUserId) {
+		List<Object> userAllInfo = new ArrayList<>();
+		//ログインユーザーを取得
+		// Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		// int loginUserId               = 1;
+	    // if(authentication.getPrincipal() instanceof DbUserDetails){
+		// 	loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+		// 	// model.addAttribute("loginUser", loginUserId);
+		// 	userAllInfo.add(loginUserId);
+	
+		// } else {
+		// 	userAllInfo.add(loginUserId);
+		// }
+		//最も再生回数が多い動画を一つ取得
+		Optional<Movie> popularMovieOpt = profileService.findPopularMovie(userId);
+		if (popularMovieOpt.isPresent()) {
+			Movie popularMovie = popularMovieOpt.get();
+			StringBuffer data  = new StringBuffer();
+			String base64_4    = Base64.getEncoder().encodeToString(popularMovie.getMovie());
+			data.append("data:video/mp4;base64,");
+			data.append(base64_4);
+			// model.addAttribute("convert", data.toString());
+			// model.addAttribute("popularMovie", popularMovie);	
+			userAllInfo.add(data.toString());
+			userAllInfo.add(popularMovie);
+
+		} else {
+			Movie popularMovie = null;
+			// model.addAttribute("popularMovie", popularMovie);
+			StringBuffer data  = new StringBuffer();
+			userAllInfo.add(data.toString());
+			userAllInfo.add(popularMovie);
+		}
+		//ユーザーネームの取得
+		Optional<MemberRegistrationEntity> userNameOpt = profileService.findUserNameById(userId);
+		if (userNameOpt.isPresent()) {
+			MemberRegistrationEntity userName = userNameOpt.get();
+			// model.addAttribute("userName", userName);
+			userAllInfo.add(userName);
+		} else {
+			MemberRegistrationEntity userName = null;
+			// model.addAttribute("userName", userName);
+			userAllInfo.add(userName);
+		}
+
+		//フォローしているかどうかで条件分岐する(フォローを探すメソッドを作成しそれが空か否かでtrue or falseを選択する)
+		if(followService.checkFollow(userId, loginUserId) == 0) {
+			// model.addAttribute("isFollowed", false);
+			Boolean isFollowed = false;
+			userAllInfo.add(isFollowed);
+		} else {
+			// model.addAttribute("isFollowed", true);
+			Boolean isFollowed = true;
+			userAllInfo.add(isFollowed);
+
+		}
+		//フォローの際に使用するためユーザーIDを渡しておく
+		// model.addAttribute("userId", userId);
+		userAllInfo.add(userId);
+
+
+		//自分がフォローしているユーザーが存在するかを確認し、その情報を取得する
+		if(followService.findFollowingById(userId).size() == 0) {
+		} else {
+			List<Integer> followingUserIdList  = followService.findFollowingById(userId);
+			List<MemberRegistrationEntity> followingUserInfoList = new ArrayList<>();
+			for(int followingUserId : followingUserIdList) {
+				followingUserInfoList.add(profileService.findFollowingUserInfo(followingUserId));
+			}
+			// model.addAttribute("followingUserInfoList", followingUserInfoList);
+			userAllInfo.add(followingUserInfoList);
+
+		}
+
+		//自分がフォローされているユーザーが存在するかを確認し、その情報を取得する
+		if(followService.findFollowerById(userId).size() == 0) {
+		} else {
+			List<Integer> followerUserIdList  = followService.findFollowerById(userId);
+			List<MemberRegistrationEntity> followerUserInfoList = new ArrayList<>();
+			for(int followerUserId : followerUserIdList) {
+				followerUserInfoList.add(profileService.findFollowerUserInfo(followerUserId));
+			}
+			// model.addAttribute("followerUserInfoList", followerUserInfoList);
+			userAllInfo.add(followerUserInfoList);
+		}
+ 
+		// return "user";
+		return userAllInfo;
+	}
 
 	@PostMapping("/{id}")
 	public Object avatar(@Validated ProfileForm profileForm, @PathVariable("id") int userId, @RequestParam("avatar") MultipartFile avatarParams) throws IOException {

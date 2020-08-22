@@ -20,8 +20,10 @@ export const CREATE_REGISTRATION = 'CREATE_REGISTRATION'
 
 const ROOT_URL = 'http://localhost:8080'
 
-export const readMovieIndex = () => async dispatch => {
-  const response = await fetch(`${ROOT_URL}/index`, {mode: 'cors'}).then(res => res.json())
+                              //loginUserIdで実験中
+export const readMovieIndex = (loginUserId) => async dispatch => {
+  const response = await fetch(`${ROOT_URL}/index?loginUserId=${loginUserId}`, {mode: 'cors'}).then(res => res.json())
+  console.log(response)
   dispatch({type: READ_MOVIE_INDEX, response})
 }
 
@@ -36,24 +38,10 @@ export const readMovieDetail = (id,loginUserId) => async dispatch => {
   dispatch({type: READ_MOVIE_DETAIL, response})
 }
 
-export const readUser = id => async dispatch => {
-  // const params = new URLSearchParams()
-  // params.append("loginUserId", loginUserId)
-  // let hashLoginUserId = {}
-  // hashLoginUserId.loginUserId= loginUserId
-  // console.log(hashLoginUserId)
-  const response = await fetch(`${ROOT_URL}/user/${id}`, {mode: 'cors'}).then(res => res.json())
+export const readUser = (id,loginUserId) => async dispatch => {
+  const response = await fetch(`${ROOT_URL}/user/${id}?loginUserId=${loginUserId}`, {mode: 'cors'}).then(res => res.json())
   dispatch({type: READ_USER, response})
 }
-// export const readUser = (id,loginUserId) => async dispatch => {
-//   // const params = new URLSearchParams()
-//   // params.append("loginUserId", loginUserId)
-//   // let hashLoginUserId = {}
-//   // hashLoginUserId.loginUserId= loginUserId
-//   // console.log(hashLoginUserId)
-//   const response = await fetch(`${ROOT_URL}/user/${id}?loginUserId=${loginUserId}`, {mode: 'cors'}).then(res => res.json())
-//   dispatch({type: READ_USER, response})
-// }
 
 export const postMovie = values => async dispatch =>{
   const formData = new FormData()

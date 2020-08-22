@@ -24,18 +24,13 @@ class User extends Component{
     const loginUserId = this.props.loginUserId
     this.props.readUser(id,loginUserId)
   }
-  // componentDidUpdate (prevProps) {
-  //   if(this.props != prevProps) {
-  //     const id = this.props.match.params.id
-  //     const loginUserId = this.props.loginUserId
-  //     this.props.readUser(id,loginUserId)
-  //   }
-  // }
-  componentDidUpdate () {
+
+  componentDidUpdate (prevProps) {
     //profileが更新された際に返されるレスポンスでuserステートを更新(そのため、レスポンスのstatusを指定することで200が返って来るはず)
-    if(this.props.user.status == 200) {
+    if(this.props.user[2] != prevProps.user[2]) {
       const id = this.props.match.params.id
-      this.props.readUser(id)
+      const loginUserId = this.props.loginUserId
+      this.props.readUser(id,loginUserId)
     }
   }
 
@@ -47,15 +42,13 @@ class User extends Component{
   renderUser() {
     const handleUserAndMovie = (userInfo) => {
       {/* // <!-- ユーザーが存在し且つ動画も存在する場合 --> */}
-      if(userInfo[1]){  //動画が存在する場合の条件式
+      if(userInfo[0]){  //動画が存在する場合の条件式
         return(
           <div className="userBox">
-            {/* <div text="${complete}"></div> */}
-            {/* <div text="${error}" style="color:red;"></div> */}
         
             <Avatar/>
 
-            <div className="boxParts userName">{userInfo[3] ? userInfo[3].name : ""}</div>
+            <div className="boxParts userName">{userInfo[2] ? userInfo[2].name : ""}</div>
         
             {/* <!-- フォロー表示 --> */}
             <div className="followInfoBox">
@@ -63,7 +56,7 @@ class User extends Component{
               <div className="followInfo followerInfo" onClick={this.selectFollower}>フォロワー</div>
             </div>
             
-            <video src={userInfo[1]} height="280px" width="500px" controls></video>
+            <video src={userInfo[0]} height="280px" width="500px" controls></video>
             <div className="boxParts">{userInfo[2] ? userInfo[2].title : ""}</div>
           </div>
         )
@@ -72,16 +65,13 @@ class User extends Component{
 
     const handleNotMovie = (userInfo) => {
         {/* // <!-- ユーザーは存在するが動画は存在しない場合 --> */}
-        if(userInfo[1] === "" && userInfo[3] ? userInfo[3].name != null : "") {
+        if(userInfo[0] === "" && userInfo[2] ? userInfo[2].name != null : "") {
           return(
             <div className="userBox">
-            
-              {/* <div text="${complete}"></div>
-              <div text="${error}" style="color:red;"></div> */}
 
               <Avatar/>
               
-              <div className="boxParts userName">{userInfo[3] ? userInfo[3].name : ""}</div>
+              <div className="boxParts userName">{userInfo[2] ? userInfo[2].name : ""}</div>
           
               {/* <!-- フォロー表示 --> */}
               <div className="followInfoBox">
@@ -96,7 +86,7 @@ class User extends Component{
 
       const handleNotUserAndMovie = (userInfo) => {
         {/* // <!-- ユーザーが存在しない場合 --> */}
-        if(userInfo[3] ? userInfo[3].name == null : "") {
+        if(userInfo[2] ? userInfo[2].name == null : "") {
           return(
             <div>
               <div className="noUser">"指定のユーザーは見つかりませんでした"</div>

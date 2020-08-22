@@ -104,7 +104,7 @@ public class SampleController {
 
     @GetMapping("/index")
     // @ResponseBody
-    public List<Object> index(Model model,@AuthenticationPrincipal DbUserDetails userDetails){
+    public List<Object> index(Model model,@RequestParam int loginUserId){
         List<Object> allItem = new ArrayList<>();
 
 
@@ -151,58 +151,52 @@ public class SampleController {
         allItem.add(top5Views);
 
         //index.htmlでユーザー情報を取得したい場合に用いる(現在ログイン中のユーザー情報を取得)
-        int loginUserId = 0;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    if(authentication.getPrincipal() instanceof DbUserDetails){
-            loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-            model.addAttribute("loginUser", loginUserId);
-            allItem.add(loginUserId);
-	    }else{
-            model.addAttribute("loginUser", "");
-            allItem.add(loginUserId);
-        }	
+        //通知機能を省いたことで必要性は現時点ではない
+        allItem.add(loginUserId);
 
         //フォローユーザーが新たな動画を投稿していた場合に通知する処理
-        if(loginUserId == 0) {
-        } else{
-            List<Integer> followingUserIdList  = followService.findFollowingById(loginUserId);
-            List<Movie> followingUserLatestMovieList = new ArrayList<>();
-            for(int followingUser : followingUserIdList) {
-                //フォローユーザーに動画が存在する場合
-                if(!(movieService.getFollowingUserLatestMovie(followingUser) == null)) {
-                    Movie followingUserLatestInfo = movieService.getFollowingUserLatestMovie(followingUser);
+        // if(loginUserId == 0) {
+        // } else{
+            // List<Integer> followingUserIdList  = followService.findFollowingById(loginUserId);
+            // List<Movie> followingUserLatestMovieList = new ArrayList<>();
+            // for(int followingUser : followingUserIdList) {
+            //     //フォローユーザーに動画が存在する場合
+            //     if(!(movieService.getFollowingUserLatestMovie(followingUser) == null)) {
+            //         Movie followingUserLatestInfo = movieService.getFollowingUserLatestMovie(followingUser);
 
-                    //コードが長くなるため一度変数に格納(movieテーブルの最新情報)
-                    LocalDateTime followingUserLatestCreatedOnMovieTable = followingUserLatestInfo.getCreated();
+            //         //コードが長くなるため一度変数に格納(movieテーブルの最新情報)
+            //         LocalDateTime followingUserLatestCreatedOnMovieTable = followingUserLatestInfo.getCreated();
 
-                    //一度もフォローユーザーの情報がnotificationに格納されていない場合はnullが返ってくるためその処理(以下の処理はnullじゃない場合に実行される)
-                    if((notificationService.getLatestCreated(followingUserLatestInfo.getUserId(), loginUserId)).isPresent()) {
-                        //コードが長くなるため一度変数に格納(notificationテーブルの最新情報)
-                        LocalDateTime followingUserLatestCreatedOnNotificationTable = notificationService.getLatestCreated(followingUserLatestInfo.getUserId(), loginUserId).get().getCreated();
+            //         //一度もフォローユーザーの情報がnotificationに格納されていない場合はnullが返ってくるためその処理(以下の処理はnullじゃない場合に実行される)
+            //         if((notificationService.getLatestCreated(followingUserLatestInfo.getUserId(), loginUserId)).isPresent()) {
+            //             //コードが長くなるため一度変数に格納(notificationテーブルの最新情報)
+            //             LocalDateTime followingUserLatestCreatedOnNotificationTable = notificationService.getLatestCreated(followingUserLatestInfo.getUserId(), loginUserId).get().getCreated();
 
-                        // 今回送られてきたmovieテーブルからの情報が以前notificationに保存されていた作成日よりも前または同じ場合処理を飛ばす（フォローユーザーの最新動画が削除された場合に起こる）
-                        //compareToメソッドで引数の日付(notificationのデータ)より後の場合は0より大きい値が帰ってくるため、それ以外の値が返ってきた時にcontinueしている（つまり、作成日よりも前または同じ場合）
-                        if(!(followingUserLatestCreatedOnMovieTable.compareTo(followingUserLatestCreatedOnNotificationTable) > 0)) {
-                            continue;
-                        }
-                    }
-                    //Notificationのインスタンスを作成して詰め替える（for文の中のためDIできない）
-                    Notification notification = new Notification();
-                    notification.setMovie_id(followingUserLatestInfo.getId());
-                    notification.setFollowee_id(followingUserLatestInfo.getUserId());
-                    notification.setFollower_id(loginUserId);
-                    notification.setCreated(followingUserLatestCreatedOnMovieTable);
-                    //通知テーブルにおけるフォローユーザーの最新動画が更新されていない場合に更新した上でその情報をリストに追加する
-                    if(!(notificationService.searchLatestNotificationInfo(notification) == 1)) {
-                        followingUserLatestMovieList.add(movieService.getFollowingUserLatestMovie(followingUser));
-                    } 
-                }
-            }
+            //             // 今回送られてきたmovieテーブルからの情報が以前notificationに保存されていた作成日よりも前または同じ場合処理を飛ばす（フォローユーザーの最新動画が削除された場合に起こる）
+            //             //compareToメソッドで引数の日付(notificationのデータ)より後の場合は0より大きい値が帰ってくるため、それ以外の値が返ってきた時にcontinueしている（つまり、作成日よりも前または同じ場合）
+            //             if(!(followingUserLatestCreatedOnMovieTable.compareTo(followingUserLatestCreatedOnNotificationTable) > 0)) {
+            //                 continue;
+            //             }
+            //         }
+            //         //Notificationのインスタンスを作成して詰め替える（for文の中のためDIできない）
+            //         Notification notification = new Notification();
+            //         notification.setMovie_id(followingUserLatestInfo.getId());
+            //         notification.setFollowee_id(followingUserLatestInfo.getUserId());
+            //         notification.setFollower_id(loginUserId);
+            //         notification.setCreated(followingUserLatestCreatedOnMovieTable);
+            //         //通知テーブルにおけるフォローユーザーの最新動画が更新されていない場合に更新した上でその情報をリストに追加する
+            //         if(!(notificationService.searchLatestNotificationInfo(notification) == 1)) {
+            //             followingUserLatestMovieList.add(movieService.getFollowingUserLatestMovie(followingUser));
+            //         } 
+            //     }
+            // }
 
-            if(!(followingUserLatestMovieList.size() == 0)) {
-                model.addAttribute("followingUserLatestMovieList", followingUserLatestMovieList);
-            }
-        }
+            // if(!(followingUserLatestMovieList.size() == 0)) {
+            //     model.addAttribute("followingUserLatestMovieList", followingUserLatestMovieList);
+            //     //loginUserIdで実験中　ここがうまくいってない
+            //     allItem.add(followingUserLatestMovieList);
+            // }
+        // }
 
         return allItem;
     }
