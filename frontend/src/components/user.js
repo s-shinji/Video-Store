@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import _ from 'lodash'
 import HeaderA from './headerA';
 import Avatar from './avatar'
-// import Modals from './modals'
 import FollowingModal from './followingModal'
 import FollowerModal from './followerModal'
 import { connect } from 'react-redux';

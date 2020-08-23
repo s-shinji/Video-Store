@@ -78,7 +78,7 @@
 <script type="text/javascript" th:inline="javascript">
   // model.addAttributeを使用する予定のため、htmlファイルにscriptタグ内に記述する必要あり
 $(function() {
-  var loginUser = /*[[${loginUser}]]*/;
+  // var loginUser = /*[[${loginUser}]]*/;
   if(!( loginUser == 0)) {
 
     // if ("Notification" in window) {
@@ -107,7 +107,7 @@ $(function() {
 
 
   //フォローしている人たちそれぞれの最新動画情報を取得するメソッドを作成しそれを得たリストを変数に代入する
-  var followingUserList = /*[[${followingUserLatestMovieList}]]*/;
+  // var followingUserList = /*[[${followingUserLatestMovieList}]]*/;
   //リストを取り出し、一つ一つ通知出せるような仕組みを作る
   var allUserName;
   var allUserTitle;

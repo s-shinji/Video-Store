@@ -5,17 +5,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.example.sampleproject.entity.DbUserDetails;
+// import com.example.sampleproject.entity.DbUserDetails;
 import com.example.sampleproject.entity.Movie;
 import com.example.sampleproject.entity.Review;
 import com.example.sampleproject.service.MovieService;
 import com.example.sampleproject.service.ReviewService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+// import org.springframework.security.core.Authentication;
+// import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+// import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,24 +45,18 @@ public class ReviewController {
 		review.setReview(reviewString);
 		review.setMovie_id(movieId);
 
-		//ログインユーザー取得
-		// int loginUserId               = 0;
-		// Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    // if(authentication.getPrincipal() instanceof DbUserDetails){
-		// 	loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-			review.setUser_id(loginUserId);
+		review.setUser_id(loginUserId);
 
-			//投稿者が自らの動画にReviewをするためにhiddenタグを不正に操作された場合の処理
-			//依存関係？
-			Optional<Movie> movieOpt = movieService.getUserIdByMovieId(movieId);
-			// Movie movie              = new Movie();
-			if(movieOpt.isPresent()) {
-				movie = movieOpt.get();
-			}
-			if(movie.getUserId() == loginUserId) {
-				return "エラー：ログイン中のユーザーと動画の投稿者が同じです。";
-			}
-		// }	
+		//投稿者が自らの動画にReviewをするためにhiddenタグを不正に操作された場合の処理
+		//依存関係？
+		Optional<Movie> movieOpt = movieService.getUserIdByMovieId(movieId);
+		// Movie movie              = new Movie();
+		if(movieOpt.isPresent()) {
+			movie = movieOpt.get();
+		}
+		if(movie.getUserId() == loginUserId) {
+			return "エラー：ログイン中のユーザーと動画の投稿者が同じです。";
+		}
 
 
 		//同ユーザーがReviewを複数回した場合以前の分を削除する

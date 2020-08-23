@@ -4,37 +4,23 @@ import { Link } from 'react-router-dom';
 import HeaderA from './headerA';
 import { readMovieIndex,deleteMovie } from '../actions' 
 import { connect } from 'react-redux'
-import { Field, reduxForm} from 'redux-form'
+import { reduxForm} from 'redux-form'
 
 import {SimpleSlider} from './reactSlick'
-// import {  Notifications } from 'react-push-notification' ;
-import Announcement from 'react-announcement'
-import { withCookies, Cookies } from 'react-cookie';
-import { instanceOf } from 'prop-types';
-import Logo from '../images/インフォメーションアイコン3.png'
-
 
 class MovieIndex extends Component{
-  static propTypes = {
-    cookies: instanceOf(Cookies).isRequired
-  };
   constructor(props) {
     super(props)
     this.onSubmit = this.onSubmit.bind(this)
-    const { cookies } = props;
-    //なぜbanner?
-    cookies.remove('banner')
   }
   
   componentDidMount () {
-    //loginUserIdで実験中
     this.props.readMovieIndex(this.props.loginUserId)
   }
   
   //deleteの反映で必要
   componentDidUpdate (prevProps) {
     if(this.props.movies[0] != prevProps.movies[0] ) {
-      //loginUserIdで実験中
       this.props.readMovieIndex(this.props.loginUserId)
     }
   }
@@ -45,7 +31,6 @@ class MovieIndex extends Component{
     arrayDeleteInfo.push(movieId)
     arrayDeleteInfo.push(this.props.loginUserId)
     await this.props.deleteMovie(arrayDeleteInfo)
-    console.log(this.props)
     await this.props.history.push("/index")
 
   }
@@ -61,29 +46,7 @@ class MovieIndex extends Component{
     const loginUserId = props.loginUserId
     const {handleSubmit} = props
 
-    console.log(props)
-    
-    // const handleTop5Views = _.map(props.movies[1], (value,key) => {
-    //   const style = {
-    //     marginTop: "60px"
-    //   }
-  
-    //   return(
-    //     <React.Fragment key={`top5Views${key}`}>
-    //       <li className="indexLoop jsMovie1" style={style}>
-    //         <Link to={`/video/${value[0]}`} className="loopLink" >
-    //           <img src={value[1]} height="225px" width="400px" />
-    //         </Link>
-    //       </li>
-    //     </React.Fragment>
-    //   )
-
-    // })
-
     const handleMovie = _.map(props.movies[0],(value,key) => {
-      const style2={
-        display: "block"
-      }
       const style3 ={
         paddingTop:"15px",
         paddingBottom:"15px"
@@ -131,10 +94,8 @@ class MovieIndex extends Component{
 
     return (
       <main role="main" className="mainBackground">
-        {/* {handleNotification} */}
         <div id="loopSlide">
           <ul className="jsMovie1">
-            {/* {handleTop5Views} */}
             <SimpleSlider value={this.props.movies[1]} />
           </ul>
         </div>
@@ -162,4 +123,4 @@ class MovieIndex extends Component{
 const mapStateToProps = state => ({movies : state.movies,loginUserId : state.auth})
 
 const mapDispatchToProps = ({readMovieIndex,deleteMovie})
-export default withCookies(connect(mapStateToProps, mapDispatchToProps)(reduxForm({form: 'deleteMovieForm'})(MovieIndex)));
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({form: 'deleteMovieForm'})(MovieIndex));

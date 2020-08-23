@@ -49,9 +49,6 @@ class HeaderA extends Component {
               <button type="submit" className="navbar-brand">ログアウト</button>
             </form>
           : ""}
-          {/* <form role="form" id="login" action="/login" method="post" if="${''.equals(loginUser)}">
-            <button type="submit" className="navbar-brand">ログイン</button>
-          </form> */}
           {/* loginUserIdが存在しない場合表示 */}
           {loginUserId == 0 ? 
             <Link to="/login" id="login">

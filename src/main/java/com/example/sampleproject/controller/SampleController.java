@@ -4,7 +4,7 @@ import com.example.sampleproject.form.MovieForm;
 import com.example.sampleproject.entity.DbUserDetails;
 import com.example.sampleproject.entity.Image;
 import com.example.sampleproject.entity.Movie;
-import com.example.sampleproject.entity.Notification;
+// import com.example.sampleproject.entity.Notification;
 import com.example.sampleproject.entity.Review;
 import com.example.sampleproject.form.SearchForm;
 import com.example.sampleproject.service.FollowService;
@@ -25,10 +25,10 @@ import java.util.Optional;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
+// import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
+// import org.springframework.security.core.context.SecurityContextHolder;
+// import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -37,10 +37,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+// import org.springframework.web.bind.annotation.RequestBody;
+// import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+// import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -52,8 +52,8 @@ public class SampleController {
     private final MovieService movieService;
     private final ImageService imageService;
     private final ReviewService reviewService;
-    private final FollowService followService;
-    private final NotificationService notificationService;
+    // private final FollowService followService;
+    // private final NotificationService notificationService;
     private Movie movie;
     private Image image;
 
@@ -62,8 +62,8 @@ public class SampleController {
         this.movieService        = movieService;
         this.imageService        = imageService;
         this.reviewService       = reviewService;
-        this.followService       = followService;
-        this.notificationService = notificationService;
+        // this.followService       = followService;
+        // this.notificationService = notificationService;
         this.movie               = movie;
         this.image               = image;
     }
@@ -193,7 +193,6 @@ public class SampleController {
 
             // if(!(followingUserLatestMovieList.size() == 0)) {
             //     model.addAttribute("followingUserLatestMovieList", followingUserLatestMovieList);
-            //     //loginUserIdで実験中　ここがうまくいってない
             //     allItem.add(followingUserLatestMovieList);
             // }
         // }
@@ -201,81 +200,6 @@ public class SampleController {
         return allItem;
     }
 
-    // @GetMapping("/video/{id}")
-    // // @ResponseBody
-    // public List<Object> video(@PathVariable("id") int movieId, Model model) {
-    //     List<Object> detailVideoInfo = new ArrayList<>();
-    //     //movieIdに紐づく動画を取得
-    //     Optional<Movie> movieOpt = movieService.getMovie(movieId);
-    //     if(movieOpt.isPresent()) {
-    //        movie = movieOpt.get();
-    //     }
-    //     StringBuffer data = new StringBuffer();
-    //     String base64_3   = Base64.getEncoder().encodeToString(movie.getMovie());
-    //     data.append("data:video/mp4;base64,");
-    //     data.append(base64_3);
-    //     model.addAttribute("convert", data.toString());
-    //     model.addAttribute("movie", movie);
-    //     detailVideoInfo.add(data.toString());
-    //     detailVideoInfo.add(movie);
-
-    //     //ログインユーザーを取得
-    //     int loginUserId               = 0;
-    //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	//     if(authentication.getPrincipal() instanceof DbUserDetails){
-    //         loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-    //         model.addAttribute("loginUser", loginUserId);
-    //         detailVideoInfo.add(loginUserId);
-    //         //ユーザーがログイン状態且つ動画投稿者じゃない場合に再生回数を+1
-    //         if(movie.getUserId() == loginUserId) {
-    //         } else {
-    //             //再生回数を+1
-    //             int views = movie.getViews();
-    //             views    += 1; 
-    //             movieService.updateViews(views, movieId);
-                
-    //         }
-
-    //         //既にReview済みの動画かどうかを判断するための処理
-    //         String matchReview = "";
-    //         if(reviewService.findMatchUserId(movieId,loginUserId) == null) {
-    //         } else {
-    //             matchReview = reviewService.findMatchUserId(movieId,loginUserId);
-    //         }
-    //         model.addAttribute("matchReview", matchReview);
-    //         detailVideoInfo.add(matchReview);
-	//     }else{
-    //         //ユーザーがログインしていない場合
-    //         //再生回数を+1
-    //         int views = movie.getViews();
-    //         views    += 1; 
-    //         movieService.updateViews(views, movieId);
-
-    //         model.addAttribute("loginUser", "");
-    //         detailVideoInfo.add(loginUserId);
-    //     }
-
-    //     //Review情報を取得
-    //     List<Review> reviewLists      = reviewService.findReviewById(movieId);
-    //     Map<String,Integer> reviewMap = new HashMap<String, Integer>();
-    //     reviewMap.put("good", 0);
-    //     reviewMap.put("normal", 0);
-    //     reviewMap.put("bad", 0);
-    //     for(Review reviewList : reviewLists) {
-    //         if("good".equals(reviewList.getReview())) {
-    //             reviewMap.put("good", reviewMap.get("good") + 1 );
-    //         } else if("normal".equals(reviewList.getReview())) {
-    //             reviewMap.put("normal", reviewMap.get("normal") + 1 );
-    //         } else if("bad".equals(reviewList.getReview())) {
-    //             reviewMap.put("bad", reviewMap.get("bad") + 1 );
-    //         }
-    //     }
-    //     model.addAttribute("reviewMap", reviewMap);
-    //     detailVideoInfo.add(reviewMap);
-
-    //     // return "detail";
-    //     return detailVideoInfo;
-    // }
     @GetMapping("/video/{id}")
     // @ResponseBody
     public List<Object> video(@PathVariable("id") int movieId, @RequestParam int loginUserId,Model model) {
@@ -289,47 +213,29 @@ public class SampleController {
         String base64_3   = Base64.getEncoder().encodeToString(movie.getMovie());
         data.append("data:video/mp4;base64,");
         data.append(base64_3);
-        model.addAttribute("convert", data.toString());
-        model.addAttribute("movie", movie);
+        // model.addAttribute("convert", data.toString());
+        // model.addAttribute("movie", movie);
         detailVideoInfo.add(data.toString());
         detailVideoInfo.add(movie);
 
-        //ログインユーザーを取得
-        // int loginUserId               = 0;
-        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    // if(authentication.getPrincipal() instanceof DbUserDetails){
-        //     loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-        //     model.addAttribute("loginUser", loginUserId);
-        //     detailVideoInfo.add(loginUserId);
-        // if(loginUserId != 0) {
-            //ユーザーがログイン状態且つ動画投稿者じゃない場合に再生回数を+1
-            if(movie.getUserId() == loginUserId) {
-            } else {
-                //再生回数を+1
-                int views = movie.getViews();
-                views    += 1; 
-                movieService.updateViews(views, movieId);
-                
-            }
+        //ユーザーがログイン状態且つ動画投稿者じゃない場合に再生回数を+1
+        if(movie.getUserId() == loginUserId) {
+        } else {
+            //再生回数を+1
+            int views = movie.getViews();
+            views    += 1; 
+            movieService.updateViews(views, movieId);
+            
+        }
 
-            //既にReview済みの動画かどうかを判断するための処理
-            String matchReview = "";
-            if(reviewService.findMatchUserId(movieId,loginUserId) == null) {
-            } else {
-                matchReview = reviewService.findMatchUserId(movieId,loginUserId);
-            }
-            model.addAttribute("matchReview", matchReview);
-            detailVideoInfo.add(matchReview);
-	    // }else if (loginUserId == 0){
-        //     //ユーザーがログインしていない場合
-        //     //再生回数を+1
-        //     int views = movie.getViews();
-        //     views    += 1; 
-        //     movieService.updateViews(views, movieId);
-
-        //     model.addAttribute("loginUser", "");
-        //     detailVideoInfo.add(loginUserId);
-        // }
+        //既にReview済みの動画かどうかを判断するための処理
+        String matchReview = "";
+        if(reviewService.findMatchUserId(movieId,loginUserId) == null) {
+        } else {
+            matchReview = reviewService.findMatchUserId(movieId,loginUserId);
+        }
+        // model.addAttribute("matchReview", matchReview);
+        detailVideoInfo.add(matchReview);
 
         //Review情報を取得
         List<Review> reviewLists      = reviewService.findReviewById(movieId);
@@ -346,10 +252,9 @@ public class SampleController {
                 reviewMap.put("bad", reviewMap.get("bad") + 1 );
             }
         }
-        model.addAttribute("reviewMap", reviewMap);
+        // model.addAttribute("reviewMap", reviewMap);
         detailVideoInfo.add(reviewMap);
 
-        // return "detail";
         return detailVideoInfo;
     }
     
@@ -382,15 +287,6 @@ public class SampleController {
         // }
         movie.setMovie(movieForm.getMovie().getBytes());
         movie.setCreated(LocalDateTime.now());
-        //今だけ変更中
-        // int loginUserId               = 1;
-        // movie.setUserId(loginUserId);
-        // int loginUserId               = 0;
-        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        // if(authentication.getPrincipal() instanceof DbUserDetails){
-        //     loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-        //     movie.setUserId(loginUserId);
-        // }
         movie.setUserId(movieForm.getLoginUserId());
         //再生回数を0で設定
         movie.setViews(0);
@@ -399,20 +295,11 @@ public class SampleController {
         //movieテーブルに登録し、その際のmovie.idを戻り値として取得している
         int lastMovieId = movieService.save(movie);
         // createMovie.add(movie);
+
         //ここからImage
         // Image image = new Image();
         image.setMovie_id(lastMovieId);
 
-        //サムネイル画像が投稿されているかどうかで処理を分岐
-        // if(movieForm.getThumbnail().isEmpty()) {
-        //     image.setImage("/images/noImage.jpg");
-        // } else {
-        //     StringBuffer data = new StringBuffer();
-        //     String base64     = Base64.getEncoder().encodeToString(movieForm.getThumbnail().getBytes());
-        //     data.append("data:image/;base64,");
-        //     data.append(base64);
-        //     image.setImage(data.toString());
-        //     }
         //サムネイル画像が投稿されているかどうかで処理を分岐
         if(movieForm.getThumbnail().getOriginalFilename().equals(movieForm.getMovie().getOriginalFilename())) {
             image.setImage("/images/noImage.jpg");
@@ -427,9 +314,6 @@ public class SampleController {
         imageService.save(image);
         // createMovie.add(image);
 
-        // return "redirect:/index";
-        // return "redirect:http://localhost:3000/index";
-        // return createMovie;
         return "OK";
     }
 
@@ -447,16 +331,6 @@ public class SampleController {
             movie = movieOpt.get();
         }
 
-        //今だけ変更中
-        // int loginUserId               = 1;
-        //ログインユーザー（つまり、削除ボタンを押したユーザー）を取得する
-        // int loginUserId = 0;
-        
-        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        // if(authentication.getPrincipal() instanceof DbUserDetails){
-        //     loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-        // }
-
         if(movie.getUserId() != loginUserId) {
             // model.addAttribute("error1", "エラー：ログイン中のユーザーと動画の投稿者が一致しませんでした。");
             // return "errorMessage";
@@ -464,31 +338,9 @@ public class SampleController {
 
         //動画を一件削除しリダイレクト
         movieService.deleteById(movieId);
-        // return "redirect:/index";
-        // return "redirect:http://localhost:3000/index";
         return "OK";
     } 
     
-    // @PostMapping("/search")
-    // // @ResponseBody
-    // //@RequestParamsで受け取れなかったため、@RequestBodyで代替
-    // public List<Object> search (@RequestBody String body,SearchForm searchForm, Model model) {
-    //     //不要なダブルクォーテーションをエスケープする
-    //     body = body.replaceAll("\"", "");
-    //     List<Object> searchResultsListsInfo =  new ArrayList<>();
-    //     if("".equals(searchForm.getSearchWord())) {
-    //         // return "index";
-    //     } else {
-    //         // List<Movie> searchResultsLists = movieService.findBySearchWordLike("%" + searchForm.getSearchWord() + "%");
-    //         List<Movie> searchResultsLists = movieService.findBySearchWordLike("%" + body + "%");
-    //         model.addAttribute("searchResultList", searchResultsLists);
-    //         model.addAttribute("searchResultListSize", searchResultsLists.size());
-    //         searchResultsListsInfo.add(searchResultsLists);
-    //         searchResultsListsInfo.add(searchResultsLists.size());
-    //     }
-    //     // return "search";
-    //     return searchResultsListsInfo;
-    // }
     @PostMapping("/search")
     // @ResponseBody
     //@RequestParamsで受け取れなかったため、@RequestBodyで代替
@@ -506,9 +358,9 @@ public class SampleController {
             searchResultsListsInfo.add(searchResultsLists);
             searchResultsListsInfo.add(searchResultsLists.size());
         }
-        // return "search";
         return searchResultsListsInfo;
     }
+
     //新規追加(ログインユーザーIDのみをかえす)
     @GetMapping("/auth")
     // @ResponseBody

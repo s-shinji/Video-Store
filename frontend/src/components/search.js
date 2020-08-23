@@ -11,8 +11,6 @@ class Search extends Component{
     this.state = {
       youtubeLogo: null
     }
-    // this.onMouseOver = this.onMouseOver.bind(this)
-    // this.onMouseLeave = this.onMouseLeave.bind(this)
   }
 
   onMouseEnter(key) {

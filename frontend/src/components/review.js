@@ -1,21 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Field, reduxForm} from 'redux-form'
+import { reduxForm} from 'redux-form'
 import {postReview} from  '../actions'
 import { withRouter } from 'react-router';
 
 class Review extends Component {
-  // constructor(props) {
-  //   super(props)
-  //   this.onSubmit = this.onSubmit.bind(this)
-  // }
-
-  // renderField(field) {
-  //   const { input, type, id, style, accept} = field
-  //   return(
-  //     <input {...input} type={type} id={id} style={style}  accept={accept} />
-  //   )
-  // }
 
   async onSubmit(review) {
     let hashReviewInfo = {}
@@ -23,8 +12,6 @@ class Review extends Component {
     hashReviewInfo.movieId = this.props.movie[1].id
     hashReviewInfo.loginUserId = this.props.loginUserId
     await this.props.postReview(hashReviewInfo)
-    // console.log(this.props.movie)
-    // await this.props.history.push(`/video/${this.props.movie[1].id}`)
   }
 
   renderReview() {
@@ -34,7 +21,7 @@ class Review extends Component {
     const loginUserId = props.loginUserId
     const myReview = props.movie[2] ? props.movie[2] : ""
     const reviewNum = props.movie[3] ? props.movie[3] : ""
-    const {handleSubmit} = props
+    // const {handleSubmit} = props
 
     const style2 = {
       color:"#28a745"
@@ -62,26 +49,6 @@ class Review extends Component {
     } else if(loginUserId != movieId && loginUserId != 0) {
       return(
         <div className="review">
-          {/* <form name="formName1"action="@{/review/{id}(id=${movie.id})}" method="POST" hadleonSubmit> */}
-            {/* 以下のreview済みかどうかの分岐は、後で、reviewのコンポーネントを別途作成し呼び出す形にするかも？(matchReviewを取得するにはUserId情報が必要なため後回し) */}
-            {/* <!-- 既にreview済みかどうかで分岐 --> */}
-            {/* 三項演算子でequals文がうまくいかないため「==」で代用 */}
-            {/* {myReview == "good" ? 
-              <a className="reviewIcon reviewLink link1 ajax_btn1" style={style2}>
-                <i className="far fa-grin-squint"></i>
-                <span className="reviewCount1">{reviewNum.good}</span>
-              </a>
-            :
-              <React.Fragment>
-                <a className="reviewIcon reviewLink link1 ajax_btn1">
-                  <i className="far fa-grin-squint"></i>
-                  <span className="reviewCount1">{reviewNum.good}</span>       
-                </a>
-                <input type="hidden" name="review" value="good" className="sendReview1" />
-              </React.Fragment>
-            }
-          </form> */}
-
           {/* <!-- 既にreview済みかどうかで分岐 --> */}
           {/* 三項演算子でequals文がうまくいかないため「==」で代用 */}
           {myReview == "good" ? 

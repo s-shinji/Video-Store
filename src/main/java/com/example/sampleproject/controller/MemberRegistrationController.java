@@ -1,8 +1,8 @@
 package com.example.sampleproject.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+// import org.springframework.stereotype.Controller;
+// import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -35,31 +35,6 @@ public class MemberRegistrationController {
 	// 	return "RegistrationForm";
 	// }
 
-	// @RequestMapping("/Register")
-	// public String registerUser(@Validated @ModelAttribute MemberRegistrationForm memberRegistrationForm,
-	// 							BindingResult result) {
-    //     if(result.hasErrors()) {
-    //         return "RegistrationForm";
-	// 	}
-		
-	// 	if (!(memberRegistrationForm.getPasswordConfirmation().equals(memberRegistrationForm.getPassword()))) {
-	// 		result.rejectValue("passwordConfirmation",null, "パスワードが一致してません。");
-    //         return "RegistrationForm";
-	// 	}
-
-	// 	//USERテーブルにinsertする時の引数。
-	// 	// MemberRegistrationEntity entity = new MemberRegistrationEntity();
-
-	// 	entity.setName(memberRegistrationForm.getName());
-	// 	entity.setEmail(memberRegistrationForm.getEmail());
-	// 	entity.setPassword(memberRegistrationForm.getPassword());
-	// 	entity.setAvatar("/images/default.jpeg");
-
-	// 	//USERテーブルにinsertする。
-	// 	registMemberService.registerMember(entity);
-
-	// 	return "Result";
-	// }
 	@RequestMapping("/Register")
 	public int registerUser(@Validated @ModelAttribute MemberRegistrationForm memberRegistrationForm,
 								BindingResult result,

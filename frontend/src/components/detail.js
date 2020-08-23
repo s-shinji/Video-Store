@@ -5,7 +5,7 @@ import HeaderA from './headerA';
 import Review from './review';
 import { readMovieDetail,deleteMovie } from '../actions' 
 import { Link } from 'react-router-dom';
-import { Field, reduxForm} from 'redux-form'
+import { reduxForm} from 'redux-form'
 
 class Detail extends Component{
 
@@ -13,94 +13,7 @@ class Detail extends Component{
     const id = this.props.match.params.id
     const loginUserId = this.props.loginUserId
     this.props.readMovieDetail(id,loginUserId)
-    // console.log(this.props)
   }
-  // componentDidUpdate () {
-  //   console.log("test")
-  //   //profileが更新された際に返されるレスポンスでmovieステートを更新(そのため、レスポンスのstatusを指定することで200が返って来るはず)
-  //   if(this.props.movie.status == 200) {
-  //     const id = this.props.match.params.id
-  //     const loginUserId = this.props.loginUserId
-  //     this.props.readMovieDetail(id,loginUserId)
-  //   }
-  // }
-
-  //Review情報に関する関数
-  // renderReview() {
-  //   const props = this.props
-  //   const movieId = props.movie[1] ? props.movie[1].id : ""
-  //   const style2 = {
-  //     color:"#28a745"
-  //   }
-
-  //   {/* <!-- ログインユーザーと投稿者が等しいまたはログインしていない場合 --> */}
-  //   if(props.movie[2] == movieId || props.movie[2] == 0){
-  //     return(
-  //       <div className="review">
-  //         <div className="reviewIcon">
-  //           <i className="far fa-grin-squint"></i>
-  //           <span className="reviewCount">{props.movie[2] ? props.movie[2].good : ""}</span>
-  //         </div>
-  //         <div className="reviewIcon">
-  //           <i className="far fa-smile"></i>
-  //           <span className="reviewCount">{props.movie[2] ? props.movie[2].normal : ""}</span>
-  //         </div>
-  //         <div className="reviewIcon">
-  //           <i className="far fa-sad-tear"></i>
-  //           <span className="reviewCount">{props.movie[2] ? props.movie[2].bad : ""}</span>
-  //         </div>
-  //       </div>
-  //     )
-  //     {/* <!-- ログインユーザーと投稿者が等しくない場合はリンク化 --> */}
-  //   } else if(props.movie[2] != movieId || props.movie[2] != 0) {
-  //     return(
-  //       <div className="review">
-  //         <form name="formName1"action="@{/review/{id}(id=${movie.id})}" method="POST">
-  //           {/* 以下のreview済みかどうかの分岐は、後で、reviewのコンポーネントを別途作成し呼び出す形にするかも？(matchReviewを取得するにはUserId情報が必要なため後回し) */}
-  //           {/* <!-- 既にreview済みかどうかで分岐 --> */}
-  //           <a if="${matchReview.equals('good')}"  className="reviewIcon reviewLink link1 ajax_btn1" style={style2}>
-  //             <i className="far fa-grin-squint"></i>
-  //             <span className="reviewCount1" text={props.movie[2] ? props.movie[2].good : ""}>0</span>
-  //           </a>
-  //           <a if="${!(matchReview.equals('good'))}"  className="reviewIcon reviewLink link1 ajax_btn1">
-  //             <i className="far fa-grin-squint"></i>
-  //             <span className="reviewCount1" text={props.movie[2] ? props.movie[2].good : ""}>0</span>       
-  //           </a>
-  //           <input type="hidden" name="review" value="good" className="sendReview1" />
-  //         </form>
-
-  //         <form name="formName2"action="@{/review/{id}(id=${movie.id})}" method="POST">
-  //           {/* <!-- 既にreview済みかどうかで分岐 --> */}
-  //           <a if="${matchReview.equals('normal')}"  className="reviewIcon reviewLink link2 ajax_btn2" style={style2}>
-  //             <i className="far fa-smile"></i>
-  //             <span className="reviewCount2" text={props.movie[2] ? props.movie[2].normal : ""}>0</span>
-  //           </a>
-  //           <a if="${!(matchReview.equals('normal'))}" className="reviewIcon reviewLink link2 ajax_btn2">
-  //             <i className="far fa-smile"></i>
-  //             <span className="reviewCount2" text={props.movie[2] ? props.movie[2].normal : ""}>0</span>
-  //           </a>
-  //           <input type="hidden" name="review" value="normal" className="sendReview2" />
-
-  //         </form>
-
-  //         <form name="formName3"action="@{/review/{id}(id=${movie.id})}" method="POST">
-  //           {/* <!-- 既にreview済みかどうかで分岐 --> */}
-  //           <a if="${matchReview.equals('bad')}" className="reviewIcon reviewLink link3 ajax_btn3" style={style2}>
-  //             <i className="far fa-sad-tear"></i>
-  //             <span className="reviewCount3" text={props.movie[2] ? props.movie[2].bad : ""}>0</span>
-  //           </a>   
-  //           <a if="${!(matchReview.equals('bad'))}" className="reviewIcon reviewLink link3 ajax_btn3">
-  //             <i className="far fa-sad-tear"></i>
-  //             <span className="reviewCount3" text={props.movie[2] ? props.movie[2].bad : ""}>0</span>
-  //           </a>   
-  //           <input type="hidden" name="review" value="bad" className="sendReview3" />
-
-  //         </form>
-
-  //       </div>
-  //     )
-  //   }
-  // }
   async onSubmit(movieId) {
     let arrayDeleteInfo = []
     arrayDeleteInfo.push(movieId)
@@ -148,7 +61,6 @@ class Detail extends Component{
             <span id="views">{`再生回数: ${views}回`}</span>
           </div>
           {/* Review情報に関する関数呼び出し */}
-          {/* {this.renderReview()} */}
           <Review />
 
         </div>

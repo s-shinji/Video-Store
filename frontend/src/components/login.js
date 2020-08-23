@@ -60,12 +60,6 @@ class Login extends Component{
             <label htmlFor="inputPassword" className="sr-only">パスワード</label>
             {/* <input type="password" id="inputPassword password"  name="password" className="form-control" placeholder="パスワード" style={style} required /> */}
             <Field type="password" id="inputPassword password"  name="password" className="form-control" placeholder="パスワード" style={style}  component={this.renderField}/>
-            <div className="checkbox mb-3">
-              <label>
-                {/* <input type="checkbox" value="remember-me" /> 保存する */}
-                {/* <Field type="checkbox" value="remember-me" component={this.renderField}/> 保存する */}
-              </label>
-            </div>
             <button className="btn btn-lg btn-success btn-block" type="submit" disabled={pristine || submitting || invalid}>ログイン</button>
             <Link to="/RegistrationForm"className="btn btn-lg btn-success btn-block" type="submit">新規登録</Link>
             <p className="mt-5 mb-3 text-muted">&copy; 2020</p>
