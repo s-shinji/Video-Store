@@ -38,9 +38,9 @@ public class ReviewController {
 									  , @RequestParam("review") String reviewString
 									  , @RequestParam int loginUserId) {
 		// reviewのhiddenが不正に操作された場合の処理
-		if(!("good".equals(reviewString) || "normal".equals(reviewString) || "bad".equals(reviewString))) {
-			return "エラー：レビューの値が不正です";
-		}
+		// if(!("good".equals(reviewString) || "normal".equals(reviewString) || "bad".equals(reviewString))) {
+		// 	return "エラー：レビューの値が不正です";
+		// }
 
 		review.setReview(reviewString);
 		review.setMovie_id(movieId);
@@ -49,20 +49,21 @@ public class ReviewController {
 
 		//投稿者が自らの動画にReviewをするためにhiddenタグを不正に操作された場合の処理
 		//依存関係？
-		Optional<Movie> movieOpt = movieService.getUserIdByMovieId(movieId);
+		// Optional<Movie> movieOpt = movieService.getUserIdByMovieId(movieId);
 		// Movie movie              = new Movie();
-		if(movieOpt.isPresent()) {
-			movie = movieOpt.get();
-		}
-		if(movie.getUserId() == loginUserId) {
-			return "エラー：ログイン中のユーザーと動画の投稿者が同じです。";
-		}
+		// if(movieOpt.isPresent()) {
+		// 	movie = movieOpt.get();
+		// }
+		// if(movie.getUserId() == loginUserId) {
+		// 	return "エラー：ログイン中のユーザーと動画の投稿者が同じです。";
+		// }
 
 
 		//同ユーザーがReviewを複数回した場合以前の分を削除する
 		reviewService.deleteReview(movieId,loginUserId);
 		//新たなReviewを登録する
 		reviewService.insertReview(review);
+		
 		//Reviewの値を取得する
         List<Review> reviewLists          = reviewService.findReviewById(movieId);
         Map<String,Integer> reviewMap     = new HashMap<String, Integer>();
