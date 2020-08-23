@@ -12,7 +12,7 @@
 //     }
 //   }
 
-//   componentWillMount () {
+//   componentDidMount () {
 //     const URL = 'http://localhost:8080/getBirthStoneList'
 //     fetch(URL, {mode: 'cors'})
 //     .then(res => res.json())

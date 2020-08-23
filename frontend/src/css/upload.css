@@ -1,0 +1,109 @@
+.uploadFlex {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* width: 500px; */
+  /* margin: 0 auto; */
+}
+
+.uploadFlex2 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.uploadBox {
+  cursor: pointer;
+  border: #28a745 1px solid;
+  padding: 50px 0;
+  margin-top: 60px; 
+  width: 300px;
+}
+
+#upfile {
+  display: none;
+}
+
+#upfile2 {
+  display: none;
+}
+
+.fa-video {
+  display: block;
+  font-size: 30px;
+  color: #28a745;
+  width: 35px;
+  margin: 0 auto;
+}
+
+.fa-image {
+  display: block;
+  font-size: 30px;
+  color: #28a745;
+  width: 35px;
+  margin: 0 auto;
+}
+
+/* #preview {
+  background-color: black;
+} */
+
+.movie {
+  display: block;
+  height: 150px;
+  width: 300px;
+  margin: 0 auto;
+}
+.thumbnail {
+  display: block;
+  height: 150px;
+  width: 300px;
+  margin: 0 auto;
+}
+
+.uploadSubmit {
+  display: block;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  padding: 5px;
+  border: #28a745 1px solid;
+  border-radius: 5px;
+  background-color: #28a745;
+  width: 500px;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.uploadError {
+  margin-top: 30px;
+}
+
+.uploadParts {
+  text-align: center;
+  color: #28a745;
+}
+
+.uploadTitle {
+  padding-top: 60px;
+  width: 500px;
+  margin: 0 auto;
+}
+
+#title {
+  width: 500px;
+}
+
+.previewBox {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 100px;
+}
+
+.uploadForm {
+  width: 1000px;
+  margin: 0 auto;
+}
+
+.previewBox{
+  margin-top: 56px;
+}

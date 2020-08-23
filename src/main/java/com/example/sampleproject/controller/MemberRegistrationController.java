@@ -7,12 +7,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.sampleproject.entity.MemberRegistrationEntity;
 import com.example.sampleproject.form.MemberRegistrationForm;
 import com.example.sampleproject.service.RegisterMemberService;
 
-@Controller
+// @Controller
+@RestController
 public class MemberRegistrationController {
 
 	@Autowired
@@ -23,38 +26,85 @@ public class MemberRegistrationController {
 	/**
 	 * 会員情報入力画面に遷移する。
 	 */
-	@RequestMapping("/RegistrationForm")
-	public String showRegistMemberForm(Model model) {
+	// @RequestMapping("/RegistrationForm")
+	// public String showRegistMemberForm(Model model) {
 
-		model.addAttribute(new MemberRegistrationForm());
+	// 	model.addAttribute(new MemberRegistrationForm());
 
-		//会員情報入力画面。
-		return "RegistrationForm";
-	}
+	// 	//会員情報入力画面。
+	// 	return "RegistrationForm";
+	// }
 
-	@RequestMapping("/Register")
-	public String registerUser(@Validated @ModelAttribute MemberRegistrationForm memberRegistrationForm,
-								BindingResult result) {
-        if(result.hasErrors()) {
-            return "RegistrationForm";
-		}
+	// @RequestMapping("/Register")
+	// public String registerUser(@Validated @ModelAttribute MemberRegistrationForm memberRegistrationForm,
+	// 							BindingResult result) {
+    //     if(result.hasErrors()) {
+    //         return "RegistrationForm";
+	// 	}
 		
-		if (!(memberRegistrationForm.getPasswordConfirmation().equals(memberRegistrationForm.getPassword()))) {
-			result.rejectValue("passwordConfirmation",null, "パスワードが一致してません。");
-            return "RegistrationForm";
+	// 	if (!(memberRegistrationForm.getPasswordConfirmation().equals(memberRegistrationForm.getPassword()))) {
+	// 		result.rejectValue("passwordConfirmation",null, "パスワードが一致してません。");
+    //         return "RegistrationForm";
+	// 	}
+
+	// 	//USERテーブルにinsertする時の引数。
+	// 	// MemberRegistrationEntity entity = new MemberRegistrationEntity();
+
+	// 	entity.setName(memberRegistrationForm.getName());
+	// 	entity.setEmail(memberRegistrationForm.getEmail());
+	// 	entity.setPassword(memberRegistrationForm.getPassword());
+	// 	entity.setAvatar("/images/default.jpeg");
+
+	// 	//USERテーブルにinsertする。
+	// 	registMemberService.registerMember(entity);
+
+	// 	return "Result";
+	// }
+	@RequestMapping("/Register")
+	public int registerUser(@Validated @ModelAttribute MemberRegistrationForm memberRegistrationForm,
+								BindingResult result,
+								@RequestParam("name") String name,
+								@RequestParam("email") String email, 
+								@RequestParam("password") String password,
+								@RequestParam("passwordConfirmation") String passwordConfirmation) {
+        if(result.hasErrors()) {
+			//ユーザー名とメールアドレスの重複の場合
+			// if("すでに登録済みのメールアドレスです".equals(result.getAllErrors().get(0).getDefaultMessage()) &&
+			//    "すでに登録済みのユーザー名です".equals(result.getAllErrors().get(1).getDefaultMessage())) {
+			// 	return 1;
+			// }
+
+			//ユーザー名の重複の場合
+			if("すでに登録済みのユーザー名です".equals(result.getAllErrors().get(0).getDefaultMessage())) {
+				return 2;
+			}
+			//メールアドレスの重複の場合
+			if("すでに登録済みのメールアドレスです".equals(result.getAllErrors().get(0).getDefaultMessage())) {
+				return 3;
+			}
+
+		//     return "RegistrationForm";
+		}
+
+		//パスワード不一致の場合
+		if (!(passwordConfirmation.equals(password))) {
+		// 	result.rejectValue("passwordConfirmation",null, "パスワードが一致してません。");
+		//     return "RegistrationForm";
+			return 4;
 		}
 
 		//USERテーブルにinsertする時の引数。
 		// MemberRegistrationEntity entity = new MemberRegistrationEntity();
 
-		entity.setName(memberRegistrationForm.getName());
-		entity.setEmail(memberRegistrationForm.getEmail());
-		entity.setPassword(memberRegistrationForm.getPassword());
+		entity.setName(name);
+		entity.setEmail(email);
+		entity.setPassword(password);
 		entity.setAvatar("/images/default.jpeg");
 
 		//USERテーブルにinsertする。
 		registMemberService.registerMember(entity);
 
-		return "Result";
+		return 0;
 	}
+
 }

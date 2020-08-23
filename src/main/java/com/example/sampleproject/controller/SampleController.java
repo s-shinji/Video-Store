@@ -23,25 +23,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
+// import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 
-@Controller
+// @Controller
+@RestController
 public class SampleController {
 
     private final MovieService movieService;
@@ -69,33 +74,37 @@ public class SampleController {
         return new MovieForm();
     }
     
-    @RequestMapping("/")
-    public String top() {
-        return "top";
-    }
-    @RequestMapping("/top")
-    public String top2() {
-        return "top";
-    }
+    // @RequestMapping("/")
+    // public String top() {
+    //     return "top";
+    // }
+    // @RequestMapping("/top")
+    // public String top2() {
+    //     return "top";
+    // }
 
-    @RequestMapping("/upload")
-    public String upload(Model model) {
-        //ログインユーザーを取得
-        int loginUserId = 0;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    if(authentication.getPrincipal() instanceof DbUserDetails){
-            loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-	    	model.addAttribute("loginUser", loginUserId);
-	    }else{
-	    	model.addAttribute("loginUser", "");
-        }	
+    // @RequestMapping("/upload")
+    // // @ResponseBody
+    // public String upload(Model model) {
+    //     //ログインユーザーを取得
+    //     int loginUserId = 0;
+    //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	//     if(authentication.getPrincipal() instanceof DbUserDetails){
+    //         loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+	//     	model.addAttribute("loginUser", loginUserId);
+	//     }else{
+	//     	model.addAttribute("loginUser", "");
+    //     }	
 
-        return "upload";
-    }
-    @CrossOrigin(origins = "http://localhost:3000")
+    //     // return loginUserId;
+    //     return "upload";
+    // }
+    // @CrossOrigin(origins = "http://localhost:3000")
+
+
     @GetMapping("/index")
-    @ResponseBody
-    public List<Object> index(Model model){
+    // @ResponseBody
+    public List<Object> index(Model model,@RequestParam int loginUserId){
         List<Object> allItem = new ArrayList<>();
 
 
@@ -142,62 +151,135 @@ public class SampleController {
         allItem.add(top5Views);
 
         //index.htmlでユーザー情報を取得したい場合に用いる(現在ログイン中のユーザー情報を取得)
-        int loginUserId = 0;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    if(authentication.getPrincipal() instanceof DbUserDetails){
-            loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-	    	model.addAttribute("loginUser", loginUserId);
-	    }else{
-	    	model.addAttribute("loginUser", "");
-        }	
+        //通知機能を省いたことで必要性は現時点ではない
+        allItem.add(loginUserId);
 
         //フォローユーザーが新たな動画を投稿していた場合に通知する処理
-        if(loginUserId == 0) {
-        } else{
-            List<Integer> followingUserIdList  = followService.findFollowingById(loginUserId);
-            List<Movie> followingUserLatestMovieList = new ArrayList<>();
-            for(int followingUser : followingUserIdList) {
-                //フォローユーザーに動画が存在する場合
-                if(!(movieService.getFollowingUserLatestMovie(followingUser) == null)) {
-                    Movie followingUserLatestInfo = movieService.getFollowingUserLatestMovie(followingUser);
+        // if(loginUserId == 0) {
+        // } else{
+            // List<Integer> followingUserIdList  = followService.findFollowingById(loginUserId);
+            // List<Movie> followingUserLatestMovieList = new ArrayList<>();
+            // for(int followingUser : followingUserIdList) {
+            //     //フォローユーザーに動画が存在する場合
+            //     if(!(movieService.getFollowingUserLatestMovie(followingUser) == null)) {
+            //         Movie followingUserLatestInfo = movieService.getFollowingUserLatestMovie(followingUser);
 
-                    //コードが長くなるため一度変数に格納(movieテーブルの最新情報)
-                    LocalDateTime followingUserLatestCreatedOnMovieTable = followingUserLatestInfo.getCreated();
+            //         //コードが長くなるため一度変数に格納(movieテーブルの最新情報)
+            //         LocalDateTime followingUserLatestCreatedOnMovieTable = followingUserLatestInfo.getCreated();
 
-                    //一度もフォローユーザーの情報がnotificationに格納されていない場合はnullが返ってくるためその処理(以下の処理はnullじゃない場合に実行される)
-                    if((notificationService.getLatestCreated(followingUserLatestInfo.getUserId(), loginUserId)).isPresent()) {
-                        //コードが長くなるため一度変数に格納(notificationテーブルの最新情報)
-                        LocalDateTime followingUserLatestCreatedOnNotificationTable = notificationService.getLatestCreated(followingUserLatestInfo.getUserId(), loginUserId).get().getCreated();
+            //         //一度もフォローユーザーの情報がnotificationに格納されていない場合はnullが返ってくるためその処理(以下の処理はnullじゃない場合に実行される)
+            //         if((notificationService.getLatestCreated(followingUserLatestInfo.getUserId(), loginUserId)).isPresent()) {
+            //             //コードが長くなるため一度変数に格納(notificationテーブルの最新情報)
+            //             LocalDateTime followingUserLatestCreatedOnNotificationTable = notificationService.getLatestCreated(followingUserLatestInfo.getUserId(), loginUserId).get().getCreated();
 
-                        // 今回送られてきたmovieテーブルからの情報が以前notificationに保存されていた作成日よりも前または同じ場合処理を飛ばす（フォローユーザーの最新動画が削除された場合に起こる）
-                        //compareToメソッドで引数の日付(notificationのデータ)より後の場合は0より大きい値が帰ってくるため、それ以外の値が返ってきた時にcontinueしている（つまり、作成日よりも前または同じ場合）
-                        if(!(followingUserLatestCreatedOnMovieTable.compareTo(followingUserLatestCreatedOnNotificationTable) > 0)) {
-                            continue;
-                        }
-                    }
-                    //Notificationのインスタンスを作成して詰め替える（for文の中のためDIできない）
-                    Notification notification = new Notification();
-                    notification.setMovie_id(followingUserLatestInfo.getId());
-                    notification.setFollowee_id(followingUserLatestInfo.getUserId());
-                    notification.setFollower_id(loginUserId);
-                    notification.setCreated(followingUserLatestCreatedOnMovieTable);
-                    //通知テーブルにおけるフォローユーザーの最新動画が更新されていない場合に更新した上でその情報をリストに追加する
-                    if(!(notificationService.searchLatestNotificationInfo(notification) == 1)) {
-                        followingUserLatestMovieList.add(movieService.getFollowingUserLatestMovie(followingUser));
-                    } 
-                }
-            }
+            //             // 今回送られてきたmovieテーブルからの情報が以前notificationに保存されていた作成日よりも前または同じ場合処理を飛ばす（フォローユーザーの最新動画が削除された場合に起こる）
+            //             //compareToメソッドで引数の日付(notificationのデータ)より後の場合は0より大きい値が帰ってくるため、それ以外の値が返ってきた時にcontinueしている（つまり、作成日よりも前または同じ場合）
+            //             if(!(followingUserLatestCreatedOnMovieTable.compareTo(followingUserLatestCreatedOnNotificationTable) > 0)) {
+            //                 continue;
+            //             }
+            //         }
+            //         //Notificationのインスタンスを作成して詰め替える（for文の中のためDIできない）
+            //         Notification notification = new Notification();
+            //         notification.setMovie_id(followingUserLatestInfo.getId());
+            //         notification.setFollowee_id(followingUserLatestInfo.getUserId());
+            //         notification.setFollower_id(loginUserId);
+            //         notification.setCreated(followingUserLatestCreatedOnMovieTable);
+            //         //通知テーブルにおけるフォローユーザーの最新動画が更新されていない場合に更新した上でその情報をリストに追加する
+            //         if(!(notificationService.searchLatestNotificationInfo(notification) == 1)) {
+            //             followingUserLatestMovieList.add(movieService.getFollowingUserLatestMovie(followingUser));
+            //         } 
+            //     }
+            // }
 
-            if(!(followingUserLatestMovieList.size() == 0)) {
-                model.addAttribute("followingUserLatestMovieList", followingUserLatestMovieList);
-            }
-        }
+            // if(!(followingUserLatestMovieList.size() == 0)) {
+            //     model.addAttribute("followingUserLatestMovieList", followingUserLatestMovieList);
+            //     //loginUserIdで実験中　ここがうまくいってない
+            //     allItem.add(followingUserLatestMovieList);
+            // }
+        // }
 
         return allItem;
     }
 
+    // @GetMapping("/video/{id}")
+    // // @ResponseBody
+    // public List<Object> video(@PathVariable("id") int movieId, Model model) {
+    //     List<Object> detailVideoInfo = new ArrayList<>();
+    //     //movieIdに紐づく動画を取得
+    //     Optional<Movie> movieOpt = movieService.getMovie(movieId);
+    //     if(movieOpt.isPresent()) {
+    //        movie = movieOpt.get();
+    //     }
+    //     StringBuffer data = new StringBuffer();
+    //     String base64_3   = Base64.getEncoder().encodeToString(movie.getMovie());
+    //     data.append("data:video/mp4;base64,");
+    //     data.append(base64_3);
+    //     model.addAttribute("convert", data.toString());
+    //     model.addAttribute("movie", movie);
+    //     detailVideoInfo.add(data.toString());
+    //     detailVideoInfo.add(movie);
+
+    //     //ログインユーザーを取得
+    //     int loginUserId               = 0;
+    //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	//     if(authentication.getPrincipal() instanceof DbUserDetails){
+    //         loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+    //         model.addAttribute("loginUser", loginUserId);
+    //         detailVideoInfo.add(loginUserId);
+    //         //ユーザーがログイン状態且つ動画投稿者じゃない場合に再生回数を+1
+    //         if(movie.getUserId() == loginUserId) {
+    //         } else {
+    //             //再生回数を+1
+    //             int views = movie.getViews();
+    //             views    += 1; 
+    //             movieService.updateViews(views, movieId);
+                
+    //         }
+
+    //         //既にReview済みの動画かどうかを判断するための処理
+    //         String matchReview = "";
+    //         if(reviewService.findMatchUserId(movieId,loginUserId) == null) {
+    //         } else {
+    //             matchReview = reviewService.findMatchUserId(movieId,loginUserId);
+    //         }
+    //         model.addAttribute("matchReview", matchReview);
+    //         detailVideoInfo.add(matchReview);
+	//     }else{
+    //         //ユーザーがログインしていない場合
+    //         //再生回数を+1
+    //         int views = movie.getViews();
+    //         views    += 1; 
+    //         movieService.updateViews(views, movieId);
+
+    //         model.addAttribute("loginUser", "");
+    //         detailVideoInfo.add(loginUserId);
+    //     }
+
+    //     //Review情報を取得
+    //     List<Review> reviewLists      = reviewService.findReviewById(movieId);
+    //     Map<String,Integer> reviewMap = new HashMap<String, Integer>();
+    //     reviewMap.put("good", 0);
+    //     reviewMap.put("normal", 0);
+    //     reviewMap.put("bad", 0);
+    //     for(Review reviewList : reviewLists) {
+    //         if("good".equals(reviewList.getReview())) {
+    //             reviewMap.put("good", reviewMap.get("good") + 1 );
+    //         } else if("normal".equals(reviewList.getReview())) {
+    //             reviewMap.put("normal", reviewMap.get("normal") + 1 );
+    //         } else if("bad".equals(reviewList.getReview())) {
+    //             reviewMap.put("bad", reviewMap.get("bad") + 1 );
+    //         }
+    //     }
+    //     model.addAttribute("reviewMap", reviewMap);
+    //     detailVideoInfo.add(reviewMap);
+
+    //     // return "detail";
+    //     return detailVideoInfo;
+    // }
     @GetMapping("/video/{id}")
-    public String video(@PathVariable("id") int movieId, Model model) {
+    // @ResponseBody
+    public List<Object> video(@PathVariable("id") int movieId, @RequestParam int loginUserId,Model model) {
+        List<Object> detailVideoInfo = new ArrayList<>();
         //movieIdに紐づく動画を取得
         Optional<Movie> movieOpt = movieService.getMovie(movieId);
         if(movieOpt.isPresent()) {
@@ -209,13 +291,17 @@ public class SampleController {
         data.append(base64_3);
         model.addAttribute("convert", data.toString());
         model.addAttribute("movie", movie);
-        //ログインユーザーを取得
-        int loginUserId               = 0;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    if(authentication.getPrincipal() instanceof DbUserDetails){
-            loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-            model.addAttribute("loginUser", loginUserId);
+        detailVideoInfo.add(data.toString());
+        detailVideoInfo.add(movie);
 
+        //ログインユーザーを取得
+        // int loginUserId               = 0;
+        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    // if(authentication.getPrincipal() instanceof DbUserDetails){
+        //     loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+        //     model.addAttribute("loginUser", loginUserId);
+        //     detailVideoInfo.add(loginUserId);
+        // if(loginUserId != 0) {
             //ユーザーがログイン状態且つ動画投稿者じゃない場合に再生回数を+1
             if(movie.getUserId() == loginUserId) {
             } else {
@@ -233,16 +319,17 @@ public class SampleController {
                 matchReview = reviewService.findMatchUserId(movieId,loginUserId);
             }
             model.addAttribute("matchReview", matchReview);
+            detailVideoInfo.add(matchReview);
+	    // }else if (loginUserId == 0){
+        //     //ユーザーがログインしていない場合
+        //     //再生回数を+1
+        //     int views = movie.getViews();
+        //     views    += 1; 
+        //     movieService.updateViews(views, movieId);
 
-	    }else{
-            //ユーザーがログインしていない場合
-            //再生回数を+1
-            int views = movie.getViews();
-            views    += 1; 
-            movieService.updateViews(views, movieId);
-
-	    	model.addAttribute("loginUser", "");
-        }
+        //     model.addAttribute("loginUser", "");
+        //     detailVideoInfo.add(loginUserId);
+        // }
 
         //Review情報を取得
         List<Review> reviewLists      = reviewService.findReviewById(movieId);
@@ -260,45 +347,74 @@ public class SampleController {
             }
         }
         model.addAttribute("reviewMap", reviewMap);
-    
+        detailVideoInfo.add(reviewMap);
 
-        return "detail";
+        // return "detail";
+        return detailVideoInfo;
     }
     
-    @PostMapping("/upload")
-    public String upload(@Validated MovieForm movieForm, BindingResult result, Model model ) throws Exception {
+    @PostMapping(value="/upload")
+    // @ResponseBody
+    public String upload(
+        @Validated MovieForm movieForm, BindingResult result, Model model,
+                         @RequestParam("movie") MultipartFile movieParams,  
+                         @RequestParam("thumbnail") MultipartFile thumbnailParams,  
+                         @RequestParam("title") String titleParams,
+                         @RequestParam("loginUserId") int idParams
+                        //  @RequestBody MovieForm movieForm
+                         ) throws Exception {
 
-        if(result.hasErrors()) {
-            return "upload";
+        if(movieForm.getLoginUserId() == 0) {
+            
         }
+        // List<Object> createMovie = new ArrayList<>();
+
+        // if(result.hasErrors()) {
+        //     return "upload";
+        // }
 
         // Movie movie = new Movie();
         // 動画投稿の処理
-        MultipartFile uploadFile = movieForm.getMovie();
-        if (uploadFile.isEmpty()) {
-            result.rejectValue("movie",null, "ファイルを選択してください");
-            return "upload";
-        }
+        // MultipartFile uploadFile = movieForm.getMovie();
+        // if (uploadFile.isEmpty()) {
+        //     result.rejectValue("movie",null, "ファイルを選択してください");
+        //     return "upload";
+        // }
         movie.setMovie(movieForm.getMovie().getBytes());
         movie.setCreated(LocalDateTime.now());
-        int loginUserId               = 0;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication.getPrincipal() instanceof DbUserDetails){
-            loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-            movie.setUserId(loginUserId);
-        }
+        //今だけ変更中
+        // int loginUserId               = 1;
+        // movie.setUserId(loginUserId);
+        // int loginUserId               = 0;
+        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // if(authentication.getPrincipal() instanceof DbUserDetails){
+        //     loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+        //     movie.setUserId(loginUserId);
+        // }
+        movie.setUserId(movieForm.getLoginUserId());
         //再生回数を0で設定
         movie.setViews(0);
         movie.setTitle(movieForm.getTitle());
 
         //movieテーブルに登録し、その際のmovie.idを戻り値として取得している
         int lastMovieId = movieService.save(movie);
+        // createMovie.add(movie);
         //ここからImage
         // Image image = new Image();
         image.setMovie_id(lastMovieId);
 
         //サムネイル画像が投稿されているかどうかで処理を分岐
-        if(movieForm.getThumbnail().isEmpty()) {
+        // if(movieForm.getThumbnail().isEmpty()) {
+        //     image.setImage("/images/noImage.jpg");
+        // } else {
+        //     StringBuffer data = new StringBuffer();
+        //     String base64     = Base64.getEncoder().encodeToString(movieForm.getThumbnail().getBytes());
+        //     data.append("data:image/;base64,");
+        //     data.append(base64);
+        //     image.setImage(data.toString());
+        //     }
+        //サムネイル画像が投稿されているかどうかで処理を分岐
+        if(movieForm.getThumbnail().getOriginalFilename().equals(movieForm.getMovie().getOriginalFilename())) {
             image.setImage("/images/noImage.jpg");
         } else {
             StringBuffer data = new StringBuffer();
@@ -309,14 +425,20 @@ public class SampleController {
             }
 
         imageService.save(image);
+        // createMovie.add(image);
 
-        return "redirect:/index";
+        // return "redirect:/index";
+        // return "redirect:http://localhost:3000/index";
+        // return createMovie;
+        return "OK";
     }
 
     @PostMapping("/delete")
+    // @ResponseBody
     public String delete (
         //hiddenのname属性をキーとしてvalueを受け取り変数movieIdに格納している
         @RequestParam("movieId") int movieId,
+        @RequestParam("loginUserId") int loginUserId,
         Model model) {
 
         //hiddenで送られてきたmovie.idをもとに投稿者のuser_idを取得する
@@ -324,34 +446,73 @@ public class SampleController {
         if(movieOpt.isPresent()) {
             movie = movieOpt.get();
         }
+
+        //今だけ変更中
+        // int loginUserId               = 1;
         //ログインユーザー（つまり、削除ボタンを押したユーザー）を取得する
-        int loginUserId = 0;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication.getPrincipal() instanceof DbUserDetails){
-            loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
-        }
+        // int loginUserId = 0;
+        
+        // Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // if(authentication.getPrincipal() instanceof DbUserDetails){
+        //     loginUserId = ((DbUserDetails)authentication.getPrincipal()).getUserId();
+        // }
 
         if(movie.getUserId() != loginUserId) {
-            model.addAttribute("error1", "エラー：ログイン中のユーザーと動画の投稿者が一致しませんでした。");
-            return "errorMessage";
+            // model.addAttribute("error1", "エラー：ログイン中のユーザーと動画の投稿者が一致しませんでした。");
+            // return "errorMessage";
         }
 
         //動画を一件削除しリダイレクト
         movieService.deleteById(movieId);
-        return "redirect:/index";
+        // return "redirect:/index";
+        // return "redirect:http://localhost:3000/index";
+        return "OK";
     } 
-
+    
+    // @PostMapping("/search")
+    // // @ResponseBody
+    // //@RequestParamsで受け取れなかったため、@RequestBodyで代替
+    // public List<Object> search (@RequestBody String body,SearchForm searchForm, Model model) {
+    //     //不要なダブルクォーテーションをエスケープする
+    //     body = body.replaceAll("\"", "");
+    //     List<Object> searchResultsListsInfo =  new ArrayList<>();
+    //     if("".equals(searchForm.getSearchWord())) {
+    //         // return "index";
+    //     } else {
+    //         // List<Movie> searchResultsLists = movieService.findBySearchWordLike("%" + searchForm.getSearchWord() + "%");
+    //         List<Movie> searchResultsLists = movieService.findBySearchWordLike("%" + body + "%");
+    //         model.addAttribute("searchResultList", searchResultsLists);
+    //         model.addAttribute("searchResultListSize", searchResultsLists.size());
+    //         searchResultsListsInfo.add(searchResultsLists);
+    //         searchResultsListsInfo.add(searchResultsLists.size());
+    //     }
+    //     // return "search";
+    //     return searchResultsListsInfo;
+    // }
     @PostMapping("/search")
-    public String search (SearchForm searchForm, Model model) {
+    // @ResponseBody
+    //@RequestParamsで受け取れなかったため、@RequestBodyで代替
+    public List<Object> search (@RequestParam("searchWord") String searchWord,SearchForm searchForm, Model model) {
+        //不要なダブルクォーテーションをエスケープする
+        // body = body.replaceAll("\"", "");
+        List<Object> searchResultsListsInfo =  new ArrayList<>();
         if("".equals(searchForm.getSearchWord())) {
-            return "index";
+            // return "index";
         } else {
             List<Movie> searchResultsLists = movieService.findBySearchWordLike("%" + searchForm.getSearchWord() + "%");
+            // List<Movie> searchResultsLists = movieService.findBySearchWordLike("%" + body + "%");
             model.addAttribute("searchResultList", searchResultsLists);
             model.addAttribute("searchResultListSize", searchResultsLists.size());
+            searchResultsListsInfo.add(searchResultsLists);
+            searchResultsListsInfo.add(searchResultsLists.size());
         }
-        return "search";
+        // return "search";
+        return searchResultsListsInfo;
     }
-    
-    
+    //新規追加(ログインユーザーIDのみをかえす)
+    @GetMapping("/auth")
+    // @ResponseBody
+    public int auth(@AuthenticationPrincipal DbUserDetails userDetails){
+        return userDetails.getUserId();
+    }    
 }

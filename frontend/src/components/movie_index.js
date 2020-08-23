@@ -1,99 +1,146 @@
 import React, { Component } from 'react';
-import fetch from 'node-fetch'
 import _ from 'lodash'
-// import $ from 'jquery'
+import { Link } from 'react-router-dom';
+import HeaderA from './headerA';
+import { readMovieIndex,deleteMovie } from '../actions' 
+import { connect } from 'react-redux'
+import { Field, reduxForm} from 'redux-form'
+
+import {SimpleSlider} from './reactSlick'
+// import {  Notifications } from 'react-push-notification' ;
+import Announcement from 'react-announcement'
+import { withCookies, Cookies } from 'react-cookie';
+import { instanceOf } from 'prop-types';
+import Logo from '../images/インフォメーションアイコン3.png'
+
 
 class MovieIndex extends Component{
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired
+  };
   constructor(props) {
     super(props)
-    this.state = {
-      movieList: [],
-      top5Views: []
+    this.onSubmit = this.onSubmit.bind(this)
+    const { cookies } = props;
+    //なぜbanner?
+    cookies.remove('banner')
+  }
+  
+  componentDidMount () {
+    //loginUserIdで実験中
+    this.props.readMovieIndex(this.props.loginUserId)
+  }
+  
+  //deleteの反映で必要
+  componentDidUpdate (prevProps) {
+    if(this.props.movies[0] != prevProps.movies[0] ) {
+      //loginUserIdで実験中
+      this.props.readMovieIndex(this.props.loginUserId)
     }
   }
 
-  componentWillMount () {
-    const URL = 'http://localhost:8080/index'
-    fetch(URL, {mode: 'cors'})
-    .then(res => 
-      res.json())
-    .then(data => {
-      this.setState({
-        movieList: data[0],
-        top5Views: data[1]
-      })
 
-    });
+  async onSubmit(movieId) {
+    let arrayDeleteInfo = []
+    arrayDeleteInfo.push(movieId)
+    arrayDeleteInfo.push(this.props.loginUserId)
+    await this.props.deleteMovie(arrayDeleteInfo)
+    console.log(this.props)
+    await this.props.history.push("/index")
+
+  }
+  renderField(field) {
+    const {input, type, value} = field
+    return(
+      <input {...input} type={type} value={value}/>
+    )
   }
 
-  // componentDidMount() {
-  //   $('#loopSlide ul').simplyScroll({
-  //     autoMode: 'loop',
-  //     speed: 1,
-  //     frameRate: 24,
-  //     horizontal: true,
-  //     pauseOnHover:   true,
-  //     pauseOnTouch: true
-  //   });
-  // }
-
-  
   renderMovie() {
-    const top5Views = _.map(this.state.top5Views, (value,key) => {
-      console.log(value)
-      return(
-        <React.Fragment key={`top5Views${key}`}>
-          <li className="indexLoop jsMovie1">
-            <a className="loopLink">
-              <img src={value[1]} height="225px" width="400px" />
-            </a>
-          </li>
-        </React.Fragment>
-      )
+    const props = this.props
+    const loginUserId = props.loginUserId
+    const {handleSubmit} = props
 
-    })
+    console.log(props)
+    
+    // const handleTop5Views = _.map(props.movies[1], (value,key) => {
+    //   const style = {
+    //     marginTop: "60px"
+    //   }
+  
+    //   return(
+    //     <React.Fragment key={`top5Views${key}`}>
+    //       <li className="indexLoop jsMovie1" style={style}>
+    //         <Link to={`/video/${value[0]}`} className="loopLink" >
+    //           <img src={value[1]} height="225px" width="400px" />
+    //         </Link>
+    //       </li>
+    //     </React.Fragment>
+    //   )
 
-    const movie = _.map(this.state.movieList,(value,key) => {
-      const style={
+    // })
+
+    const handleMovie = _.map(props.movies[0],(value,key) => {
+      const style2={
         display: "block"
       }
+      const style3 ={
+        paddingTop:"15px",
+        paddingBottom:"15px"
+      }
       return(
-          
-          <div key={`movieList${key}`}>
-            <a className="movieLink jsMovie2" id={key}>
-              <div className="thumbnailBox" id={`imgSrc_${key}`}>
-                <img src={value.image.image} height="150px" width="300px" className="movieIndex" id="hoverChange" />
+          <React.Fragment key={`movieList${key}`}>
+            <div style={style3}>
+              <Link to={`/video/${value.id}`} className="movieLink jsMovie2" id={key}>
+                <div className="thumbnailBox" id={`imgSrc_${key}`}>
+                  <img src={value.image.image} height="150px" width="300px" className="movieIndex" id="hoverChange" />
+                </div>
+                <div className="movieTitle">{value.title}</div>
+              </Link>
+      
+              <div className="indexInfo">
+                <div>
+                  <Link to={`/user/${value.userId}`} className="postUserName" style={style3}>
+                    <img src={value.user.avatar} className="upAvatar" height="50px" width="50px" />
+                    <span id="postUser">投稿者:{value.user.name}</span>
+                  </Link>
+                </div>
+                <div>
+                  <label htmlFor = "views">再生回数:</label>
+                  <span id="views">{`${value.views}回`}</span>
+                </div>
               </div>
-              <div text={value.title} className="movieTitle">{value.title}</div>
-            </a>
-    
-            <div className="indexInfo">
-              <div>
-                <a  className="postUserName" style={style}>
-                  <img src="" alt="" src={value.user.avatar} className="upAvatar" height="50px" width="50px" />
-                  <span id="postUser" text={value.user.name}>投稿者:{value.user.name}</span>
-                </a>
-              </div>
-              <div>
-                <label htmlFor = "views">再生回数:</label>
-                <span id="views" text={`${value.views}回`}>{`${value.views}回`}</span>
-              </div>
+              {/* <!-- 現在ログイン中のユーザーと動画投稿者が同じな場合、削除ボタンを表示する --> */}
+              {loginUserId == value.userId &&
+                <form onSubmit={handleSubmit(() => this.onSubmit(value.id))}>
+                  {/* <!-- このname属性が@RequestParamで受け取る際のキーになる（受け取る値はvalue属性） --> */}
+                  <input type="hidden" name="movieId" value={value.id} />
+                  {/* <Field type="hidden" name="movieId" value={value.id} component={this.renderField}/> */}
+                  {/* <input type="hidden" name="loginUserId" value={loginUserId} /> */}
+                  {/* <Field type="hidden" name="loginUserId" value={loginUserId} component={this.renderField}/> */}
+                  <input type="submit" value="削除" className="deleteBtn" />
+                </form>    
+              }
             </div>
-          </div>
+
+          </React.Fragment>
+        
       )
       
     })
 
     return (
       <main role="main" className="mainBackground">
+        {/* {handleNotification} */}
         <div id="loopSlide">
           <ul className="jsMovie1">
-            {top5Views}
+            {/* {handleTop5Views} */}
+            <SimpleSlider value={this.props.movies[1]} />
           </ul>
         </div>
         <div className="images">
           <div className="image">
-            {movie}
+            {handleMovie}
           </div>
         </div>
       </main>    
@@ -103,11 +150,16 @@ class MovieIndex extends Component{
  
   render() {
     return (
-      <React.Fragment>{this.renderMovie()}</React.Fragment>
+      <React.Fragment>
+        <HeaderA />
+        {this.renderMovie()}
+      </React.Fragment>
     );
   }
 }
 
-export default MovieIndex;
+//オブジェクト(ハッシュ)を返す場合は戻り値に()が必要??
+const mapStateToProps = state => ({movies : state.movies,loginUserId : state.auth})
 
-
+const mapDispatchToProps = ({readMovieIndex,deleteMovie})
+export default withCookies(connect(mapStateToProps, mapDispatchToProps)(reduxForm({form: 'deleteMovieForm'})(MovieIndex)));

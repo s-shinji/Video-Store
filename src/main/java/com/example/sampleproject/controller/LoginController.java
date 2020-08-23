@@ -1,10 +1,16 @@
 package com.example.sampleproject.controller;
 
+import com.example.sampleproject.entity.DbUserDetails;
+
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+// @Controller
+@RestController
 public class LoginController {
 
 	/**
@@ -21,6 +27,11 @@ public class LoginController {
 	public String loginError(Model model) {
 		 model.addAttribute("iserror",true);
 		 return "login";
+	}
+
+	@GetMapping("/logouted")
+	public int logout() {
+		return 0;
 	}
 	/**
 	 * メインページに遷移する。

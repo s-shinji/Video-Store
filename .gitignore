@@ -34,3 +34,6 @@ application.yml
 
 ### H2 database ###
 /h2db/
+
+# ビルド結果
+src/main/resources/public

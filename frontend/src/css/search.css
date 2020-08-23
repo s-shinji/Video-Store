@@ -1,0 +1,12 @@
+.noMovie {
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 50px;
+}
+
+.upAvatar {
+  border: 1px solid gray;
+  border-radius: 100%;
+}
+

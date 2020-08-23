@@ -1,0 +1,19 @@
+.resultBox {
+  width: 450px;
+  margin: 0 auto;
+  margin-top: 200px;
+  border: #343a40 1px solid;
+  padding: 30px;
+  border-radius: 5px;
+}
+
+.success {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.goBackLogin {
+  display: inline-block;
+  margin-top: 50px;
+  font-size: 20px;
+}

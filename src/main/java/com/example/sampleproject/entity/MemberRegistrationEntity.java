@@ -1,8 +1,11 @@
 package com.example.sampleproject.entity;
 
+import org.springframework.stereotype.Component;
+
 /**
  * DBに入れる値を格納するクラス。
  */
+@Component
 public class MemberRegistrationEntity {
 	private int id;
 	private String name;
