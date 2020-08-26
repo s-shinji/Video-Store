@@ -10,7 +10,7 @@ import com.example.sampleproject.form.SearchForm;
 import com.example.sampleproject.service.FollowService;
 import com.example.sampleproject.service.ImageService;
 import com.example.sampleproject.service.MovieService;
-import com.example.sampleproject.service.NotificationService;
+// import com.example.sampleproject.service.NotificationService;
 import com.example.sampleproject.service.ReviewService;
 
 import java.time.LocalDateTime;
@@ -58,7 +58,7 @@ public class SampleController {
     private Image image;
 
     @Autowired
-    public SampleController(MovieService movieService, ImageService imageService, ReviewService reviewService, FollowService followService,NotificationService notificationService, Movie movie, Image image){
+    public SampleController(MovieService movieService, ImageService imageService, ReviewService reviewService, FollowService followService,/*NotificationService notificationService,*/ Movie movie, Image image){
         this.movieService        = movieService;
         this.imageService        = imageService;
         this.reviewService       = reviewService;

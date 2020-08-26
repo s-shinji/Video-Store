@@ -2,7 +2,7 @@ package com.example.sampleproject.controller;
 
 // import com.example.sampleproject.entity.DbUserDetails;
 import com.example.sampleproject.service.FollowService;
-import com.example.sampleproject.service.NotificationService;
+// import com.example.sampleproject.service.NotificationService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.security.core.Authentication;
@@ -21,8 +21,8 @@ public class FollowController {
 	@Autowired
 	FollowService followService;
 
-	@Autowired
-	NotificationService notificationService;
+	// @Autowired
+	// NotificationService notificationService;
 	
 	@PostMapping("/follow/{id}")
 	//メソッドをvoidにするかStringにするか（ajaxが戻り値なしでいけるか、modelがうまく働くか、エラーハンドリングをした場合の問題）
@@ -47,7 +47,7 @@ public class FollowController {
 			
 			followService.deleteFollow(userId, loginUserId);
 			//フォロー解除の際にnotificationのデータを削除する
-			notificationService.deleteNotification(userId, loginUserId);
+			// notificationService.deleteNotification(userId, loginUserId);
 		// }
 		return false;
 	} 
