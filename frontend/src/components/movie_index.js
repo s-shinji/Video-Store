@@ -110,6 +110,7 @@ class MovieIndex extends Component{
   }
  
   render() {
+    console.log(this.props.movies)
     return (
       <React.Fragment>
         <HeaderA />

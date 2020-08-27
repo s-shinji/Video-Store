@@ -50,6 +50,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://fierce-forest-67177.herokuapp.com"
+  "proxy": "http://localhost:8080"
 }
 
