@@ -1,7 +1,7 @@
-<!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!-- <!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"> -->
 <!-- ログインユーザーが自らのユーザーページを訪れた場合 -->
-<div th:if="${popularMovie.userId.equals(loginUser)}" th:fragment="userAvatar1">
+<!-- <div th:if="${popularMovie.userId.equals(loginUser)}" th:fragment="userAvatar1">
   <form th:action="@{/user/{id}(id=${loginUser})}" method="post" enctype="multipart/form-data">
     <div th:text="${fileError}" style="color:red;"></div>
 
@@ -11,23 +11,23 @@
     </label>
     <input type="submit" value="更新" class="deleteBtn">
   </form>
-</div>
+</div> -->
 <!-- ログインユーザーが他のユーザーページを訪れた場合 -->
-<div th:if="${!(popularMovie.userId.equals(loginUser))}" th:fragment="userAvatar1">
+<!-- <div th:if="${!(popularMovie.userId.equals(loginUser))}" th:fragment="userAvatar1">
   <label for="upAvatar" class="upAvatarBox">
     <img src="" th:src="${userName.avatar}" alt="" class="upAvatar" height="200px" width="200px">
-  </label>
+  </label> -->
   <!-- <a href="#" class="followBtn"> フォローする </a> -->
-  <div class="followBox">
-    <button class="followBtn" th:if="${isFollowed == false}"> フォローする </button>
+  <!-- <div class="followBox">
+    <button class="followBtn" th:if="${isFollowed == false}"> フォローする </button> -->
     <!-- <a href="#" class="followedBtn"> フォローを外す </a> -->
-    <button class="followedBtn" th:if="${isFollowed == true}"> フォロー中 </button>
+    <!-- <button class="followedBtn" th:if="${isFollowed == true}"> フォロー中 </button>
   </div>
-</div>
+</div> -->
 
 
 <!-- ログインユーザーが自らのユーザーページを訪れた場合 -->
-<div th:if="${userName.id.equals(loginUser)}" th:fragment="userAvatar2">
+<!-- <div th:if="${userName.id.equals(loginUser)}" th:fragment="userAvatar2">
   <form th:action="@{/user/{id}(id=${loginUser})}" method="post" enctype="multipart/form-data">
     <div th:text="${fileError}" style="color:red;"></div>
 
@@ -37,16 +37,16 @@
     </label>
     <input type="submit" value="更新" class="deleteBtn">
   </form>
-</div>
+</div> -->
 <!-- ログインユーザーが他のユーザーページを訪れた場合 -->
-<div th:if="${!(userName.id.equals(loginUser))}" th:fragment="userAvatar2">
+<!-- <div th:if="${!(userName.id.equals(loginUser))}" th:fragment="userAvatar2">
   <label for="upAvatar" class="upAvatarBox">
     <img src="" th:src="${userName.avatar}" alt="" class="upAvatar" height="200px" width="200px">
   </label>
   <div class="followBox">
-    <button class="followBtn" th:if="${isFollowed == false}"> フォローする </button>
+    <button class="followBtn" th:if="${isFollowed == false}"> フォローする </button> -->
     <!-- <a href="#" class="followedBtn"> フォローを外す </a> -->
-    <button class="followedBtn" th:if="${isFollowed == true}"> フォロー中 </button>
+    <!-- <button class="followedBtn" th:if="${isFollowed == true}"> フォロー中 </button>
   </div>
-</div>
+</div> -->
 
