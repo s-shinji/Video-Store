@@ -20,7 +20,9 @@ export const CREATE_REGISTRATION = 'CREATE_REGISTRATION'
 const ROOT_URL = 'https://fierce-forest-67177.herokuapp.com'
 
 export const readMovieIndex = (loginUserId) => async dispatch => {
+  console.log("test")
   const response = await fetch(`${ROOT_URL}/index?loginUserId=${loginUserId}`, {mode: 'cors'}).then(res => res.json())
+  console.log(response)
   // const response = await fetch(`/home?loginUserId=${loginUserId}`, {mode: 'cors'}).then(res => res.json())
   dispatch({type: READ_MOVIE_INDEX, response})
 }
