@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class SinglePageController {
-	@GetMapping("/**/{path:[^.]*}")
+	@GetMapping("https://fierce-forest-67177.herokuapp.com/**/{path:[^.]*}")
     public String any() {
-        return "forward:/index";
+        return "forward:/index.html";
     }
 }
