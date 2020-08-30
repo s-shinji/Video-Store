@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 // @Controller
 @RestController
+//springとreactでurlがかぶらないようにするため追加
+@RequestMapping("/KdiJ362")
 public class LoginController {
 
 	/**

@@ -16,14 +16,15 @@ export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
 export const CREATE_REGISTRATION = 'CREATE_REGISTRATION'
 
-// const ROOT_URL = 'http://localhost:8080'
-const ROOT_URL = 'https://fierce-forest-67177.herokuapp.com'
+const ROOT_URL = 'http://localhost:8080/KdiJ362'
+// const ROOT_URL = '/KdiJ362'
+// const ROOT_URL = 'https://fierce-forest-67177.herokuapp.com'
 
 export const readMovieIndex = (loginUserId) => async dispatch => {
   console.log("test")
   const response = await fetch(`${ROOT_URL}/index?loginUserId=${loginUserId}`, {mode: 'cors'}).then(res => res.json())
-  console.log(response)
   // const response = await fetch(`/home?loginUserId=${loginUserId}`, {mode: 'cors'}).then(res => res.json())
+  console.log(response)
   dispatch({type: READ_MOVIE_INDEX, response})
 }
 

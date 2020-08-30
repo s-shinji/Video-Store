@@ -26,7 +26,8 @@ class User extends Component{
 
   componentDidUpdate (prevProps) {
     //profileが更新された際に返されるレスポンスでuserステートを更新(そのため、レスポンスのstatusを指定することで200が返って来るはず)
-    if(this.props.user[2] != prevProps.user[2]) {
+    //本来、this.props.user[2] != prevProps.user[2]のように異なった場合にupdateするはずだが、常に異なった状態で無限ループに陥るため==に変更(更新の際、一瞬undifinedになるため==だと一度だけ更新してくれる？)
+    if(this.props.user[2] == prevProps.user[2]) {
       const id = this.props.match.params.id
       const loginUserId = this.props.loginUserId
       this.props.readUser(id,loginUserId)
@@ -44,8 +45,8 @@ class User extends Component{
       if(userInfo[0]){  //動画が存在する場合の条件式
         return(
           <div className="userBox">
-        
-            <Avatar/>
+            
+            <Avatar />
 
             <div className="boxParts userName">{userInfo[2] ? userInfo[2].name : ""}</div>
         
@@ -68,7 +69,7 @@ class User extends Component{
           return(
             <div className="userBox">
 
-              <Avatar/>
+              <Avatar />
               
               <div className="boxParts userName">{userInfo[2] ? userInfo[2].name : ""}</div>
           

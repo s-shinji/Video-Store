@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Top = () => {
+  console.log("top")
   return(
     <div className="top">
       <h1 className="topPageH1">Video Store</h1>

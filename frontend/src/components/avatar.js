@@ -57,7 +57,8 @@ class Avatar extends Component {
   
     if(movieUserId == loginUserId) {
       return(
-        //ログインユーザーが自らのユーザーページを訪れた場合
+        /*本番環境で？babelの影響？によって「//」のコメントアウトがあるとエラーが発生するため「/*」で対応*/
+        /*ログインユーザーが自らのユーザーページを訪れた場合*/
         <div>
           <form encType="multipart/form-data" onSubmit={handleSubmit(this.onSubmit)}>
   
@@ -81,7 +82,8 @@ class Avatar extends Component {
 
     if(movieUserId != loginUserId) {
       return(
-        // ログインユーザーが他のユーザーページを訪れた場合
+        /*本番環境で？babelの影響？によって「//」のコメントアウトがあるとエラーが発生するため「/*」で対応*/
+        /*ログインユーザーが他のユーザーページを訪れた場合*/
         <div>
           <label htmlFor="upAvatar" className="upAvatarBox">
             <img src="" src={user[2] ? user[2].avatar : ""} alt="" className="upAvatar" height="200px" width="200px" />

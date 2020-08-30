@@ -12,6 +12,9 @@ class MovieIndex extends Component{
   constructor(props) {
     super(props)
     this.onSubmit = this.onSubmit.bind(this)
+    this.state = {
+      youtubeLogo: null
+    }
   }
   
   componentDidMount () {
@@ -41,6 +44,21 @@ class MovieIndex extends Component{
     )
   }
 
+  onMouseEnter(key) {
+    document.getElementById(`imgSrc_${key}`).style.opacity = '0.8'
+    this.setState({
+      youtubeLogo: key
+    })
+  }
+
+  onMouseLeave(key) {
+    document.getElementById(`imgSrc_${key}`).style.opacity = '1.0'
+    this.setState({
+      youtubeLogo: null
+    })
+  }
+
+
   renderMovie() {
     const props = this.props
     const loginUserId = props.loginUserId
@@ -55,8 +73,9 @@ class MovieIndex extends Component{
           <React.Fragment key={`movieList${key}`}>
             <div style={style3}>
               <Link to={`/video/${value.id}`} className="movieLink jsMovie2" id={key}>
-                <div className="thumbnailBox" id={`imgSrc_${key}`}>
+                <div className="thumbnailBox" id={`imgSrc_${key}`} onMouseEnter={() => this.onMouseEnter(key)} onMouseLeave={() => this.onMouseLeave(key)}>
                   <img src={value.image.image} height="150px" width="300px" className="movieIndex" id="hoverChange" />
+                  {this.state.youtubeLogo == key ? <i className='fab fa-youtube'></i> :""}
                 </div>
                 <div className="movieTitle">{value.title}</div>
               </Link>
