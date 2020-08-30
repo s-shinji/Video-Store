@@ -4,6 +4,7 @@ package com.example.sampleproject.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -18,5 +19,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addMapping("/KdiJ362/authenticate").allowedOrigins("http://localhost:3000");
                 // .addMapping("/getBirthStoneList")
                 // .allowedOrigins("http://localhost:3000");
+    }
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("forward:/index.html");
     }
 }
