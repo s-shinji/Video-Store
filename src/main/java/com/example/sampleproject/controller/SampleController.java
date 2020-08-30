@@ -102,7 +102,7 @@ public class SampleController {
     // @CrossOrigin(origins = "http://localhost:3000")
 
 
-    @GetMapping("/index")
+    @GetMapping("/home")
     // @ResponseBody
     public List<Object> index(Model model,@RequestParam int loginUserId){
         List<Object> allItem = new ArrayList<>();

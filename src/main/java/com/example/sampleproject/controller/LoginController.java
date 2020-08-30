@@ -16,18 +16,18 @@ public class LoginController {
 	/**
 	 * ログイン画面 に遷移する。
 	 */
-	@RequestMapping("/login")
-	public String showLoginForm(Model model) {
+	// @RequestMapping("/login")
+	// public String showLoginForm(Model model) {
 
-		//ログイン画面。
-		return "login";
-	}
+	// 	//ログイン画面。
+	// 	return "login";
+	// }
 
-	@RequestMapping("/login-error")
-	public String loginError(Model model) {
-		 model.addAttribute("iserror",true);
-		 return "login";
-	}
+	// @RequestMapping("/login-error")
+	// public String loginError(Model model) {
+	// 	 model.addAttribute("iserror",true);
+	// 	 return "login";
+	// }
 
 	@GetMapping("/logouted")
 	public int logout() {
