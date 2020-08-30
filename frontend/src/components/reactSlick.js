@@ -18,16 +18,13 @@ const handleTop5Views = (top5Views) => {
         fontWeight:"bold",
         marginLeft:"50px"
       }
-      const style3= {
-        marginLeft: "250px"
-      }
 
       return(
         <React.Fragment key={`top5Views${key}`}>
           <li style={style}>
             <span style={style2}>{`NO.${key + 1}`}</span>
             <Link to={`/video/${value[0]}`} className="loopLink">
-              <img src={value[1]} height="225px" width="600px" style={style3}/>
+              <img src={value[1]} height="225px" width="600px" />
             </Link>
           </li>
         </React.Fragment>
