@@ -41,6 +41,7 @@ ReactDOM.render(
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component= {Top} />
+          <Route exact path="/top" component= {Top} />
           <Route path="/index" component= {MovieIndex} />
           <Route path="/login" component={Login} />
           <Route path="/RegistrationForm" component={RegistrationForm} />

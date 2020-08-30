@@ -35,7 +35,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 // @Controller
 @RestController
-@RequestMapping("/user")
+//springとreactでurlがかぶらないようにするため追加
+@RequestMapping("/KdiJ362")
 public class ProfileController {
 	private final ProfileService profileService;
 	private final FollowService  followService;
@@ -46,7 +47,7 @@ public class ProfileController {
 		this.followService  = followService;
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("user/{id}")
 	// @ResponseBody
 	public List<Object> user(@PathVariable("id") int userId, @RequestParam int loginUserId) {
 		List<Object> userAllInfo = new ArrayList<>();
@@ -127,7 +128,7 @@ public class ProfileController {
 		return userAllInfo;
 	}
 
-	@PostMapping("/{id}")
+	@PostMapping("user/{id}")
 	public Object avatar(@Validated ProfileForm profileForm, @PathVariable("id") int userId, @RequestParam("avatar") MultipartFile avatarParams) throws IOException {
 		// 	//hiddenタグが書き換えられた場合のエラーハンドリング
 		// 	if(!(userId == loginUserId)) {
