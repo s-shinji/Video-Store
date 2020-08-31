@@ -5,6 +5,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class SinglePageController {
+
+	@GetMapping("/")
+    public String all() {
+        return "login";
+    }
 	@GetMapping("{path:[^.]*}")
     public String any() {
         return "login";
