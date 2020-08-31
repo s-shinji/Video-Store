@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class SinglePageController {
 	@GetMapping("/{path:[^.]*}")
     public String any() {
-        return "top";
+        return "login";
     }
 }
