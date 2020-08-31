@@ -8,10 +8,10 @@ public class SinglePageController {
 
 	@GetMapping("/")
     public String all() {
-        return "login";
+        return "foward:/index.html";
     }
-	@GetMapping("{path:[^.]*}")
+	@GetMapping("/{path:[^.]*}")
     public String any() {
-        return "login";
+        return "foward:/index.html";
     }
 }
