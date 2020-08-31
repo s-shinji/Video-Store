@@ -5,13 +5,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class SinglePageController {
-
-	@GetMapping("/")
+	// @GetMapping("/**/{path:[^.]*}")
+    // public String any() {
+    //     return "forward:/index.html";
+    // }
+    @GetMapping("/")
     public String all() {
-        return "foward:/index.html";
+        return "forward:/index.html";
     }
 	@GetMapping("/{path:[^.]*}")
     public String any() {
-        return "foward:/index.html";
+        return "forward:/index.html";
     }
+
 }
