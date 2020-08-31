@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class SinglePageController {
-	@GetMapping("/**/{path:[^.]*}")
+	@GetMapping("/{path:[^.]*}")
     public String any() {
         return "top";
     }
