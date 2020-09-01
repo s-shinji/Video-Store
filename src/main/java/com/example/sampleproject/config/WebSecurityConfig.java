@@ -46,15 +46,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .usernameParameter("userName")
             .passwordParameter("password")
 			// .defaultSuccessUrl("http://localhost:3000/index")
-			// .defaultSuccessUrl("/KdiJ362/auth")
-			.defaultSuccessUrl("/auth")
+			.defaultSuccessUrl("/KdiJ362/auth")
 			.failureUrl("/login-error")
             .permitAll();
         
 		
 		http.logout()
-			// .logoutSuccessUrl("/KdiJ362/logouted")
-			.logoutSuccessUrl("/logouted")
+			.logoutSuccessUrl("/KdiJ362/logouted")
 			.permitAll();
         // CustomAuthenticationFilter filter = new CustomAuthenticationFilter();
         // filter.setRequiresAuthenticationRequestMatcher(
@@ -66,31 +64,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/css/**", "/images/**", "/js/**").permitAll()
 
             //springとreactでurlがかぶらないようにするため追加
-            // .antMatchers("/KdiJ362/RegistrationForm").permitAll()
-            // .antMatchers("/KdiJ362/Register").permitAll()
-            // .antMatchers("/KdiJ362/Result").permitAll()
-            // .antMatchers("/KdiJ362/index").permitAll()
-            // .antMatchers("/KdiJ362/video/{id}").permitAll()
-            // .antMatchers("/KdiJ362/").permitAll()
-            // .antMatchers("/KdiJ362/top").permitAll()
-            // .antMatchers("/KdiJ362/search").permitAll()
-            // //Reactから遷移できるように追加
-            // .antMatchers("/KdiJ362/user/{id}").permitAll()
-            // .antMatchers("/KdiJ362/upload").permitAll()
-            // .antMatchers("/KdiJ362/delete").permitAll()
-            // .antMatchers("/authenticate").permitAll();
-            .antMatchers("RegistrationForm").permitAll()
-            .antMatchers("Register").permitAll()
-            .antMatchers("Result").permitAll()
-            .antMatchers("index").permitAll()
-            .antMatchers("video/{id}").permitAll()
-            .antMatchers("").permitAll()
-            .antMatchers("top").permitAll()
-            .antMatchers("search").permitAll()
+            .antMatchers("/KdiJ362/RegistrationForm").permitAll()
+            .antMatchers("/KdiJ362/Register").permitAll()
+            .antMatchers("/KdiJ362/Result").permitAll()
+            .antMatchers("/KdiJ362/index").permitAll()
+            .antMatchers("/KdiJ362/video/{id}").permitAll()
+            .antMatchers("/KdiJ362/").permitAll()
+            .antMatchers("/KdiJ362/top").permitAll()
+            .antMatchers("/KdiJ362/search").permitAll()
             //Reactから遷移できるように追加
-            .antMatchers("user/{id}").permitAll()
-            .antMatchers("upload").permitAll()
-            .antMatchers("delete").permitAll()
+            .antMatchers("/KdiJ362/user/{id}").permitAll()
+            .antMatchers("/KdiJ362/upload").permitAll()
+            .antMatchers("/KdiJ362/delete").permitAll()
             .antMatchers("/authenticate").permitAll();
             // .antMatchers("/getBirthStoneList").permitAll()
 			//anyRequest().authenticated()でその他の全てのページへはログインが必要にする

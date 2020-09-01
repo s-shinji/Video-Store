@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 //springとreactでurlがかぶらないようにするため追加
-// @RequestMapping("/KdiJ362")
+@RequestMapping("/KdiJ362")
 public class ReviewController {
 	@Autowired
 	ReviewService reviewService;

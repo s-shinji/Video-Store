@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @ResponseBody
 //springとreactでurlがかぶらないようにするため追加
-// @RequestMapping("/KdiJ362")
+@RequestMapping("/KdiJ362")
 public class FollowController {
 	@Autowired
 	FollowService followService;
