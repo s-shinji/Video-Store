@@ -104,15 +104,14 @@ export const postLogin = values => async dispatch => {
   let response = await fetch(`/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params})
   // let response = await fetch(`/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params})
   // if(response.url == "http://localhost:8080/login-error") {
-  console.log(response.url)
-  // if(response.url == "https://fierce-forest-67177.herokuapp.com/login-error") {
-  //   response = 0;
-  // } else {
-  //   response = await fetch(`/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params}).then(res => res.json())
-  //   // response = await fetch(`/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params}).then(res => res.json())
-  // }
-  // console.log(response)
-  // dispatch({type: LOGIN, response})
+  if(response.url == "https://fierce-forest-67177.herokuapp.com/login-error") {
+    response = 0;
+  } else {
+    response = await fetch(`/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params}).then(res => res.json())
+    // response = await fetch(`/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params}).then(res => res.json())
+  }
+  console.log(response)
+  dispatch({type: LOGIN, response})
 }
 
 export const postLogout = () => async dispatch =>{
