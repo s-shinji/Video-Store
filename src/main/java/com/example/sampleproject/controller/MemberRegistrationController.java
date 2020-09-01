@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,7 +38,7 @@ public class MemberRegistrationController {
 	// 	return "RegistrationForm";
 	// }
 
-	@RequestMapping("/Register")
+	@PostMapping("/Register")
 	public int registerUser(@Validated @ModelAttribute MemberRegistrationForm memberRegistrationForm,
 								BindingResult result,
 								@RequestParam("name") String name,
