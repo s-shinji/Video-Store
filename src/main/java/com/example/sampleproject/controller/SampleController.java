@@ -49,7 +49,7 @@ import org.springframework.web.multipart.MultipartFile;
 // @Controller
 @RestController
 //springとreactでurlがかぶらないようにするため追加
-@RequestMapping("/KdiJ362")
+// @RequestMapping("/KdiJ362")
 public class SampleController {
 
     private final MovieService movieService;
