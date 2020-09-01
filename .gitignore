@@ -36,4 +36,4 @@ application.yml
 /h2db/
 
 # ビルド結果
-src/main/resources/public
+# src/main/resources/public
