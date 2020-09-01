@@ -101,14 +101,15 @@ export const postLogin = values => async dispatch => {
   const params = new URLSearchParams()
   params.append('userName', values.userName)
   params.append('password', values.password)
-  let response = await fetch(`${REACT_APP_BACKEND_URL}/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params})
+  let response = await fetch(`/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params})
   // let response = await fetch(`/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params})
   if(response.url == "http://localhost:8080/login-error") {
     response = 0;
   } else {
-    response = await fetch(`${REACT_APP_BACKEND_URL}/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params}).then(res => res.json())
+    response = await fetch(`/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params}).then(res => res.json())
     // response = await fetch(`/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params}).then(res => res.json())
   }
+  console.log(response)
   dispatch({type: LOGIN, response})
 }
 

@@ -41,13 +41,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .formLogin() //ログイン設定
         
             //springとreactでurlがかぶらないようにするため追加
-            .loginPage("/KdiJ362/login")
-            .loginProcessingUrl("/KdiJ362/authenticate")
+            .loginPage("/login")
+            .loginProcessingUrl("/authenticate")
             .usernameParameter("userName")
             .passwordParameter("password")
 			// .defaultSuccessUrl("http://localhost:3000/index")
 			.defaultSuccessUrl("/KdiJ362/auth")
-			.failureUrl("/KdiJ362/login-error")
+			.failureUrl("/login-error")
             .permitAll();
         
 		
@@ -76,7 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/KdiJ362/user/{id}").permitAll()
             .antMatchers("/KdiJ362/upload").permitAll()
             .antMatchers("/KdiJ362/delete").permitAll()
-            .antMatchers("/KdiJ362/authenticate").permitAll();
+            .antMatchers("/authenticate").permitAll();
             // .antMatchers("/getBirthStoneList").permitAll()
 			//anyRequest().authenticated()でその他の全てのページへはログインが必要にする
             // .anyRequest().authenticated()
