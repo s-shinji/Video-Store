@@ -103,7 +103,8 @@ export const postLogin = values => async dispatch => {
   params.append('password', values.password)
   let response = await fetch(`/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params})
   // let response = await fetch(`/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params})
-  if(response.url == "http://localhost:8080/login-error") {
+  // if(response.url == "http://localhost:8080/login-error") {
+  if(response.url == "https://fierce-forest-67177.herokuapp.com/login-error") {
     response = 0;
   } else {
     response = await fetch(`/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params}).then(res => res.json())
