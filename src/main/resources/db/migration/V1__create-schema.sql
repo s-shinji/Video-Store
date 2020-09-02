@@ -1,0 +1,63 @@
+-- Table Definition ----------------------------------------------
+-- CREATE TABLE movie (
+--     id SERIAL PRIMARY KEY,
+--     movie bytea NOT NULL,
+--     created timestamp  NOT NULL,
+--     user_id integer NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+--     views integer,
+--     title character varying(50) NOT NULL
+-- );
+-- -- Indices -------------------------------------------------------
+-- CREATE UNIQUE INDEX movie_pkey ON movie(id int4_ops);
+
+-- -- Table Definition ----------------------------------------------
+-- CREATE TABLE follow (
+--     id SERIAL PRIMARY KEY,
+--     followee_id integer NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+--     follower_id integer NOT NULL REFERENCES users(id) ON DELETE CASCADE
+-- );
+-- -- Indices -------------------------------------------------------
+-- CREATE UNIQUE INDEX follow_pkey ON follow(id int4_ops);
+
+-- -- Table Definition ----------------------------------------------
+-- CREATE TABLE image (
+--     id SERIAL PRIMARY KEY,
+--     image character varying,
+--     movie_id integer NOT NULL REFERENCES movie(id) ON DELETE CASCADE
+-- );
+-- -- Indices -------------------------------------------------------
+-- CREATE UNIQUE INDEX image_pkey ON image(id int4_ops);
+
+-- -- Table Definition ----------------------------------------------
+-- CREATE TABLE notification (
+--     id integer DEFAULT nextval('"
+-- notification_id_seq"'::regclass) PRIMARY KEY,
+--     movie_id integer NOT NULL,
+--     followee_id integer NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+--     follower_id integer NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+--     created timestamp without time zone NOT NULL
+-- );
+-- -- Indices -------------------------------------------------------
+-- CREATE UNIQUE INDEX notification_pkey ON notification(id int4_ops);
+
+-- -- Table Definition ----------------------------------------------
+-- CREATE TABLE review (
+--     id SERIAL PRIMARY KEY,
+--     review character varying(10) NOT NULL,
+--     movie_id integer NOT NULL REFERENCES movie(id) ON DELETE CASCADE,
+--     user_id integer NOT NULL
+-- );
+-- -- Indices -------------------------------------------------------
+-- CREATE UNIQUE INDEX review_pkey ON review(id int4_ops);
+
+-- -- Table Definition ----------------------------------------------
+-- CREATE TABLE users (
+--     id SERIAL PRIMARY KEY,
+--     name character varying(15) NOT NULL,
+--     password character varying(64) NOT NULL,
+--     email character varying(100) NOT NULL UNIQUE,
+--     avatar character varying
+-- );
+-- -- Indices -------------------------------------------------------
+-- CREATE UNIQUE INDEX users_pkey ON users(id int4_ops);
+-- CREATE UNIQUE INDEX users_email_key ON users(email text_ops);
