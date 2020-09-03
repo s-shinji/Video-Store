@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.sampleproject.mapper.RegisterMemberMapper">
-
-    <insert id="insertMemberInfo" parameterType="com.example.sampleproject.entity.MemberRegistrationEntity">
+    <!-- ローカル用 -->
+    <!-- <insert id="insertMemberInfo" parameterType="com.example.sampleproject.entity.MemberRegistrationEntity">
         INSERT INTO
             users(name, email, password,avatar)
         VALUES(
@@ -11,6 +11,16 @@
             #{email},
             #{password},
             #{avatar})
+    </insert> -->
+
+    <!-- 本番用 -->
+    <insert id="insertMemberInfo" parameterType="com.example.sampleproject.entity.MemberRegistrationEntity">
+        INSERT INTO
+            users(name, email, password)
+        VALUES(
+            #{name},
+            #{email},
+            #{password})
     </insert>
 
     <select id="findByEmail" resultType="com.example.sampleproject.entity.MemberRegistrationEntity">
