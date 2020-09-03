@@ -128,8 +128,8 @@ export const createNewRegistration = values => async dispatch =>{
   params.append('password', values.password)
   params.append('passwordConfirmation', values.passwordConfirmation)
 
-  // const response = await fetch(`${REACT_APP_BACKEND_URL}/Register`, {mode: 'cors', method: 'POST', body:params}).then(res => res.json())
-  const response = await fetch(`/Register`, {mode: 'cors', method: 'POST', body:params}).then(res => res.json())
+  const response = await fetch(`${REACT_APP_BACKEND_URL}/Register`, {mode: 'cors', method: 'POST', body:params}).then(res => res.json())
+  // const response = await fetch(`/Register`, {mode: 'cors', method: 'POST', body:params}).then(res => res.json())
 
   dispatch({type: CREATE_REGISTRATION, response})
 }

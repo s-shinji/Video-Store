@@ -18,7 +18,7 @@ import com.example.sampleproject.service.RegisterMemberService;
 // @Controller
 @RestController
 //springとreactでurlがかぶらないようにするため追加
-// @RequestMapping("/KdiJ362")
+@RequestMapping("/KdiJ362")
 public class MemberRegistrationController {
 
 	@Autowired

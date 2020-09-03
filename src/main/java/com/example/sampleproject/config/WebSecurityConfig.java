@@ -65,8 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             //springとreactでurlがかぶらないようにするため追加
             .antMatchers("/KdiJ362/RegistrationForm").permitAll()
-            // .antMatchers("/KdiJ362/Register").permitAll()
-            .antMatchers("/Register").permitAll()
+            .antMatchers("/KdiJ362/Register").permitAll()
             .antMatchers("/KdiJ362/Result").permitAll()
             .antMatchers("/KdiJ362/index").permitAll()
             .antMatchers("/KdiJ362/video/{id}").permitAll()
