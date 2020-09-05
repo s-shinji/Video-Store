@@ -1,5 +1,6 @@
 package com.example.sampleproject.mapper;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import com.example.sampleproject.entity.MemberRegistrationEntity;
 
@@ -7,7 +8,8 @@ import com.example.sampleproject.entity.MemberRegistrationEntity;
 public interface RegisterMemberMapper {
 
 	//会員情報をUSERテーブルにinsertする。
-	public void insertMemberInfo(MemberRegistrationEntity entity);
+		@Insert("INSERT INTO users(name, email, password) VALUES(#{name},#{email},#{password})")
+		public void insertMemberInfo(MemberRegistrationEntity entity);
 
 	public MemberRegistrationEntity findByEmail(String email);
 
