@@ -15,12 +15,12 @@ public interface RegisterMemberMapper {
 	public void insertMemberInfo(MemberRegistrationEntity entity);
 
 	// public MemberRegistrationEntity findByEmail(String email);
-	@Select("SELECT email FROM users WHERE email = #{email})")
+	@Select("SELECT email FROM users WHERE email = #{email}")
 	public MemberRegistrationEntity findByEmail(String email);
 
 
 	// public MemberRegistrationEntity findByName(String name);
-	@Select("SELECT name FROM users WHERE name = #{name})")
+	@Select("SELECT name FROM users WHERE name = #{name}")
 	public MemberRegistrationEntity findByName(String name);
 
 
