@@ -14,7 +14,7 @@
     </insert> -->
 
     <!-- 本番用 -->
-    <insert id="insertMemberInfo" parameterType="com.example.sampleproject.entity.MemberRegistrationEntity">
+    <!-- <insert id="insertMemberInfo" parameterType="com.example.sampleproject.entity.MemberRegistrationEntity">
         INSERT INTO
             users(name, email, password)
         VALUES(
@@ -39,6 +39,6 @@
           users
         WHERE
           name = #{name}
-    </select>
+    </select> -->
 
 </mapper>
