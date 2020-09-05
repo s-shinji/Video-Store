@@ -10,11 +10,11 @@ import com.example.sampleproject.validation.FindName;
  * 会員登録フォームに入力された値を格納するためのクラス。
  */
 public class MemberRegistrationForm {
-	// @FindName
+	@FindName
 	@Size(min = 1, max = 15,message = "15字以内で指定してください") 
 	private String name;
 	
-	// @FindEmail
+	@FindEmail
 	@Pattern(regexp = "^[a-zA-Z0-9!#$%&'_`/=~\\*\\+\\-\\?\\^\\{\\|\\}]+(\\.[a-zA-Z0-9!#$%&'_`/=~\\*\\+\\-\\?\\^\\{\\|\\}]+)*+(.*)@[a-zA-Z0-9][a-zA-Z0-9\\-]*(\\.[a-zA-Z0-9\\-]+)+$", message = "Emailが不正です。")
 	private String email;
 
