@@ -8,7 +8,7 @@ import com.example.sampleproject.entity.MemberRegistrationEntity;
 public interface RegisterMemberMapper {
 
 	//会員情報をUSERテーブルにinsertする。
-	public void insertMemberInfo(MemberRegistrationEntity entity)
+	public void insertMemberInfo(MemberRegistrationEntity entity);
 	// @Insert("INSERT INTO users(name, email, password) VALUES(#{name},#{email},#{password})")
 	// public void insertMemberInfo(MemberRegistrationEntity entity);
 
