@@ -29,9 +29,19 @@ public class MovieDaoImpl implements MovieDao {
     
     @Override
     public int insertMovie(Movie movie) {
-        Integer lastId = jdbcTemplate.queryForObject("INSERT INTO movie(movie, created, user_id, views, title) VALUES(?, ?, ?, ?, ?) RETURNING id", Integer.class,movie.getMovie(), movie.getCreated(), movie.getUserId(), movie.getViews(), movie.getTitle());
+        //postgresql用
+        // Integer lastId = jdbcTemplate.queryForObject("INSERT INTO movie(movie, created, user_id, views, title) VALUES(?, ?, ?, ?, ?) RETURNING id", Integer.class,movie.getMovie(), movie.getCreated(), movie.getUserId(), movie.getViews(), movie.getTitle());
+        //mysql用
+        jdbcTemplate.update("INSERT INTO movie(movie, created, user_id, views, title) VALUES(?, ?, ?, ?, ?)", movie.getMovie(), movie.getCreated(), movie.getUserId(), movie.getViews(), movie.getTitle());
+        int lastId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()",Integer.class);
         return lastId;
     }
+    // @Override
+    // public void insertMovie(Movie movie) {
+    //     // Integer lastId = jdbcTemplate.queryForObject("INSERT INTO movie(movie, created, user_id, views, title) VALUES(?, ?, ?, ?, ?) RETURNING id", Integer.class,movie.getMovie(), movie.getCreated(), movie.getUserId(), movie.getViews(), movie.getTitle());
+    //     // jdbcTemplate.update("INSERT INTO movie(movie, created, user_id, views, title) VALUES(?, ?, ?, ?, ?)", movie.getMovie(), movie.getCreated(), movie.getUserId(), movie.getViews(), movie.getTitle());
+    //     // int lastId = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()",Integer.class);
+    // }
 
 
     @Override

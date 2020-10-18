@@ -29,7 +29,7 @@ build/
 
 ### VS Code ###
 .vscode/
-src/main/resources/static/images/*
+src/main/resources/static/Noimages/*
 application.yml
 
 ### H2 database ###

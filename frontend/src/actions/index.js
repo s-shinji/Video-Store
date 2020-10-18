@@ -21,22 +21,18 @@ const REACT_APP_BACKEND_URL = '/KdiJ362'
 // const REACT_APP_BACKEND_URL = 'https://fierce-forest-67177.herokuapp.com'
 
 export const readMovieIndex = (loginUserId) => async dispatch => {
-  console.log("test")
   const response = await fetch(`${REACT_APP_BACKEND_URL}/index?loginUserId=${loginUserId}`, {mode: 'cors'}).then(res => res.json())
   // const response = await fetch(`/home?loginUserId=${loginUserId}`, {mode: 'cors'}).then(res => res.json())
-  console.log(response)
   dispatch({type: READ_MOVIE_INDEX, response})
 }
 
 export const readMovieDetail = (id,loginUserId) => async dispatch => {
   const response = await fetch(`${REACT_APP_BACKEND_URL}/video/${id}?loginUserId=${loginUserId}`, {mode: 'cors'}).then(res => res.json())
-  // const response = await fetch(`/video/${id}?loginUserId=${loginUserId}`, {mode: 'cors'}).then(res => res.json())
   dispatch({type: READ_MOVIE_DETAIL, response})
 }
 
 export const readUser = (id,loginUserId) => async dispatch => {
   const response = await fetch(`${REACT_APP_BACKEND_URL}/user/${id}?loginUserId=${loginUserId}`, {mode: 'cors'}).then(res => res.json())
-  // const response = await fetch(`/user/${id}?loginUserId=${loginUserId}`, {mode: 'cors'}).then(res => res.json())
   dispatch({type: READ_USER, response})
 }
 
@@ -104,13 +100,12 @@ export const postLogin = values => async dispatch => {
   let response = await fetch(`/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params})
   // let response = await fetch(`/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params})
   // if(response.url == "http://localhost:8080/login-error") {
-  if(response.url == "https://fierce-forest-67177.herokuapp.com/login-error") {
+  // if(response.url == "https://fierce-forest-67177.herokuapp.com/login-error") {
+  if(response.url == "http://18.183.179.177:8080/login-error") {
     response = 0;
   } else {
     response = await fetch(`/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params}).then(res => res.json())
-    // response = await fetch(`/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params}).then(res => res.json())
   }
-  console.log(response)
   dispatch({type: LOGIN, response})
 }
 

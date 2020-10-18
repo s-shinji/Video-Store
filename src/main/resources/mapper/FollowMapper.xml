@@ -20,8 +20,7 @@
     </delete>
 
     <select id="checkFollow" parameterType="int" resultType="int">
-      SELECT COUNT
-        (followee_id)
+      SELECT COUNT(followee_id)
       FROM
         follow
       WHERE

@@ -141,17 +141,18 @@ public class SampleController {
         // movieGetAllLists.stream()
         //         .sorted(Comparator.comparing(Movie::getViews,Comparator.reverseOrder()));
                 
-
-        //再生回数の上位5つを取り出す
-        List<Object> top5Views = new ArrayList<>();
-        for(int j = 0; j < 5; j++) {
-            List<Object> refillableList2 = new ArrayList<>();
-            refillableList2.add(viewList.get(j).getId());
-            refillableList2.add(viewList.get(j).getImage().getImage());
-            top5Views.add(refillableList2);
+        if(viewList.size() >= 5) {
+            //再生回数の上位5つを取り出す
+            List<Object> top5Views = new ArrayList<>();
+            for(int j = 0; j < 5; j++) {
+                List<Object> refillableList2 = new ArrayList<>();
+                refillableList2.add(viewList.get(j).getId());
+                refillableList2.add(viewList.get(j).getImage().getImage());
+                top5Views.add(refillableList2);
+            }
+            model.addAttribute("top5Views", top5Views);
+            allItem.add(top5Views);
         }
-        model.addAttribute("top5Views", top5Views);
-        allItem.add(top5Views);
 
         //index.htmlでユーザー情報を取得したい場合に用いる(現在ログイン中のユーザー情報を取得)
         //通知機能を省いたことで必要性は現時点ではない
@@ -272,9 +273,9 @@ public class SampleController {
                         //  @RequestBody MovieForm movieForm
                          ) throws Exception {
 
-        if(movieForm.getLoginUserId() == 0) {
+        // if(movieForm.getLoginUserId() == 0) {
             
-        }
+        // }
         // List<Object> createMovie = new ArrayList<>();
 
         // if(result.hasErrors()) {

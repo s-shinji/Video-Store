@@ -25,7 +25,7 @@ class FollowingModal extends Component {
 
   renderFollowingUser(){
     const props = this.props
-    const followingUser = _.map(props.user[6], (value,key) => {
+    const followingUser = _.map(props.user[5], (value,key) => {
       return(
         <div className="followUserBox" key={`followingUser${key}`}>
           <Link to={`/user/${value.id}`} className="followEach" onClick={this.click}>
