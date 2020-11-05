@@ -223,7 +223,7 @@ public class SampleController {
         detailVideoInfo.add(movie);
 
         //ユーザーがログイン状態且つ動画投稿者じゃない場合に再生回数を+1
-        if(movie.getUserId() == loginUserId) {
+        if(movie.getUserId() == loginUserId || loginUserId == 0) {
         } else {
             //再生回数を+1
             int views = movie.getViews();

@@ -100,8 +100,9 @@ export const postLogin = values => async dispatch => {
   let response = await fetch(`/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params})
   // let response = await fetch(`/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params})
   // if(response.url == "http://localhost:8080/login-error") {
-  // if(response.url == "https://fierce-forest-67177.herokuapp.com/login-error") {
-  if(response.url == "http://18.183.179.177:8080/login-error") {
+
+  //ElasticIPアドレスを固定してないため、EC2を停止するたびにここの記述は変更する必要あり
+  if(response.url == "http://13.231.185.192:8080/login-error") {
     response = 0;
   } else {
     response = await fetch(`/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params}).then(res => res.json())
