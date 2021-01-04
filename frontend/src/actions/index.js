@@ -102,7 +102,7 @@ export const postLogin = values => async dispatch => {
   // if(response.url == "http://localhost:8080/login-error") {
 
   //ElasticIPアドレスを固定してないため、EC2を停止するたびにここの記述は変更する必要あり
-  if(response.url == "http://13.231.185.192:8080/login-error") {
+  if(response.url == "http://52.194.224.178:8080/login-error") {
     response = 0;
   } else {
     response = await fetch(`/authenticate`, {mode: 'cors', method: 'POST',credentials: 'include',body: params}).then(res => res.json())
