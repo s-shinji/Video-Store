@@ -107,3 +107,7 @@
 .previewBox{
   margin-top: 56px;
 }
+
+.uploadSubmit:disabled {
+  opacity: 0.65;
+}

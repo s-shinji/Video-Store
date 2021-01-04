@@ -96,6 +96,7 @@ class User extends Component{
       } 
 
       const props = this.props
+      console.log(props)
       //{}は必要
       const {Component} = this.state;
       return (
